@@ -479,6 +479,12 @@
       <input type="text" id="infobipBizId" value="1654519411336220" readonly style="opacity:0.6; cursor:not-allowed;" />
       <p class="hint">ID da Infobip como parceiro na Meta</p>
     </div>
+
+    <div class="field">
+      <label>Solution ID da Infobip</label>
+      <input type="text" id="solutionId" placeholder="Ex: 123456789" />
+      <p class="hint">Encontre em: Meta App Dashboard → WhatsApp → Partner Solutions</p>
+    </div>
   </div>
 
   <!-- Card 3: N8N Webhook -->
@@ -606,6 +612,8 @@
       phoneNumberId: phoneId,
       currency,
       infobipBusinessId: '1654519411336220',
+      solutionId: document.getElementById('solutionId').value.trim(),
+      appId: '1370401139746733',
       timestamp: new Date().toISOString()
     };
 
