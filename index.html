@@ -3,548 +3,189 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Infobip — Vincular WhatsApp</title>
+  <title>Infobip — Registrar Sender</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #080c14;
-      --surface: #0f1520;
-      --surface2: #151c2b;
-      --surface3: #1a2235;
-      --border: #1f2d45;
-      --border2: #263550;
-      --accent: #3b82f6;
-      --accent-dim: rgba(59,130,246,0.1);
-      --accent-glow: rgba(59,130,246,0.2);
-      --green: #22c55e;
-      --green-dim: rgba(34,197,94,0.1);
-      --yellow: #f59e0b;
-      --yellow-dim: rgba(245,158,11,0.1);
-      --red: #ef4444;
-      --red-dim: rgba(239,68,68,0.1);
-      --text: #e2e8f0;
-      --text-muted: #64748b;
-      --text-dim: #94a3b8;
-      --mono: 'JetBrains Mono', monospace;
-      --radius: 12px;
+      --bg: #080c14; --surface: #0f1520; --surface2: #151c2b;
+      --border: #1f2d45; --accent: #3b82f6; --accent-dim: rgba(59,130,246,0.1);
+      --accent-glow: rgba(59,130,246,0.2); --green: #22c55e;
+      --green-dim: rgba(34,197,94,0.1); --yellow: #f59e0b;
+      --yellow-dim: rgba(245,158,11,0.1); --red: #ef4444;
+      --red-dim: rgba(239,68,68,0.1); --text: #e2e8f0;
+      --text-muted: #64748b; --text-dim: #94a3b8;
+      --mono: 'JetBrains Mono', monospace; --radius: 12px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 40px 24px;
-    }
-
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 40px 24px; }
     .container { width: 100%; max-width: 560px; }
-
-    /* Header */
-    .header { margin-bottom: 36px; }
-
-    .logo-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .logo-dot {
-      width: 8px; height: 8px;
-      background: var(--green);
-      border-radius: 50%;
-      box-shadow: 0 0 8px var(--green);
-      animation: blink 2s ease-in-out infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-    .logo-label {
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
-    }
-
-    h1 {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.6px;
-      line-height: 1.2;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    /* Steps indicator */
-    .steps {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      margin-bottom: 28px;
-    }
-
-    .step {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      flex: 1;
-    }
-
-    .step-num {
-      width: 24px; height: 24px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.3s;
-    }
-
-    .step.active .step-num {
-      background: var(--accent-dim);
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .step.done .step-num {
-      background: var(--green-dim);
-      border-color: var(--green);
-      color: var(--green);
-    }
-
-    .step-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      font-weight: 500;
-      white-space: nowrap;
-    }
-
-    .step.active .step-label { color: var(--text-dim); }
-    .step.done .step-label { color: var(--green); }
-
-    .step-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      margin: 0 8px;
-    }
-
-    /* Cards */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 12px;
-    }
-
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .card-icon {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      flex-shrink: 0;
-    }
-
+    .header { margin-bottom: 32px; }
+    .logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .logo-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 8px var(--green); animation: blink 2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .logo-label { font-size: 12px; font-weight: 500; color: var(--text-muted); }
+    h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.6px; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: var(--text-muted); }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 12px; }
+    .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+    .card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
     .card-icon.blue { background: var(--accent-dim); }
     .card-icon.green { background: var(--green-dim); }
     .card-icon.yellow { background: var(--yellow-dim); }
-
-    .card-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .card-subtitle {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    /* Fields */
+    .card-title { font-size: 13px; font-weight: 600; }
+    .card-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
     .field { margin-bottom: 16px; }
     .field:last-child { margin-bottom: 0; }
-
     .field-row { display: flex; gap: 12px; }
     .field-row .field { flex: 1; }
-
-    label {
-      display: block;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--text-dim);
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-
+    label { display: block; font-size: 11px; font-weight: 600; color: var(--text-dim); margin-bottom: 6px; }
+    .badge { display: inline-flex; font-size: 10px; color: var(--green); background: var(--green-dim); border: 1px solid rgba(34,197,94,0.2); border-radius: 4px; padding: 2px 6px; margin-left: 6px; }
     .input-wrap { position: relative; }
-
-    input {
-      width: 100%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 13px;
-      font-size: 12px;
-      font-family: var(--mono);
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
-    }
-
+    input { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 13px; font-size: 12px; font-family: var(--mono); color: var(--text); outline: none; transition: border-color 0.15s, box-shadow 0.15s; }
     input::placeholder { color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 12px; }
     input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
     input.has-eye { padding-right: 38px; }
-
-    .eye-btn {
-      position: absolute;
-      right: 10px; top: 50%;
-      transform: translateY(-50%);
-      background: none; border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      padding: 2px;
-      display: flex;
-      align-items: center;
-      transition: color 0.15s;
-    }
+    input[readonly] { opacity: 0.5; cursor: not-allowed; }
+    .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; transition: color 0.15s; }
     .eye-btn:hover { color: var(--text); }
-
-    .hint {
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-top: 5px;
-      line-height: 1.4;
-    }
-
-    /* Pre-filled badge */
-    .prefilled {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10px;
-      color: var(--green);
-      background: var(--green-dim);
-      border: 1px solid rgba(34,197,94,0.2);
-      border-radius: 4px;
-      padding: 2px 6px;
-      margin-left: 6px;
-      font-weight: 500;
-    }
-
-    /* Webhook row */
-    .webhook-row { display: flex; gap: 8px; }
-    .webhook-row input { flex: 1; }
-
-    .copy-btn {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-      color: var(--text-dim);
-      cursor: pointer;
-      font-size: 11px;
-      font-family: 'Inter', sans-serif;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      white-space: nowrap;
-      transition: all 0.15s;
-    }
-    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    /* Info box */
-    .info-box {
-      background: var(--accent-dim);
-      border: 1px solid rgba(59,130,246,0.2);
-      border-radius: 8px;
-      padding: 12px 14px;
-      font-size: 11px;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-
-    .info-box strong { color: var(--accent); font-weight: 600; }
-
-    /* Button */
-    .btn {
-      width: 100%;
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: 'Inter', sans-serif;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.15s;
-      letter-spacing: -0.2px;
-    }
-
+    .hint { font-size: 11px; color: var(--text-muted); margin-top: 5px; line-height: 1.4; }
+    .info-box { background: var(--accent-dim); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 12px 14px; font-size: 11px; color: var(--text-dim); line-height: 1.6; margin-bottom: 12px; }
+    .info-box strong { color: var(--accent); }
+    .btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 14px; font-size: 14px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.15s; }
     .btn:hover { background: #2563eb; box-shadow: 0 0 24px var(--accent-glow); }
     .btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
-
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
-
+    .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
     .btn.loading .spinner { display: block; }
     .btn.loading .btn-text { display: none; }
-
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* Status */
-    .status {
-      border-radius: 10px;
-      padding: 14px 16px;
-      display: none;
-      gap: 10px;
-      margin-top: 12px;
-      align-items: flex-start;
-    }
-
+    .status { border-radius: 10px; padding: 14px 16px; display: none; gap: 10px; margin-top: 12px; align-items: flex-start; }
     .status.show { display: flex; }
     .status.success { background: var(--green-dim); border: 1px solid rgba(34,197,94,0.25); }
     .status.error { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); }
     .status.loading { background: var(--yellow-dim); border: 1px solid rgba(245,158,11,0.25); }
-
     .status-icon { font-size: 18px; flex-shrink: 0; }
-    .status-body { flex: 1; }
-
-    .status-title {
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 3px;
-    }
-
+    .status-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
     .status.success .status-title { color: var(--green); }
     .status.error .status-title { color: var(--red); }
     .status.loading .status-title { color: var(--yellow); }
-
     .status-msg { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
-
-    /* Footer chips */
-    .chips {
-      display: flex;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .chip {
-      flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 12px;
-    }
-
+    .chips { display: flex; gap: 8px; margin-top: 16px; }
+    .chip { flex: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
     .chip-label { font-size: 10px; color: var(--text-muted); margin-bottom: 3px; font-weight: 500; }
     .chip-value { font-size: 11px; color: var(--text-dim); font-weight: 600; font-family: var(--mono); }
   </style>
 </head>
 <body>
 <div class="container">
-
-  <!-- Header -->
   <div class="header">
     <div class="logo-row">
       <div class="logo-dot"></div>
       <span class="logo-label">Infobip · WhatsApp Business</span>
     </div>
-    <h1>Vincular número ao crédito</h1>
-    <p class="subtitle">Conecte seu WABA da Meta ao crédito da Infobip via API REST</p>
+    <h1>Registrar Sender</h1>
+    <p class="subtitle">Registra o número verificado na Meta diretamente na Infobip</p>
   </div>
 
-  <!-- Steps -->
-  <div class="steps">
-    <div class="step active" id="step1">
-      <div class="step-num">1</div>
-      <span class="step-label">Credenciais</span>
-    </div>
-    <div class="step-line"></div>
-    <div class="step" id="step2">
-      <div class="step-num">2</div>
-      <span class="step-label">WABA</span>
-    </div>
-    <div class="step-line"></div>
-    <div class="step" id="step3">
-      <div class="step-num">3</div>
-      <span class="step-label">Webhook</span>
-    </div>
-    <div class="step-line"></div>
-    <div class="step" id="step4">
-      <div class="step-num">4</div>
-      <span class="step-label">Conectar</span>
-    </div>
-  </div>
-
-  <!-- Card 1: Infobip -->
+  <!-- Infobip -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon blue">🔑</div>
       <div>
         <div class="card-title">Credenciais Infobip</div>
-        <div class="card-subtitle">API Key e Base URL da sua conta</div>
+        <div class="card-subtitle">Já pré-preenchidas</div>
       </div>
     </div>
-
     <div class="field">
-      <label>API Key</label>
+      <label>API Key <span class="badge">✓ pré-preenchida</span></label>
       <div class="input-wrap">
-        <input type="password" id="apiKey" class="has-eye" placeholder="Cole sua API Key aqui" />
+        <input type="password" id="apiKey" class="has-eye" value="5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d" />
         <button class="eye-btn" onclick="toggleVis('apiKey', this)">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
         </button>
       </div>
     </div>
-
     <div class="field">
-      <label>Base URL <span class="prefilled">✓ pré-preenchida</span></label>
+      <label>Base URL <span class="badge">✓ pré-preenchida</span></label>
       <input type="text" id="baseUrl" value="qdn5nq.api.infobip.com" />
-      <p class="hint">URL exclusiva da sua conta Infobip</p>
     </div>
   </div>
 
-  <!-- Card 2: Meta / WABA -->
+  <!-- Número -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon green">📱</div>
       <div>
-        <div class="card-title">Dados Meta / WhatsApp Business</div>
-        <div class="card-subtitle">WABA ID e Phone Number ID do seu BM</div>
+        <div class="card-title">Dados do Número</div>
+        <div class="card-subtitle">Número já verificado na Meta</div>
       </div>
     </div>
-
     <div class="field">
       <label>WABA ID</label>
-      <input type="text" id="wabaId" placeholder="Ex: 123456789012345" />
-      <p class="hint">Business Manager → Configurações → Contas WhatsApp</p>
+      <input type="text" id="wabaId" placeholder="Ex: 1018698034528920" />
+      <p class="hint">ID da conta WhatsApp Business no Meta BM</p>
     </div>
-
     <div class="field-row">
       <div class="field">
-        <label>Phone Number ID</label>
-        <input type="text" id="phoneNumberId" placeholder="Ex: 987654321098765" />
+        <label>Código do País <span class="badge">✓ fixo</span></label>
+        <input type="text" id="countryCode" value="55" readonly />
       </div>
       <div class="field">
-        <label>Moeda</label>
-        <input type="text" id="currency" value="BRL" placeholder="BRL" />
+        <label>Número <span class="badge">✓ fixo</span></label>
+        <input type="text" id="phoneNumber" value="62920027381" readonly />
       </div>
     </div>
-
     <div class="field">
-      <label>Infobip Business ID <span class="prefilled">✓ pré-preenchida</span></label>
-      <input type="text" id="infobipBizId" value="1654519411336220" readonly style="opacity:0.6; cursor:not-allowed;" />
-      <p class="hint">ID da Infobip como parceiro na Meta</p>
-    </div>
-
-    <div class="field">
-      <label>Solution ID da Infobip</label>
-      <input type="text" id="solutionId" placeholder="Ex: 123456789" />
-      <p class="hint">Encontre em: Meta App Dashboard → WhatsApp → Partner Solutions</p>
+      <label>Nome de Exibição <span class="badge">✓ fixo</span></label>
+      <input type="text" id="displayName" value="Atendimento" readonly />
     </div>
   </div>
 
-  <!-- Card 3: N8N Webhook -->
+  <!-- Webhook -->
   <div class="card">
     <div class="card-header">
       <div class="card-icon yellow">⚡</div>
       <div>
         <div class="card-title">Webhook N8N</div>
-        <div class="card-subtitle">URL do fluxo que vai processar a conexão</div>
+        <div class="card-subtitle">Já pré-preenchido</div>
       </div>
     </div>
-
     <div class="field">
-      <label>URL do Webhook</label>
-      <div class="webhook-row">
-        <input type="text" id="webhookUrl" placeholder="https://rarelookingorca-n8n.cloudfy.live/webhook/..." />
-        <button class="copy-btn" onclick="copyWebhook()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copiar
-        </button>
-      </div>
+      <label>URL do Webhook <span class="badge">✓ pré-preenchida</span></label>
+      <input type="text" id="webhookUrl" value="https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-connect" />
     </div>
   </div>
 
-  <!-- Info box -->
   <div class="info-box">
-    <strong>Fluxo de conexão:</strong> O painel envia os dados ao N8N → N8N chama a API da Infobip para compartilhar a linha de crédito com o WABA → Infobip notifica via webhook o status do vínculo.
+    <strong>Fluxo:</strong> Painel → N8N → Infobip verifica se o número já está verificado na Meta → Se sim, registra automaticamente como sender ativo.
   </div>
 
-  <!-- Botão -->
   <button class="btn" id="btnConnect" onclick="conectar()">
     <div class="spinner"></div>
-    <span class="btn-text">Vincular ao crédito Infobip</span>
+    <span class="btn-text">Registrar Sender na Infobip</span>
   </button>
 
-  <!-- Status -->
   <div class="status" id="statusBox">
     <div class="status-icon" id="statusIcon"></div>
-    <div class="status-body">
+    <div>
       <div class="status-title" id="statusTitle"></div>
       <div class="status-msg" id="statusMsg"></div>
     </div>
   </div>
 
-  <!-- Chips -->
   <div class="chips">
     <div class="chip">
-      <div class="chip-label">Parceiro</div>
-      <div class="chip-value">Infobip BSP</div>
+      <div class="chip-label">Número</div>
+      <div class="chip-value">+55 62 92002-7381</div>
     </div>
     <div class="chip">
-      <div class="chip-label">Partner ID</div>
-      <div class="chip-value">1654519411...</div>
+      <div class="chip-label">Display</div>
+      <div class="chip-value">Atendimento</div>
     </div>
     <div class="chip">
       <div class="chip-label">Canal</div>
       <div class="chip-value">WhatsApp Cloud</div>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -557,18 +198,6 @@
       : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
   }
 
-  function copyWebhook() {
-    const val = document.getElementById('webhookUrl').value;
-    if (!val) return;
-    navigator.clipboard.writeText(val).then(() => {
-      const btn = document.querySelector('.copy-btn');
-      btn.textContent = '✓ Copiado';
-      setTimeout(() => {
-        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar`;
-      }, 2000);
-    });
-  }
-
   function setStatus(type, title, msg) {
     const box = document.getElementById('statusBox');
     box.className = 'status show ' + type;
@@ -577,66 +206,38 @@
     document.getElementById('statusMsg').textContent = msg;
   }
 
-  function setStep(n) {
-    for (let i = 1; i <= 4; i++) {
-      const el = document.getElementById('step' + i);
-      el.className = 'step' + (i < n ? ' done' : i === n ? ' active' : '');
-      el.querySelector('.step-num').textContent = i < n ? '✓' : i;
-    }
-  }
-
   async function conectar() {
-    const apiKey       = document.getElementById('apiKey').value.trim();
-    const baseUrl      = document.getElementById('baseUrl').value.trim();
-    const wabaId       = document.getElementById('wabaId').value.trim();
-    const phoneId      = document.getElementById('phoneNumberId').value.trim();
-    const currency     = document.getElementById('currency').value.trim() || 'BRL';
-    const webhookUrl   = document.getElementById('webhookUrl').value.trim();
+    const apiKey      = document.getElementById('apiKey').value.trim();
+    const baseUrl     = document.getElementById('baseUrl').value.trim();
+    const wabaId      = document.getElementById('wabaId').value.trim();
+    const countryCode = document.getElementById('countryCode').value.trim();
+    const phoneNumber = document.getElementById('phoneNumber').value.trim();
+    const displayName = document.getElementById('displayName').value.trim();
+    const webhookUrl  = document.getElementById('webhookUrl').value.trim();
 
-    if (!apiKey || !baseUrl || !wabaId || !phoneId || !webhookUrl) {
-      setStatus('error', 'Campos incompletos', 'Preencha todos os campos antes de continuar.');
+    if (!wabaId) {
+      setStatus('error', 'WABA ID obrigatório', 'Preencha o WABA ID antes de continuar.');
       return;
     }
 
     const btn = document.getElementById('btnConnect');
     btn.disabled = true;
     btn.classList.add('loading');
+    setStatus('loading', 'Enviando ao N8N...', 'Aguardando resposta da Infobip.');
 
-    setStep(2);
-    setStatus('loading', 'Enviando ao N8N...', 'Aguardando processamento do fluxo de conexão.');
-
-    const payload = {
-      apiKey,
-      baseUrl: baseUrl.startsWith('https://') ? baseUrl : `https://${baseUrl}`,
-      wabaId,
-      phoneNumberId: phoneId,
-      currency,
-      infobipBusinessId: '1654519411336220',
-      solutionId: document.getElementById('solutionId').value.trim(),
-      appId: '1370401139746733',
-      timestamp: new Date().toISOString()
-    };
+    const payload = { apiKey, baseUrl: baseUrl.startsWith('https://') ? baseUrl : 'https://' + baseUrl, wabaId, countryCode, phoneNumber, displayName, timestamp: new Date().toISOString() };
 
     try {
-      setStep(3);
-      const res = await fetch(webhookUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-
-      setStep(4);
-
+      const res = await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
       if (res.ok) {
-        setStatus('success', 'Solicitação enviada com sucesso!', 'O N8N recebeu os dados e está processando o vínculo com a Infobip. Verifique o fluxo para confirmar o status da conexão.');
+        const data = await res.json().catch(() => ({}));
+        setStatus('success', 'Solicitação enviada!', JSON.stringify(data));
       } else {
-        const errText = await res.text().catch(() => '');
-        setStatus('error', `Erro ${res.status} no N8N`, errText || 'O webhook retornou um erro. Verifique se o fluxo está ativo e publicado.');
-        setStep(1);
+        const err = await res.text().catch(() => '');
+        setStatus('error', `Erro ${res.status}`, err || 'Verifique se o N8N está ativo.');
       }
     } catch (err) {
-      setStatus('error', 'Não foi possível alcançar o N8N', 'Verifique a URL do webhook e se o N8N está online.');
-      setStep(1);
+      setStatus('error', 'Falha na conexão', 'Verifique a URL do webhook.');
     }
 
     btn.disabled = false;
