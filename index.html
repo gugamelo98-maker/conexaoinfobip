@@ -103,6 +103,7 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
       <span>Remetentes disponíveis</span>
       <div style="display:flex;gap:6px">
         <button class="btn btn-all" onclick="togAll()">✓ Todos</button>
+        <button class="btn btn-all" style="background:var(--bdim);border-color:var(--bbdr);color:var(--blue)" onclick="togAtivos()">✓ Apenas ativos</button>
         <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAllS()">✕ Limpar</button>
       </div>
     </div>
@@ -271,6 +272,20 @@ function togAll() {
 }
 
 function desAllS() { sS = []; renderS(); }
+
+function togAtivos() {
+  const ativos = fS.filter(s => {
+    const st = (s.connectionStatus || s.registrationStatus || "").toUpperCase();
+    return st === "FINISHED" || st === "CONNECTED";
+  }).map(s => s.sender);
+  const todosAtivosJaSelecionados = ativos.every(n => sS.includes(n));
+  if (todosAtivosJaSelecionados) {
+    sS = sS.filter(n => !ativos.includes(n));
+  } else {
+    ativos.forEach(n => { if (!sS.includes(n)) sS.push(n); });
+  }
+  renderS();
+}
 
 // ─ STEP 2: Templates ─
 async function buscarTodosTemplates() {
