@@ -364,6 +364,7 @@ async function buscarSenders() {
     const d = await r.json();
     aS = (d.senders && d.senders.results) || [];
     fS = [...aS];
+    document.getElementById('sSearch').value = '';
     renderS();
   } catch(e) {
     document.getElementById('sendersList').innerHTML = '<div class="empty">Erro ao buscar. Verifique o N8N.</div>';
@@ -372,8 +373,15 @@ async function buscarSenders() {
 }
 
 function filterS() {
-  const q = document.getElementById('sSearch').value.toLowerCase();
-  fS = q ? aS.filter(s => s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q)) : [...aS];
+  if (!aS.length) return;
+  const q = document.getElementById('sSearch').value.toLowerCase().trim();
+  if (!q) {
+    fS = [...aS];
+  } else {
+    fS = aS.filter(function(s) {
+      return s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q);
+    });
+  }
   renderS();
 }
 
