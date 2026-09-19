@@ -153,22 +153,11 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 
 <!-- STEP 3 -->
 <div class="step" id="step3">
-  <div class="tcol">
-    <div>
-      <div class="card">
-        <div class="chead">Variáveis do template</div>
-        <div id="varFields"><div class="empty">Nenhuma variável</div></div>
-      </div>
-      <div class="card">
-        <div class="chead">URL da imagem (header)</div>
-        <div class="fld"><input type="url" id="mediaUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="updatePrev()"/></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="chead">Prévia da mensagem</div>
-      <div id="prevArea"><div class="empty">Preencha as variáveis para ver a prévia</div></div>
-    </div>
+  <div class="card">
+    <div class="chead">URL da imagem (header) — usada em todos os templates</div>
+    <div class="fld"><input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/></div>
   </div>
+  <div id="templateVarCards"></div>
   <div class="brow">
     <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">← Voltar</span></button>
     <button class="btn btn-green" onclick="goStep(4)"><span class="lbl">Revisar e criar →</span></button>
@@ -396,39 +385,72 @@ function updateCntT(){
 
 // ─ STEP 3: Vars ─
 function buildVars(){
-  if(!sT.length){document.getElementById('varFields').innerHTML='<div class="empty">Selecione ao menos um template</div>';return;}
-  const t=sT[0];
-  const body=t.structure&&t.structure.body||'';
-  const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
-  if(!nums.length){document.getElementById('varFields').innerHTML='<div class="empty">Sem variáveis</div>';return;}
+  if(!sT.length){document.getElementById('templateVarCards').innerHTML='<div class="empty">Selecione ao menos um template</div>';return;}
+
+  // Agrupar templates com variáveis iguais para não duplicar campos
+  // Cada template único de variáveis fica num card lado a lado com a prévia
+  const img=document.getElementById('mediaUrl')?.value||'';
+
+  // Salvar valores existentes antes de rerender
   const existing={};
-  nums.forEach(n=>{const el=document.getElementById(`v${n}`);if(el)existing[n]=el.value;});
-  document.getElementById('varFields').innerHTML=nums.map(n=>`
-    <div class="fld">
-      <label>Variável {{${n}}}</label>
-      <input type="text" id="v${n}" placeholder="Conteúdo da variável ${n}" oninput="updatePrev()" value="${existing[n]||''}"/>
-    </div>`).join('');
-  updatePrev();
+  sT.forEach(t=>{
+    const nums=getVarNums(t);
+    nums.forEach(n=>{
+      const key=`${t.name}_v${n}`;
+      const el=document.getElementById(key);
+      if(el)existing[key]=el.value;
+    });
+  });
+
+  document.getElementById('templateVarCards').innerHTML=sT.map(t=>{
+    const nums=getVarNums(t);
+    const fieldsHtml=nums.length
+      ?nums.map(n=>`
+        <div class="fld">
+          <label>Variável {{${n}}}</label>
+          <input type="text" id="${t.name}_v${n}" placeholder="Variável ${n}" oninput="updateAllPrevs()" value="${existing[`${t.name}_v${n}`]||''}"/>
+        </div>`).join('')
+      :'<div class="empty" style="padding:8px">Sem variáveis</div>';
+    return `<div class="tcol" style="margin-bottom:12px">
+      <div class="card" style="margin-bottom:0">
+        <div class="chead">${t.name}</div>
+        ${fieldsHtml}
+      </div>
+      <div class="card" style="margin-bottom:0">
+        <div class="chead">Prévia</div>
+        <div id="prev_${t.name}">${mkPrev(t,img,t.name)}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getVarNums(t){
+  const body=t.structure&&t.structure.body||'';
+  return [...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
 }
 
 function getPH(t){
-  const body=t.structure&&t.structure.body||'';
-  const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
-  return nums.map(n=>document.getElementById(`v${n}`)?.value||'');
+  return getVarNums(t).map(n=>document.getElementById(`${t.name}_v${n}`)?.value||'');
 }
 
-function updatePrev(){
-  if(!sT.length)return;
+function updateAllPrevs(){
   const img=document.getElementById('mediaUrl')?.value||'';
-  document.getElementById('prevArea').innerHTML=mkPrev(sT[0],img);
-  if(document.getElementById('revPrev'))
-    document.getElementById('revPrev').innerHTML=mkPrev(sT[0],img);
+  sT.forEach(t=>{
+    const el=document.getElementById(`prev_${t.name}`);
+    if(el)el.innerHTML=mkPrev(t,img,t.name);
+  });
+  // atualizar review preview com o primeiro template
+  const rev=document.getElementById('revPrev');
+  if(rev&&sT.length)rev.innerHTML=mkPrev(sT[0],img,sT[0].name);
 }
 
-function mkPrev(t,img){
+function updatePrev(){ updateAllPrevs(); }
+
+function mkPrev(t,img,tname){
   let body=t.structure&&t.structure.body||'';
   [...body.matchAll(/\{\{(\d+)\}\}/g)].forEach(m=>{
-    const v=document.getElementById(`v${m[1]}`)?.value||m[0];
+    const key=tname?`${tname}_v${m[1]}`:`v${m[1]}`;
+    const v=document.getElementById(key)?.value||m[0];
     body=body.split(m[0]).join(`<strong>${v}</strong>`);
   });
   const ft=t.structure&&t.structure.footer||'';
