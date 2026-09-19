@@ -206,6 +206,14 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
       <input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/>
     </div>
   </div>
+  <div class="card">
+    <div class="chead">Destinatários — Upload CSV/TXT</div>
+    <div class="fld">
+      <input type="file" id="csvFile" accept=".csv,.txt" onchange="importCSV(event)" style="background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px;width:100%;color:var(--text);font-size:12px"/>
+    </div>
+    <div id="csvInfo" style="font-size:11px;color:var(--muted);margin-top:4px">Nenhum arquivo carregado</div>
+    <div id="csvPreview" style="margin-top:8px"></div>
+  </div>
   <div id="templateVarCards"></div>
   <div class="brow">
     <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">← Voltar</span></button>
@@ -251,6 +259,51 @@ let BU = '';
 let PORTAL_USER = '';
 let PORTAL_PASS = '';
 
+function importCSV(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev) {
+    const text = ev.target.result;
+    const lines = text.split(String.fromCharCode(10));
+    allContacts = [];
+    lines.forEach(function(line) {
+      const col = line.trim().split(',')[0];
+      const num = col.replace(/[^0-9]/g, '');
+      if (num.length >= 10) allContacts.push(num);
+    });
+    const info = document.getElementById('csvInfo');
+    info.innerHTML = '<span style="color:var(--green);font-weight:600">' + allContacts.length + ' contatos</span> carregados de ' + file.name;
+    updateDistribuicao();
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function updateDistribuicao() {
+  const el = document.getElementById('csvPreview');
+  if (!allContacts.length || !sS.length) { el.innerHTML = ''; return; }
+  const porSender = Math.floor(allContacts.length / sS.length);
+  const resto = allContacts.length % sS.length;
+  const limite = 20000;
+  const ok = porSender <= limite;
+  const cor = ok ? 'var(--green)' : 'var(--red)';
+  const aviso = !ok
+    ? '<div style="margin-top:8px;background:var(--rdim);border:1px solid rgba(239,68,68,.25);border-radius:7px;padding:8px;font-size:11px;color:var(--red)">' +
+      '⚠️ Limite de 20.000 por campanha excedido! Adicione pelo menos <strong>' +
+      Math.ceil(allContacts.length / limite) + '</strong> senders para distribuir corretamente.' +
+      '</div>'
+    : '';
+  el.innerHTML = '<div style="background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:10px;font-size:11px;color:var(--dim)">' +
+    '<strong style="color:var(--text)">' + allContacts.length + '</strong> contatos ÷ ' +
+    '<strong style="color:var(--green)">' + sS.length + '</strong> senders = ' +
+    '<strong style="color:' + cor + '">' + porSender + '</strong> por campanha' +
+    (resto > 0 ? ' (+ ' + resto + ' no último)' : '') +
+    (ok ? ' ✅' : ' ❌ acima do limite') +
+    '</div>' + aviso;
+  document.getElementById('btnCriar') && (document.getElementById('btnCriar').disabled = !ok && allContacts.length > 0);
+}
+
 function salvarConfig() {
   const ak = document.getElementById('cfgApiKey').value.trim();
   const bu = document.getElementById('cfgBaseUrl').value.trim().replace('https://', '');
@@ -295,6 +348,7 @@ function initConfig() {
 initConfig();
 
 let aS = [], fS = [], sS = [];
+let allContacts = [];
 let wabaTemplates = {};
 let sT = [];
 let cur = 1;
@@ -531,6 +585,10 @@ function buildVars() {
   });
 
   const img = (document.getElementById('mediaUrl') || {}).value || '';
+    const si = job.senderIdx;
+    const inicio = si * porSender;
+    const fim = si === totalSenders - 1 ? totalContatos : inicio + porSender;
+    const fatia = allContacts.length > 0 ? allContacts.slice(inicio, fim) : undefined;
 
   document.getElementById('templateVarCards').innerHTML = Object.entries(grupos).map(function(entry) {
     const key = entry[0], g = entry[1];
@@ -606,6 +664,7 @@ function buildReview() {
     total += sendersOk.length;
   });
   document.getElementById('revCntS').textContent = sS.length;
+  updateDistribuicao();
   document.getElementById('revCntT').textContent = sT.length;
   document.getElementById('revTotal').textContent = total;
   document.getElementById('revS').innerHTML = sS.map(s => '<div class="pill pg">+' + s + '</div>').join('');
@@ -619,6 +678,11 @@ async function criarCampanhas() {
   const btn = document.getElementById('btnCriar');
   btn.classList.add('loading'); btn.disabled = true;
 
+  // Calcular fatias de contatos por sender
+  const totalContatos = allContacts.length;
+  const totalSenders = sS.length;
+  const porSender = totalSenders > 0 && totalContatos > 0 ? Math.floor(totalContatos / totalSenders) : 0;
+
   const jobs = [];
   sT.forEach(t => {
     const waba = t._waba;
@@ -626,7 +690,7 @@ async function criarCampanhas() {
       const info = aS.find(x => x.sender === s);
       return info && String(info.whatsAppBusinessAccountId) === String(waba);
     });
-    sendersOk.forEach(sender => jobs.push({ sender: sender, t: t }));
+    sendersOk.forEach((sender, idx) => jobs.push({ sender: sender, t: t, senderIdx: sS.indexOf(sender) }));
   });
 
   const total = jobs.length;
@@ -649,6 +713,7 @@ const name = baseName + ' ' + sender.slice(-4) + ' ' + t.name;
           campaignName: name, sender: sender, templateName: t.name,
           language: t.language || 'pt_BR', placeholders: ph,
           imageUrl: hi ? img : undefined,
+phoneNumbers: fatia && fatia.length > 0 ? fatia : undefined,
           buttonUrl: (t.structure && t.structure.buttons && t.structure.buttons[0] && t.structure.buttons[0].url) || ''
         })
       });
