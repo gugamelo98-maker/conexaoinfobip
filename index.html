@@ -7,61 +7,51 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root {
-  --bg: #07090f;
-  --s1: #0d1117;
-  --s2: #131922;
-  --s3: #192130;
-  --border: #1e2d3d;
-  --green: #25d366;
-  --green-dim: rgba(37,211,102,0.08);
-  --blue: #3b82f6;
-  --blue-dim: rgba(59,130,246,0.08);
-  --red: #ef4444;
-  --red-dim: rgba(239,68,68,0.08);
-  --yellow: #f59e0b;
-  --yellow-dim: rgba(245,158,11,0.08);
-  --text: #e2e8f0;
-  --muted: #4a6080;
-  --dim: #7a9ab8;
+  --bg: #07090f; --s1: #0d1117; --s2: #131922; --s3: #192130;
+  --border: #1e2d3d; --green: #25d366; --green-dim: rgba(37,211,102,0.08);
+  --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.08);
+  --red: #ef4444; --red-dim: rgba(239,68,68,0.08);
+  --yellow: #f59e0b; --yellow-dim: rgba(245,158,11,0.08);
+  --text: #e2e8f0; --muted: #4a6080; --dim: #7a9ab8;
   --mono: 'JetBrains Mono', monospace;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 32px 24px; }
-.container { max-width: 900px; margin: 0 auto; }
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 28px 20px; }
+.wrap { max-width: 960px; margin: 0 auto; }
 
 /* Header */
-.header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
-.logo { width: 40px; height: 40px; background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.logo svg { width: 20px; height: 20px; fill: var(--green); }
-h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
-.h-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
+.logo { width: 38px; height: 38px; background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+.logo svg { width: 18px; height: 18px; fill: var(--green); }
+h1 { font-size: 18px; font-weight: 700; }
+.h-sub { font-size: 11px; color: var(--muted); }
 
 /* Steps */
-.steps { display: flex; align-items: center; margin-bottom: 28px; }
-.sdot { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); }
+.steps { display: flex; align-items: center; margin-bottom: 24px; }
+.sdot { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; }
 .sdot.active { color: var(--text); }
 .sdot.done { color: var(--green); }
-.snum { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--border); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+.snum { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .sdot.active .snum { border-color: var(--blue); color: var(--blue); }
 .sdot.done .snum { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-.sline { flex: 1; height: 1px; background: var(--border); margin: 0 12px; }
+.sline { flex: 1; height: 1px; background: var(--border); margin: 0 10px; }
 
 /* Step panels */
 .step { display: none; }
 .step.active { display: block; }
 
 /* Card */
-.card { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-.card-head { font-size: 11px; font-weight: 600; color: var(--dim); letter-spacing: 0.3px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.card { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+.card-head { font-size: 11px; font-weight: 600; color: var(--dim); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
 
-/* Search bar */
-.search-row { display: flex; gap: 10px; margin-bottom: 16px; }
-.search-row input { flex: 1; background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: var(--text); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; }
+/* Search */
+.search-row { display: flex; gap: 8px; margin-bottom: 14px; }
+.search-row input { flex: 1; background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-size: 12px; color: var(--text); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; }
 .search-row input:focus { border-color: var(--blue); }
 .search-row input::placeholder { color: var(--muted); }
 
-/* Btn */
-.btn { padding: 10px 18px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 7px; transition: all 0.15s; }
+/* Buttons */
+.btn { padding: 9px 16px; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
 .btn-green { background: var(--green); color: #000; }
 .btn-green:hover { background: #20c55a; }
 .btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -70,501 +60,451 @@ h1 { font-size: 20px; font-weight: 700; letter-spacing: -0.3px; }
 .btn-blue:disabled { opacity: 0.4; cursor: not-allowed; }
 .btn-ghost { background: var(--s2); border: 1px solid var(--border); color: var(--dim); }
 .btn-ghost:hover { border-color: var(--green); color: var(--green); }
-.btn-sm { padding: 6px 12px; font-size: 11px; }
-.btn-row { display: flex; gap: 10px; margin-top: 20px; }
-.btn-row .btn { flex: 1; justify-content: center; padding: 13px; }
-.spinner { width: 14px; height: 14px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-.btn.loading .spinner { display: block; }
-.btn.loading .btn-lbl { display: none; }
+.btn-sm { padding: 5px 10px; font-size: 10px; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.btn-row .btn { flex: 1; justify-content: center; padding: 12px; font-size: 13px; }
+.spin { width: 13px; height: 13px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
+.btn.loading .spin { display: block; }
+.btn.loading .lbl { display: none; }
+.spin-w { border-top-color: #fff; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* Grid items */
-.items-grid { display: flex; flex-direction: column; gap: 7px; max-height: 340px; overflow-y: auto; padding-right: 4px; }
-.items-grid::-webkit-scrollbar { width: 4px; }
-.items-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-
-.item-row {
-  display: flex; align-items: center; gap: 10px;
-  background: var(--s2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 11px 13px; cursor: pointer;
-  transition: all 0.15s; user-select: none;
-}
-.item-row:hover { border-color: var(--dim); }
-.item-row.selected { border-color: var(--green); background: var(--green-dim); }
-.item-row.selected-blue { border-color: var(--blue); background: var(--blue-dim); }
-.item-check { width: 16px; height: 16px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; position: relative; transition: all 0.15s; }
-.item-row.selected .item-check { background: var(--green); border-color: var(--green); }
-.item-row.selected .item-check::after { content: ''; width: 8px; height: 5px; border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; transform: rotate(-45deg) translate(1px,-1px); position: absolute; }
-.item-row.selected-blue .item-check { background: var(--blue); border-color: var(--blue); }
-.item-row.selected-blue .item-check::after { content: ''; width: 8px; height: 5px; border-left: 1.5px solid #fff; border-bottom: 1.5px solid #fff; transform: rotate(-45deg) translate(1px,-1px); position: absolute; }
-
+/* List items */
+.list { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; padding-right: 2px; }
+.list::-webkit-scrollbar { width: 3px; }
+.list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.item { display: flex; align-items: center; gap: 9px; background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; user-select: none; }
+.item:hover { border-color: var(--dim); }
+.item.sel-g { border-color: var(--green); background: var(--green-dim); }
+.item.sel-b { border-color: var(--blue); background: var(--blue-dim); }
+.chk { width: 15px; height: 15px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; position: relative; transition: all 0.15s; }
+.item.sel-g .chk { background: var(--green); border-color: var(--green); }
+.item.sel-g .chk::after, .item.sel-b .chk::after { content: ''; width: 7px; height: 4px; border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; transform: rotate(-45deg) translate(1px,-1px); position: absolute; }
+.item.sel-b .chk { background: var(--blue); border-color: var(--blue); }
+.item.sel-b .chk::after { border-left-color: #fff; border-bottom-color: #fff; }
 .item-info { flex: 1; min-width: 0; }
 .item-main { font-size: 12px; font-weight: 600; font-family: var(--mono); }
-.item-sub { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.badge { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; flex-shrink: 0; }
-.badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
-.badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
-.badge-yellow { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
-.badge-blue { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+.item-sub { font-size: 11px; color: var(--muted); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; flex-shrink: 0; }
+.bg { background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
+.br { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+.bb { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+.by { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
 
-/* Selection summary */
-.sel-summary { display: flex; align-items: center; justify-content: space-between; }
-.sel-count { font-size: 11px; color: var(--dim); }
-.sel-count span { color: var(--green); font-weight: 600; }
-.sel-count-blue span { color: var(--blue); }
+.sel-info { font-size: 11px; color: var(--muted); margin-top: 10px; }
+.sel-info span { font-weight: 600; }
+.sel-info .sg { color: var(--green); }
+.sel-info .sb { color: var(--blue); }
 
 /* Fields */
-.field { margin-bottom: 14px; }
+.field { margin-bottom: 12px; }
 .field:last-child { margin-bottom: 0; }
-label { display: block; font-size: 11px; font-weight: 600; color: var(--dim); margin-bottom: 6px; }
-input[type=text], input[type=url], textarea {
-  width: 100%; background: var(--s2); border: 1px solid var(--border);
-  border-radius: 8px; padding: 10px 13px; font-size: 12px;
-  font-family: 'Inter', sans-serif; color: var(--text); outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+label { display: block; font-size: 11px; font-weight: 600; color: var(--dim); margin-bottom: 5px; }
+input[type=text], input[type=url], input[type=password], textarea {
+  width: 100%; background: var(--s2); border: 1px solid var(--border); border-radius: 8px;
+  padding: 9px 12px; font-size: 12px; font-family: 'Inter', sans-serif; color: var(--text);
+  outline: none; transition: border-color 0.15s;
 }
-input[type=text]:focus, input[type=url]:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); }
+input:focus, textarea:focus { border-color: var(--blue); }
 input::placeholder, textarea::placeholder { color: var(--muted); }
-textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+textarea { resize: vertical; min-height: 56px; line-height: 1.5; }
+
+/* Two col */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
 /* Preview */
-.preview-box { background: var(--s2); border: 1px solid var(--border); border-radius: 10px; padding: 14px; }
-.preview-img { width: 100%; height: 90px; background: var(--s3); border-radius: 7px; margin-bottom: 10px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.preview-img img { width: 100%; height: 100%; object-fit: cover; }
-.preview-img-ph { font-size: 11px; color: var(--muted); }
-.preview-text { font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
-.preview-footer { font-size: 11px; color: var(--muted); margin-top: 6px; }
-.preview-btn { font-size: 12px; color: var(--blue); text-align: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+.preview-box { background: var(--s2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+.prev-img { width: 100%; height: 80px; background: var(--s3); border-radius: 7px; margin-bottom: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.prev-img img { width: 100%; height: 100%; object-fit: cover; }
+.prev-ph { font-size: 11px; color: var(--muted); }
+.prev-txt { font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.prev-footer { font-size: 11px; color: var(--muted); margin-top: 5px; }
+.prev-btn { font-size: 12px; color: var(--blue); text-align: center; margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); }
 
 /* Pills */
-.pills { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill { font-size: 11px; font-family: var(--mono); padding: 3px 10px; border-radius: 20px; background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
-.pill-blue { background: var(--blue-dim); color: var(--blue); border-color: rgba(59,130,246,0.2); }
+.pills { display: flex; flex-wrap: wrap; gap: 5px; }
+.pill { font-size: 11px; font-family: var(--mono); padding: 3px 9px; border-radius: 20px; }
+.pill-g { background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
+.pill-b { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
 
 /* Status */
-.status { border-radius: 9px; padding: 14px 16px; margin-top: 14px; display: none; gap: 10px; align-items: flex-start; }
+.status { border-radius: 9px; padding: 12px 14px; margin-top: 12px; display: none; gap: 9px; align-items: flex-start; }
 .status.show { display: flex; }
-.status.success { background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); }
-.status.error { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); }
-.status.loading { background: var(--yellow-dim); border: 1px solid rgba(245,158,11,0.25); }
-.status-icon { font-size: 18px; flex-shrink: 0; }
-.status-title { font-size: 13px; font-weight: 600; }
-.status.success .status-title { color: var(--green); }
-.status.error .status-title { color: var(--red); }
-.status.loading .status-title { color: var(--yellow); }
-.status-msg { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+.status.ok { background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); }
+.status.err { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); }
+.status.wait { background: var(--yellow-dim); border: 1px solid rgba(245,158,11,0.25); }
+.s-icon { font-size: 16px; flex-shrink: 0; }
+.s-title { font-size: 12px; font-weight: 600; }
+.status.ok .s-title { color: var(--green); }
+.status.err .s-title { color: var(--red); }
+.status.wait .s-title { color: var(--yellow); }
+.s-msg { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
 
-.empty-box { padding: 20px; text-align: center; color: var(--muted); font-size: 12px; }
-
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.empty { padding: 16px; text-align: center; color: var(--muted); font-size: 11px; }
+.hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
-  <!-- Header -->
   <div class="header">
     <div class="logo">
       <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
     </div>
     <div>
-      <h1>Criação de campanhas</h1>
-      <div class="h-sub">Infobip WhatsApp · Disparos em massa</div>
+      <h1>Campanhas WhatsApp</h1>
+      <div class="h-sub">Infobip · Criação de transmissões</div>
     </div>
   </div>
 
-  <!-- Steps nav -->
   <div class="steps">
-    <div class="sdot active" id="sdot1"><div class="snum">1</div><span>Remetentes</span></div>
+    <div class="sdot active" id="sd1"><div class="snum">1</div><span>Remetentes</span></div>
     <div class="sline"></div>
-    <div class="sdot" id="sdot2"><div class="snum">2</div><span>Templates</span></div>
+    <div class="sdot" id="sd2"><div class="snum">2</div><span>Templates</span></div>
     <div class="sline"></div>
-    <div class="sdot" id="sdot3"><div class="snum">3</div><span>Variáveis</span></div>
+    <div class="sdot" id="sd3"><div class="snum">3</div><span>Conteúdo</span></div>
     <div class="sline"></div>
-    <div class="sdot" id="sdot4"><div class="snum">4</div><span>Criar</span></div>
+    <div class="sdot" id="sd4"><div class="snum">4</div><span>Criar</span></div>
   </div>
 
-  <!-- STEP 1: Remetentes -->
+  <!-- STEP 1 -->
   <div class="step active" id="step1">
     <div class="card">
       <div class="card-head">
-        <span>Buscar remetentes</span>
-        <button class="btn btn-sm btn-ghost" onclick="toggleAllSenders()">Selecionar todos</button>
+        <span>Remetentes disponíveis</span>
+        <button class="btn btn-ghost btn-sm" onclick="togAll('senders')">Todos</button>
       </div>
       <div class="search-row">
-        <input type="text" id="senderSearch" placeholder="Filtrar por número ou nome..." oninput="filterSenders()"/>
-        <button class="btn btn-green" id="btnBuscarSenders" onclick="buscarSenders()">
-          <div class="spinner"></div>
-          <span class="btn-lbl">Buscar</span>
+        <input id="sSearch" type="text" placeholder="Filtrar por número ou nome..." oninput="filter('senders')"/>
+        <button class="btn btn-green" id="btnBS" onclick="buscarSenders()">
+          <div class="spin"></div><span class="lbl">Buscar</span>
         </button>
       </div>
-      <div id="sendersList"><div class="empty-box">Clique em "Buscar" para carregar os remetentes</div></div>
-      <div class="sel-summary" style="margin-top:12px">
-        <div class="sel-count" id="senderCount"><span>0</span> selecionado(s)</div>
-      </div>
+      <div id="sendersList"><div class="empty">Clique em "Buscar" para carregar os remetentes</div></div>
+      <div class="sel-info">Selecionados: <span class="sg" id="cntS">0</span></div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-green" id="btnGoStep2" onclick="goStep(2)" disabled>
-        <span class="btn-lbl">Próximo — escolher templates</span>
-      </button>
+      <button class="btn btn-green" id="btnGo2" onclick="goStep(2)" disabled><span class="lbl">Próximo — templates</span></button>
     </div>
   </div>
 
-  <!-- STEP 2: Templates -->
+  <!-- STEP 2 -->
   <div class="step" id="step2">
     <div class="card">
       <div class="card-head">
-        <span>Buscar templates</span>
-        <button class="btn btn-sm btn-ghost" onclick="toggleAllTemplates()">Selecionar todos</button>
+        <span>Templates aprovados</span>
+        <button class="btn btn-ghost btn-sm" onclick="togAll('templates')">Todos</button>
       </div>
       <div class="search-row">
-        <input type="text" id="templateSearch" placeholder="Filtrar por nome do template..." oninput="filterTemplates()"/>
-        <button class="btn btn-blue" id="btnBuscarTemplates" onclick="buscarTemplates()">
-          <div class="spinner"></div>
-          <span class="btn-lbl">Buscar</span>
+        <input id="tSearch" type="text" placeholder="Filtrar por nome..." oninput="filter('templates')"/>
+        <button class="btn btn-blue" id="btnBT" onclick="buscarTemplates()">
+          <div class="spin spin-w"></div><span class="lbl">Buscar</span>
         </button>
       </div>
-      <div id="templatesList"><div class="empty-box">Clique em "Buscar" para carregar os templates</div></div>
-      <div class="sel-summary" style="margin-top:12px">
-        <div class="sel-count sel-count-blue" id="templateCount"><span>0</span> selecionado(s)</div>
-      </div>
+      <div id="templatesList"><div class="empty">Clique em "Buscar" para carregar os templates</div></div>
+      <div class="sel-info">Selecionados: <span class="sb" id="cntT">0</span></div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(1)"><span class="btn-lbl">Voltar</span></button>
-      <button class="btn btn-blue" id="btnGoStep3" onclick="goStep(3)" disabled>
-        <span class="btn-lbl">Próximo — preencher variáveis</span>
-      </button>
+      <button class="btn btn-ghost" onclick="goStep(1)"><span class="lbl">Voltar</span></button>
+      <button class="btn btn-blue" id="btnGo3" onclick="goStep(3)" disabled><span class="lbl">Próximo — conteúdo</span></button>
     </div>
   </div>
 
-  <!-- STEP 3: Variáveis + Mídia -->
+  <!-- STEP 3 -->
   <div class="step" id="step3">
     <div class="two-col">
       <div>
         <div class="card">
           <div class="card-head">Variáveis do template</div>
-          <div id="varFields"><div class="empty-box">Nenhuma variável</div></div>
+          <div id="varFields"><div class="empty">Nenhuma variável</div></div>
         </div>
         <div class="card">
           <div class="card-head">Imagem (header)</div>
           <div class="field">
             <label>URL da imagem</label>
-            <input type="url" id="mediaUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="updateAllPreviews()"/>
+            <input type="url" id="mediaUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="updatePrev()"/>
           </div>
         </div>
       </div>
-      <div>
-        <div class="card">
-          <div class="card-head">Prévia</div>
-          <div id="previewArea"><div class="empty-box">Selecione um template</div></div>
-        </div>
+      <div class="card">
+        <div class="card-head">Prévia da mensagem</div>
+        <div id="prevArea"><div class="empty">Selecione um template</div></div>
       </div>
     </div>
     <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(2)"><span class="btn-lbl">Voltar</span></button>
-      <button class="btn btn-green" onclick="goStep(4)"><span class="btn-lbl">Revisar e criar</span></button>
+      <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">Voltar</span></button>
+      <button class="btn btn-green" onclick="goStep(4)"><span class="lbl">Revisar e criar</span></button>
     </div>
   </div>
 
-  <!-- STEP 4: Criar -->
+  <!-- STEP 4 -->
   <div class="step" id="step4">
     <div class="card">
-      <div class="card-head">Resumo da campanha</div>
-      <div style="margin-bottom:16px">
-        <label style="margin-bottom:8px; display:block">Remetentes selecionados</label>
-        <div class="pills" id="reviewSenders"></div>
+      <div class="card-head">Resumo</div>
+      <div style="margin-bottom:14px">
+        <label style="margin-bottom:6px;display:block">Remetentes</label>
+        <div class="pills" id="revS"></div>
       </div>
-      <div style="margin-bottom:16px">
-        <label style="margin-bottom:8px; display:block">Templates selecionados</label>
-        <div class="pills" id="reviewTemplates"></div>
+      <div style="margin-bottom:14px">
+        <label style="margin-bottom:6px;display:block">Templates</label>
+        <div class="pills" id="revT"></div>
       </div>
       <div>
-        <label style="margin-bottom:8px; display:block">Prévia da mensagem</label>
-        <div id="reviewPreview"></div>
+        <label style="margin-bottom:6px;display:block">Prévia</label>
+        <div id="revPrev"></div>
       </div>
     </div>
+    <div class="card">
+      <div class="card-head">Credenciais do portal (para criar transmissão)</div>
+      <div class="two-col">
+        <div class="field">
+          <label>Usuário</label>
+          <input type="text" id="portalUser" value="hurley08"/>
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <input type="password" id="portalPass" value="@Guu0809"/>
+        </div>
+      </div>
+      <p class="hint">Usado para autenticar no portal e criar as transmissões como rascunho.</p>
+    </div>
     <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(3)"><span class="btn-lbl">Voltar</span></button>
+      <button class="btn btn-ghost" onclick="goStep(3)"><span class="lbl">Voltar</span></button>
       <button class="btn btn-green" id="btnCriar" onclick="criarCampanhas()">
-        <div class="spinner"></div>
-        <span class="btn-lbl">Criar campanhas</span>
+        <div class="spin"></div><span class="lbl">Criar transmissões</span>
       </button>
     </div>
     <div class="status" id="statusBox">
-      <div class="status-icon" id="sIcon"></div>
-      <div>
-        <div class="status-title" id="sTitle"></div>
-        <div class="status-msg" id="sMsg"></div>
-      </div>
+      <div class="s-icon" id="sIcon"></div>
+      <div><div class="s-title" id="sTitle"></div><div class="s-msg" id="sMsg"></div></div>
     </div>
   </div>
 
 </div>
-
 <script>
 const WEBHOOK = 'https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
 const API_KEY = '5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
 const BASE_URL = 'qdn5nq.api.infobip.com';
 
-let allSenders = [], filteredSenders = [], selectedSenders = [];
-let allTemplates = [], filteredTemplates = [], selectedTemplates = [];
-let currentStep = 1;
+let allSenders=[], filtSenders=[], selSenders=[];
+let allTemplates=[], filtTemplates=[], selTemplates=[];
+let step=1;
 
-// ─── STEP 1: Senders ───
-async function buscarSenders() {
-  const btn = document.getElementById('btnBuscarSenders');
-  btn.classList.add('loading'); btn.disabled = true;
-  document.getElementById('sendersList').innerHTML = '<div class="empty-box">Buscando...</div>';
-  try {
-    const res = await fetch(WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'listSenders', apiKey: API_KEY, baseUrl: BASE_URL })
-    });
-    const data = await res.json();
-    allSenders = (data.senders && data.senders.results) ? data.senders.results : [];
-    filteredSenders = [...allSenders];
+// ── Senders ──
+async function buscarSenders(){
+  const btn=document.getElementById('btnBS');
+  btn.classList.add('loading'); btn.disabled=true;
+  document.getElementById('sendersList').innerHTML='<div class="empty">Buscando...</div>';
+  try{
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'listSenders',apiKey:API_KEY,baseUrl:BASE_URL})});
+    const d=await r.json();
+    allSenders=(d.senders&&d.senders.results)||[];
+    filtSenders=[...allSenders]; renderSenders();
+  }catch(e){ document.getElementById('sendersList').innerHTML='<div class="empty">Erro ao buscar</div>'; }
+  btn.classList.remove('loading'); btn.disabled=false;
+}
+
+function filter(type){
+  if(type==='senders'){
+    const q=document.getElementById('sSearch').value.toLowerCase();
+    filtSenders=q?allSenders.filter(s=>s.sender.includes(q)||(s.displayName||'').toLowerCase().includes(q)):[...allSenders];
     renderSenders();
-  } catch(e) {
-    document.getElementById('sendersList').innerHTML = '<div class="empty-box">Erro ao buscar. Verifique o N8N.</div>';
-  }
-  btn.classList.remove('loading'); btn.disabled = false;
-}
-
-function filterSenders() {
-  const q = document.getElementById('senderSearch').value.toLowerCase();
-  filteredSenders = q ? allSenders.filter(s => s.sender.includes(q) || (s.displayName||'').toLowerCase().includes(q)) : [...allSenders];
-  renderSenders();
-}
-
-function renderSenders() {
-  const el = document.getElementById('sendersList');
-  if (!filteredSenders.length) { el.innerHTML = '<div class="empty-box">Nenhum remetente encontrado</div>'; return; }
-  el.innerHTML = '<div class="items-grid">' + filteredSenders.map((s, i) => {
-    const sel = selectedSenders.includes(s.sender);
-    const status = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
-    const badgeCls = status === 'CONNECTED' || status === 'FINISHED' ? 'badge-green' : status === 'BANNED' ? 'badge-red' : 'badge-yellow';
-    const badgeTxt = status === 'FINISHED' ? 'Ativo' : status || '?';
-    return `<div class="item-row ${sel ? 'selected' : ''}" onclick="toggleSender('${s.sender}')">
-      <div class="item-check"></div>
-      <div class="item-info">
-        <div class="item-main">+${s.sender}</div>
-        <div class="item-sub">${s.displayName || 'WhatsApp'}</div>
-      </div>
-      <div class="badge ${badgeCls}">${badgeTxt}</div>
-    </div>`;
-  }).join('') + '</div>';
-  updateSenderCount();
-}
-
-function toggleSender(num) {
-  if (selectedSenders.includes(num)) selectedSenders = selectedSenders.filter(n => n !== num);
-  else selectedSenders.push(num);
-  renderSenders();
-}
-
-function toggleAllSenders() {
-  const allNums = filteredSenders.map(s => s.sender);
-  const allSelected = allNums.every(n => selectedSenders.includes(n));
-  if (allSelected) selectedSenders = selectedSenders.filter(n => !allNums.includes(n));
-  else allNums.forEach(n => { if (!selectedSenders.includes(n)) selectedSenders.push(n); });
-  renderSenders();
-}
-
-function updateSenderCount() {
-  document.getElementById('senderCount').innerHTML = `<span>${selectedSenders.length}</span> selecionado(s)`;
-  document.getElementById('btnGoStep2').disabled = selectedSenders.length === 0;
-}
-
-// ─── STEP 2: Templates ───
-async function buscarTemplates() {
-  if (!selectedSenders.length) return;
-  const btn = document.getElementById('btnBuscarTemplates');
-  btn.classList.add('loading'); btn.disabled = true;
-  document.getElementById('templatesList').innerHTML = '<div class="empty-box">Buscando...</div>';
-  try {
-    const res = await fetch(WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'listTemplates', apiKey: API_KEY, baseUrl: BASE_URL, sender: selectedSenders[0] })
-    });
-    const data = await res.json();
-    allTemplates = data.templates || [];
-    filteredTemplates = [...allTemplates];
+  } else {
+    const q=document.getElementById('tSearch').value.toLowerCase();
+    filtTemplates=q?allTemplates.filter(t=>t.name.toLowerCase().includes(q)):[...allTemplates];
     renderTemplates();
-  } catch(e) {
-    document.getElementById('templatesList').innerHTML = '<div class="empty-box">Erro ao buscar templates.</div>';
   }
-  btn.classList.remove('loading'); btn.disabled = false;
 }
 
-function filterTemplates() {
-  const q = document.getElementById('templateSearch').value.toLowerCase();
-  filteredTemplates = q ? allTemplates.filter(t => t.name.toLowerCase().includes(q)) : [...allTemplates];
-  renderTemplates();
-}
-
-function renderTemplates() {
-  const el = document.getElementById('templatesList');
-  if (!filteredTemplates.length) { el.innerHTML = '<div class="empty-box">Nenhum template encontrado</div>'; return; }
-  el.innerHTML = '<div class="items-grid">' + filteredTemplates.map(t => {
-    const sel = selectedTemplates.find(x => x.name === t.name);
-    const body = (t.structure && t.structure.body || '').replace(/\n/g,' ').substring(0,55) + '...';
-    const hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
-    return `<div class="item-row ${sel ? 'selected-blue' : ''}" onclick="toggleTemplate('${t.name}')">
-      <div class="item-check"></div>
-      <div class="item-info">
-        <div class="item-main">${t.name}</div>
-        <div class="item-sub">${body}</div>
-      </div>
-      ${hasImg ? '<div class="badge badge-blue">IMAGE</div>' : ''}
+function renderSenders(){
+  const el=document.getElementById('sendersList');
+  if(!filtSenders.length){el.innerHTML='<div class="empty">Nenhum remetente</div>';return;}
+  el.innerHTML='<div class="list">'+filtSenders.map(s=>{
+    const sel=selSenders.includes(s.sender);
+    const st=(s.connectionStatus||s.registrationStatus||'').toUpperCase();
+    const bc=st==='FINISHED'?'bg':st==='BANNED'?'br':'by';
+    const bt=st==='FINISHED'?'Ativo':st||'?';
+    return `<div class="item ${sel?'sel-g':''}" onclick="togS('${s.sender}')">
+      <div class="chk"></div>
+      <div class="item-info"><div class="item-main">+${s.sender}</div><div class="item-sub">${s.displayName||'WhatsApp'}</div></div>
+      <div class="badge ${bc}">${bt}</div>
     </div>`;
-  }).join('') + '</div>';
-  updateTemplateCount();
+  }).join('')+'</div>';
+  document.getElementById('cntS').textContent=selSenders.length;
+  document.getElementById('btnGo2').disabled=selSenders.length===0;
 }
 
-function toggleTemplate(name) {
-  const t = allTemplates.find(x => x.name === name);
-  if (selectedTemplates.find(x => x.name === name)) selectedTemplates = selectedTemplates.filter(x => x.name !== name);
-  else if (t) selectedTemplates.push(t);
-  renderTemplates();
-  buildVarFields();
+function togS(num){
+  selSenders.includes(num)?selSenders=selSenders.filter(n=>n!==num):selSenders.push(num);
+  renderSenders();
 }
 
-function toggleAllTemplates() {
-  const allSel = filteredTemplates.every(t => selectedTemplates.find(x => x.name === t.name));
-  if (allSel) selectedTemplates = selectedTemplates.filter(x => !filteredTemplates.find(t => t.name === x.name));
-  else filteredTemplates.forEach(t => { if (!selectedTemplates.find(x => x.name === t.name)) selectedTemplates.push(t); });
-  renderTemplates();
-  buildVarFields();
+function togAll(type){
+  if(type==='senders'){
+    const all=filtSenders.map(s=>s.sender);
+    const allSel=all.every(n=>selSenders.includes(n));
+    if(allSel) selSenders=selSenders.filter(n=>!all.includes(n));
+    else all.forEach(n=>{if(!selSenders.includes(n))selSenders.push(n);});
+    renderSenders();
+  } else {
+    const allSel=filtTemplates.every(t=>selTemplates.find(x=>x.name===t.name));
+    if(allSel) selTemplates=selTemplates.filter(x=>!filtTemplates.find(t=>t.name===x.name));
+    else filtTemplates.forEach(t=>{if(!selTemplates.find(x=>x.name===t.name))selTemplates.push(t);});
+    renderTemplates(); buildVars();
+  }
 }
 
-function updateTemplateCount() {
-  document.getElementById('templateCount').innerHTML = `<span>${selectedTemplates.length}</span> selecionado(s)`;
-  document.getElementById('btnGoStep3').disabled = selectedTemplates.length === 0;
+// ── Templates ──
+async function buscarTemplates(){
+  if(!selSenders.length)return;
+  const btn=document.getElementById('btnBT');
+  btn.classList.add('loading'); btn.disabled=true;
+  document.getElementById('templatesList').innerHTML='<div class="empty">Buscando...</div>';
+  try{
+    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'listTemplates',apiKey:API_KEY,baseUrl:BASE_URL,sender:selSenders[0]})});
+    const d=await r.json();
+    allTemplates=d.templates||[];
+    filtTemplates=[...allTemplates]; renderTemplates();
+  }catch(e){ document.getElementById('templatesList').innerHTML='<div class="empty">Erro ao buscar</div>'; }
+  btn.classList.remove('loading'); btn.disabled=false;
 }
 
-// ─── STEP 3: Vars ───
-function buildVarFields() {
-  if (!selectedTemplates.length) { document.getElementById('varFields').innerHTML = '<div class="empty-box">Selecione ao menos um template</div>'; return; }
-  // usar o primeiro template selecionado para extrair variáveis
-  const t = selectedTemplates[0];
-  const body = t.structure && t.structure.body || '';
-  const matches = [...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m => m[1]))].sort((a,b)=>a-b);
-  if (!matches.length) { document.getElementById('varFields').innerHTML = '<div class="empty-box">Nenhuma variável neste template</div>'; return; }
-  document.getElementById('varFields').innerHTML = matches.map(n => `
+function renderTemplates(){
+  const el=document.getElementById('templatesList');
+  if(!filtTemplates.length){el.innerHTML='<div class="empty">Nenhum template</div>';return;}
+  el.innerHTML='<div class="list">'+filtTemplates.map(t=>{
+    const sel=selTemplates.find(x=>x.name===t.name);
+    const body=(t.structure&&t.structure.body||'').replace(/\n/g,' ').substring(0,50)+'...';
+    const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
+    return `<div class="item ${sel?'sel-b':''}" onclick="togT('${t.name}')">
+      <div class="chk"></div>
+      <div class="item-info"><div class="item-main">${t.name}</div><div class="item-sub">${body}</div></div>
+      ${hasImg?'<div class="badge bb">IMG</div>':''}
+    </div>`;
+  }).join('')+'</div>';
+  document.getElementById('cntT').textContent=selTemplates.length;
+  document.getElementById('btnGo3').disabled=selTemplates.length===0;
+}
+
+function togT(name){
+  const t=allTemplates.find(x=>x.name===name);
+  selTemplates.find(x=>x.name===name)?selTemplates=selTemplates.filter(x=>x.name!==name):(t&&selTemplates.push(t));
+  renderTemplates(); buildVars();
+}
+
+// ── Vars ──
+function buildVars(){
+  if(!selTemplates.length){document.getElementById('varFields').innerHTML='<div class="empty">Selecione um template</div>';return;}
+  const t=selTemplates[0];
+  const body=t.structure&&t.structure.body||'';
+  const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
+  if(!nums.length){document.getElementById('varFields').innerHTML='<div class="empty">Sem variáveis</div>';return;}
+  document.getElementById('varFields').innerHTML=nums.map(n=>`
     <div class="field">
       <label>Variável {{${n}}}</label>
-      <input type="text" id="var_${n}" placeholder="Conteúdo para {{${n}}}" oninput="updateAllPreviews()"/>
-    </div>
-  `).join('');
-  updateAllPreviews();
+      <input type="text" id="v${n}" placeholder="Conteúdo para {{${n}}}" oninput="updatePrev()"/>
+    </div>`).join('');
+  updatePrev();
 }
 
-function getPlaceholders(t) {
-  const body = t.structure && t.structure.body || '';
-  const matches = [...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m => m[1]))].sort((a,b)=>a-b);
-  return matches.map(n => document.getElementById(`var_${n}`)?.value || '');
+function getPlaceholders(t){
+  const body=t.structure&&t.structure.body||'';
+  const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
+  return nums.map(n=>document.getElementById(`v${n}`)?.value||'');
 }
 
-function updateAllPreviews() {
-  if (!selectedTemplates.length) return;
-  const t = selectedTemplates[0];
-  const imgUrl = document.getElementById('mediaUrl')?.value || '';
-  document.getElementById('previewArea').innerHTML = buildPreviewHtml(t, imgUrl);
-  document.getElementById('reviewPreview').innerHTML = buildPreviewHtml(t, imgUrl);
+function updatePrev(){
+  if(!selTemplates.length)return;
+  const img=document.getElementById('mediaUrl')?.value||'';
+  document.getElementById('prevArea').innerHTML=buildPrev(selTemplates[0],img);
+  document.getElementById('revPrev').innerHTML=buildPrev(selTemplates[0],img);
 }
 
-function buildPreviewHtml(t, imgUrl) {
-  let body = t.structure && t.structure.body || '';
-  const matches = [...body.matchAll(/\{\{(\d+)\}\}/g)];
-  matches.forEach(m => {
-    const val = document.getElementById(`var_${m[1]}`)?.value || m[0];
-    body = body.split(m[0]).join(`<strong>${val}</strong>`);
+function buildPrev(t,img){
+  let body=t.structure&&t.structure.body||'';
+  [...body.matchAll(/\{\{(\d+)\}\}/g)].forEach(m=>{
+    const v=document.getElementById(`v${m[1]}`)?.value||m[0];
+    body=body.split(m[0]).join(`<strong>${v}</strong>`);
   });
-  const footer = t.structure && t.structure.footer || '';
-  const btn = t.structure && t.structure.buttons && t.structure.buttons[0];
-  const hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+  const footer=t.structure&&t.structure.footer||'';
+  const btn=t.structure&&t.structure.buttons&&t.structure.buttons[0];
+  const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
   return `<div class="preview-box">
-    ${hasImg ? `<div class="preview-img">${imgUrl ? `<img src="${imgUrl}"/>` : '<span class="preview-img-ph">Imagem aparece aqui</span>'}</div>` : ''}
-    <div class="preview-text">${body.replace(/\n/g,'<br>')}</div>
-    ${footer ? `<div class="preview-footer">${footer}</div>` : ''}
-    ${btn ? `<div class="preview-btn">${btn.text}</div>` : ''}
+    ${hasImg?`<div class="prev-img">${img?`<img src="${img}"/>`:'<span class="prev-ph">Imagem aqui</span>'}</div>`:''}
+    <div class="prev-txt">${body.replace(/\n/g,'<br>')}</div>
+    ${footer?`<div class="prev-footer">${footer}</div>`:''}
+    ${btn?`<div class="prev-btn">${btn.text}</div>`:''}
   </div>`;
 }
 
-// ─── STEP 4: Create ───
-function buildReview() {
-  document.getElementById('reviewSenders').innerHTML = selectedSenders.map(s => `<div class="pill">+${s}</div>`).join('');
-  document.getElementById('reviewTemplates').innerHTML = selectedTemplates.map(t => `<div class="pill pill-blue">${t.name}</div>`).join('');
-  updateAllPreviews();
+// ── Review ──
+function buildReview(){
+  document.getElementById('revS').innerHTML=selSenders.map(s=>`<div class="pill pill-g">+${s}</div>`).join('');
+  document.getElementById('revT').innerHTML=selTemplates.map(t=>`<div class="pill pill-b">${t.name}</div>`).join('');
+  updatePrev();
 }
 
-async function criarCampanhas() {
-  const btn = document.getElementById('btnCriar');
-  btn.classList.add('loading'); btn.disabled = true;
-  const total = selectedSenders.length * selectedTemplates.length;
-  setStatus('loading', 'Criando campanhas...', `0 de ${total} criada(s)`);
-
-  const imageUrl = document.getElementById('mediaUrl')?.value || '';
-  let ok = 0, fail = 0, n = 0;
-
-  for (const sender of selectedSenders) {
-    for (const t of selectedTemplates) {
-      const placeholders = getPlaceholders(t);
-      const hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
-      const buttonUrl = t.structure?.buttons?.[0]?.url || '';
-      try {
-        const res = await fetch(WEBHOOK, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'createCampaign',
-            apiKey: API_KEY,
-            baseUrl: BASE_URL,
-            sender,
-            templateName: t.name,
-            language: t.language || 'pt_BR',
-            placeholders,
-            imageUrl: hasImg ? imageUrl : undefined,
-            buttonUrl
-          })
-        });
-        const d = await res.json();
-        if (d.status >= 200 && d.status < 300) ok++;
+// ── Create ──
+async function criarCampanhas(){
+  const btn=document.getElementById('btnCriar');
+  const user=document.getElementById('portalUser').value;
+  const pass=document.getElementById('portalPass').value;
+  if(!user||!pass){setStatus('err','Credenciais necessárias','Preencha usuário e senha do portal Infobip.');return;}
+  btn.classList.add('loading'); btn.disabled=true;
+  const total=selSenders.length*selTemplates.length;
+  setStatus('wait','Criando transmissões...', `0 de ${total} criada(s)`);
+  let ok=0, fail=0, n=0;
+  for(const sender of selSenders){
+    for(const t of selTemplates){
+      const img=document.getElementById('mediaUrl')?.value||'';
+      const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
+      const ph=getPlaceholders(t);
+      const name=`${t.name}_${sender}_${Date.now()}`;
+      try{
+        const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            action:'createCampaign', apiKey:API_KEY, baseUrl:BASE_URL,
+            username:user, password:pass,
+            campaignName:name, sender, templateName:t.name,
+            language:t.language||'pt_BR', placeholders:ph,
+            imageUrl:hasImg?img:undefined,
+            buttonUrl:t.structure?.buttons?.[0]?.url||''
+          })});
+        const d=await r.json();
+        if(d.status===200&&d.body&&d.body.status==='DRAFT') ok++;
         else fail++;
-      } catch(e) { fail++; }
+      }catch(e){fail++;}
       n++;
-      setStatus('loading', 'Criando campanhas...', `${n} de ${total} processada(s)`);
+      setStatus('wait','Criando transmissões...',`${n} de ${total} processada(s)`);
     }
   }
-
-  btn.classList.remove('loading'); btn.disabled = false;
-  if (fail === 0) setStatus('success', `${ok} campanha(s) criada(s)!`, 'Acesse o portal da Infobip → Transmissão para ajustar a data e disparar.');
-  else setStatus('error', `${ok} criada(s), ${fail} falhou`, 'Verifique os logs no N8N.');
+  btn.classList.remove('loading'); btn.disabled=false;
+  if(fail===0) setStatus('ok',`${ok} transmissão(ões) criada(s)!`,'Acesse Transmissão no portal Infobip para adicionar destinatários e disparar.');
+  else setStatus('err',`${ok} criada(s), ${fail} falhou`,'Verifique os logs no N8N.');
 }
 
-function setStatus(type, title, msg) {
-  const box = document.getElementById('statusBox');
-  box.className = 'status show ' + type;
-  document.getElementById('sIcon').textContent = type === 'success' ? '✅' : type === 'error' ? '❌' : '⏳';
-  document.getElementById('sTitle').textContent = title;
-  document.getElementById('sMsg').textContent = msg;
+function setStatus(type,title,msg){
+  const b=document.getElementById('statusBox');
+  b.className='status show '+(type==='ok'?'ok':type==='err'?'err':'wait');
+  document.getElementById('sIcon').textContent=type==='ok'?'✅':type==='err'?'❌':'⏳';
+  document.getElementById('sTitle').textContent=title;
+  document.getElementById('sMsg').textContent=msg;
 }
 
-// ─── Nav ───
-function goStep(n) {
-  if (n === 3) buildVarFields();
-  if (n === 4) buildReview();
-  document.getElementById(`step${currentStep}`).classList.remove('active');
+// ── Nav ──
+function goStep(n){
+  if(n===3)buildVars();
+  if(n===4)buildReview();
+  document.getElementById(`step${step}`).classList.remove('active');
   document.getElementById(`step${n}`).classList.add('active');
-  for (let i = 1; i <= 4; i++) {
-    const d = document.getElementById(`sdot${i}`);
-    d.className = 'sdot' + (i < n ? ' done' : i === n ? ' active' : '');
-    d.querySelector('.snum').textContent = i < n ? '✓' : i;
+  for(let i=1;i<=4;i++){
+    const d=document.getElementById(`sd${i}`);
+    d.className='sdot'+(i<n?' done':i===n?' active':'');
+    d.querySelector('.snum').textContent=i<n?'✓':i;
   }
-  currentStep = n;
-  window.scrollTo(0, 0);
+  step=n; window.scrollTo(0,0);
 }
 </script>
 </body>
