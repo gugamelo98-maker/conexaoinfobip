@@ -402,23 +402,38 @@ function buildVars(){
     });
   });
 
-  document.getElementById('templateVarCards').innerHTML=sT.map(t=>{
+  // Agrupar templates pelo número de variáveis
+  const grupos={};
+  sT.forEach(t=>{
     const nums=getVarNums(t);
+    const key=nums.join(','); // ex: "1,2,3,4" ou "1,2"
+    if(!grupos[key])grupos[key]={nums,templates:[]};
+    grupos[key].templates.push(t);
+  });
+
+  document.getElementById('templateVarCards').innerHTML=Object.entries(grupos).map(([key,g])=>{
+    const {nums,templates}=g;
+    // Usar o primeiro template do grupo como referência para os inputs
+    const refName=`grupo_${key.replace(/,/g,'_')}`;
+    const templNames=templates.map(t=>`<span class="pill pb" style="font-size:10px">${t.name}</span>`).join('');
     const fieldsHtml=nums.length
       ?nums.map(n=>`
         <div class="fld">
           <label>Variável {{${n}}}</label>
-          <input type="text" id="${t.name}_v${n}" placeholder="Variável ${n}" oninput="updateAllPrevs()" value="${existing[`${t.name}_v${n}`]||''}"/>
+          <input type="text" id="${refName}_v${n}" placeholder="Variável ${n}" oninput="updateAllPrevs()" value="${existing[`${refName}_v${n}`]||''}"/>
         </div>`).join('')
       :'<div class="empty" style="padding:8px">Sem variáveis</div>';
     return `<div class="tcol" style="margin-bottom:12px">
       <div class="card" style="margin-bottom:0">
-        <div class="chead">${t.name}</div>
+        <div class="chead">
+          <span>${nums.length} variável(is) — usado em:</span>
+        </div>
+        <div class="pills" style="margin-bottom:12px">${templNames}</div>
         ${fieldsHtml}
       </div>
       <div class="card" style="margin-bottom:0">
-        <div class="chead">Prévia</div>
-        <div id="prev_${t.name}">${mkPrev(t,img,t.name)}</div>
+        <div class="chead">Prévia — ${templates[0].name}</div>
+        <div id="prev_${refName}">${mkPrev(templates[0],img,refName)}</div>
       </div>
     </div>`;
   }).join('');
@@ -429,19 +444,34 @@ function getVarNums(t){
   return [...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
 }
 
-function getPH(t){
-  return getVarNums(t).map(n=>document.getElementById(`${t.name}_v${n}`)?.value||'');
+function getGroupKey(t){
+  return `grupo_${getVarNums(t).join("_")}`;
 }
 
+function getPH(t){
+  const refName=getGroupKey(t);
+  return getVarNums(t).map(n=>document.getElementById(`${refName}_v${n}`)?.value||"");
+}
+
+_v${n}`)?.value||'');
+}
+
+
+
 function updateAllPrevs(){
-  const img=document.getElementById('mediaUrl')?.value||'';
+  const img=document.getElementById("mediaUrl")?.value||"";
+  const grupos={};
   sT.forEach(t=>{
-    const el=document.getElementById(`prev_${t.name}`);
-    if(el)el.innerHTML=mkPrev(t,img,t.name);
+    const key=getVarNums(t).join(",");
+    if(!grupos[key])grupos[key]=t;
   });
-  // atualizar review preview com o primeiro template
-  const rev=document.getElementById('revPrev');
-  if(rev&&sT.length)rev.innerHTML=mkPrev(sT[0],img,sT[0].name);
+  Object.entries(grupos).forEach(([key,t])=>{
+    const refName=`grupo_${key.replace(/,/g,"_")}`;
+    const el=document.getElementById(`prev_${refName}`);
+    if(el)el.innerHTML=mkPrev(t,img,refName);
+  });
+  const rev=document.getElementById("revPrev");
+  if(rev&&sT.length)rev.innerHTML=mkPrev(sT[0],img,getGroupKey(sT[0]));
 }
 
 function updatePrev(){ updateAllPrevs(); }
