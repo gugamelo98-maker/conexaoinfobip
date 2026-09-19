@@ -256,8 +256,12 @@ function renderS() {
 }
 
 function togS(num) {
+  const lst = document.getElementById("sendersList");
+  const scrollTop = lst ? lst.querySelector(".lst") ? lst.querySelector(".lst").scrollTop : 0 : 0;
   sS.includes(num) ? sS = sS.filter(x => x !== num) : sS.push(num);
   renderS();
+  const el = lst ? lst.querySelector(".lst") : null;
+  if (el) el.scrollTop = scrollTop;
 }
 
 function togAll() {
@@ -352,11 +356,15 @@ function togT(wid, name) {
   const w = wabaTemplates[wid];
   const t = w && w.templates.find(x => x.name === name);
   if (!t) return;
+  const lst = document.querySelector("#wg_" + wid + " .waba-lst");
+  const scrollTop = lst ? lst.scrollTop : 0;
   const idx = sT.findIndex(x => x.name === name && x._waba === wid);
   if (idx >= 0) sT.splice(idx, 1);
   else sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders }));
   renderWabaGroup(wid);
   updateCntT();
+  const lst2 = document.querySelector("#wg_" + wid + " .waba-lst");
+  if (lst2) lst2.scrollTop = scrollTop;
 }
 
 function togWaba(wid, select) {
