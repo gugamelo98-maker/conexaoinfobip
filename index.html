@@ -383,8 +383,8 @@ function renderS() {
   el.innerHTML = '<div class="lst">' + fS.map(s => {
     const sel = sS.includes(s.sender);
     const st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
-    const bc = st === 'FINISHED' ? 'bg' : st === 'BANNED' ? 'br' : 'by';
-    const bt = st === 'FINISHED' ? 'Ativo' : st || '?';
+    const bc = st === 'FINISHED' || st === 'UNKNOWN' || st === '' ? 'bg' : st === 'BANNED' ? 'br' : 'by';
+    const bt = st === 'FINISHED' || st === 'UNKNOWN' || st === '' ? 'Ativo' : st || '?';
     return '<div class="it ' + (sel ? 'sg' : '') + '" onclick="togS(\'' + s.sender + '\')">' +
       '<div class="ck"></div>' +
       '<div class="ii"><div class="im">+' + s.sender + '</div><div class="is">' + (s.displayName || 'WhatsApp') + ' · WABA ' + (s.whatsAppBusinessAccountId || '') + '</div></div>' +
@@ -416,7 +416,7 @@ function desAllS() { sS = []; renderS(); }
 function togAtivos() {
   const ativos = fS.filter(s => {
     const st = (s.connectionStatus || s.registrationStatus || "").toUpperCase();
-    return st === "FINISHED" || st === "CONNECTED";
+    return st === "FINISHED" || st === "CONNECTED" || st === "UNKNOWN" || st === "";
   }).map(s => s.sender);
   const todosAtivosJaSelecionados = ativos.every(n => sS.includes(n));
   if (todosAtivosJaSelecionados) {
