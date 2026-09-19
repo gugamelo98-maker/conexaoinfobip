@@ -593,10 +593,6 @@ function buildVars() {
   });
 
   const img = (document.getElementById('mediaUrl') || {}).value || '';
-    const si = job.senderIdx;
-    const inicio = si * porSender;
-    const fim = si === totalSenders - 1 ? totalContatos : inicio + porSender;
-    const fatia = allContacts.length > 0 ? allContacts.slice(inicio, fim) : undefined;
 
   document.getElementById('templateVarCards').innerHTML = Object.entries(grupos).map(function(entry) {
     const key = entry[0], g = entry[1];
