@@ -152,6 +152,13 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 <!-- STEP 3 -->
 <div class="step" id="step3">
   <div class="card">
+    <div class="chead">Nome da campanha</div>
+    <div class="fld">
+      <input type="text" id="campaignBaseName" placeholder="Ex: Promoção Julho" />
+      <div style="font-size:11px;color:var(--muted);margin-top:5px">Nome final: <strong style="color:var(--dim)">[nome] [4 últimos dígitos] [template]</strong></div>
+    </div>
+  </div>
+  <div class="card">
     <div class="chead">URL da imagem (header) — mesma para todos os templates</div>
     <div class="fld">
       <input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/>
@@ -522,7 +529,8 @@ async function criarCampanhas() {
     const img = (document.getElementById('mediaUrl') || {}).value || '';
     const hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
     const ph = getPH(t);
-    const name = t.name + '_' + sender.slice(-4) + '_' + new Date().toISOString().slice(0, 10);
+    const baseName = (document.getElementById('campaignBaseName') || {}).value || 'Campanha';
+const name = baseName + ' ' + sender.slice(-4) + ' ' + t.name;
     try {
       const r = await fetch(WH, {
         method: 'POST',
