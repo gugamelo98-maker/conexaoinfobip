@@ -79,14 +79,55 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 .sts.show{display:flex}.sts.ok{background:var(--gdim);border:1px solid var(--gbdr)}.sts.err{background:var(--rdim);border:1px solid rgba(239,68,68,.25)}.sts.wait{background:var(--ydim);border:1px solid rgba(245,158,11,.25)}
 .si{font-size:15px;flex-shrink:0}.st{font-size:12px;font-weight:600}.sts.ok .st{color:var(--green)}.sts.err .st{color:var(--red)}.sts.wait .st{color:var(--yellow)}.sm{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
 .empty{padding:14px;text-align:center;color:var(--muted);font-size:11px}
+
+.config-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
+.config-box{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:32px;width:100%;max-width:440px}
+.config-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px}
+.config-title{font-size:16px;font-weight:700}
+.config-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.config-footer{font-size:11px;color:var(--muted);margin-top:16px;text-align:center}
+.config-footer a{color:var(--green);cursor:pointer;text-decoration:none}
 </style>
 </head>
 <body>
+
+<div class="config-screen" id="configScreen">
+  <div class="config-box">
+    <div class="config-logo">
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+      <div>
+        <div class="config-title">Campanhas WhatsApp</div>
+        <div class="config-sub">Configure as credenciais da conta Infobip</div>
+      </div>
+    </div>
+    <div class="fld">
+      <label>API Key</label>
+      <input type="text" id="cfgApiKey" placeholder="5d85f30d4b42757f..."/>
+    </div>
+    <div class="fld">
+      <label>Base URL</label>
+      <input type="text" id="cfgBaseUrl" placeholder="xxxxx.api.infobip.com"/>
+    </div>
+    <div class="fld">
+      <label>Usuário do portal</label>
+      <input type="text" id="cfgUser" placeholder="hurley08"/>
+    </div>
+    <div class="fld">
+      <label>Senha do portal</label>
+      <input type="password" id="cfgPass" placeholder="••••••••"/>
+    </div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;padding:12px;font-size:13px" onclick="salvarConfig()">
+      Entrar
+    </button>
+    <div class="config-footer">Credenciais salvas localmente no navegador · <a onclick="limparConfig()">Trocar de conta</a></div>
+  </div>
+</div>
+
 <div class="wrap">
 
 <div class="hdr">
   <div class="logo"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-  <div><h1>Campanhas WhatsApp</h1><div class="hsub">Infobip · Criação de transmissões em massa</div></div>
+  <div style="flex:1"><h1>Campanhas WhatsApp</h1><div class="hsub">Infobip · Criação de transmissões em massa</div></div><button class="btn btn-ghost" style="font-size:11px;padding:6px 12px" onclick="limparConfig()">⚙ Trocar conta</button>
 </div>
 
 <div class="snav">
@@ -205,8 +246,53 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 </div>
 <script>
 const WH = 'https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
-const AK = '5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
-const BU = 'qdn5nq.api.infobip.com';
+let AK = '';
+let BU = '';
+let PORTAL_USER = '';
+let PORTAL_PASS = '';
+
+function salvarConfig() {
+  const ak = document.getElementById('cfgApiKey').value.trim();
+  const bu = document.getElementById('cfgBaseUrl').value.trim().replace('https://', '');
+  const user = document.getElementById('cfgUser').value.trim();
+  const pass = document.getElementById('cfgPass').value;
+  if (!ak || !bu || !user || !pass) { alert('Preencha todos os campos!'); return; }
+  localStorage.setItem('ib_ak', ak);
+  localStorage.setItem('ib_bu', bu);
+  localStorage.setItem('ib_user', user);
+  localStorage.setItem('ib_pass', pass);
+  AK = ak; BU = bu; PORTAL_USER = user; PORTAL_PASS = pass;
+  document.getElementById('configScreen').style.display = 'none';
+}
+
+function limparConfig() {
+  localStorage.removeItem('ib_ak');
+  localStorage.removeItem('ib_bu');
+  localStorage.removeItem('ib_user');
+  localStorage.removeItem('ib_pass');
+  AK = ''; BU = ''; PORTAL_USER = ''; PORTAL_PASS = '';
+  document.getElementById('cfgApiKey').value = '';
+  document.getElementById('cfgBaseUrl').value = '';
+  document.getElementById('cfgUser').value = '';
+  document.getElementById('cfgPass').value = '';
+  document.getElementById('configScreen').style.display = 'flex';
+}
+
+function initConfig() {
+  const ak = localStorage.getItem('ib_ak');
+  const bu = localStorage.getItem('ib_bu');
+  const user = localStorage.getItem('ib_user');
+  const pass = localStorage.getItem('ib_pass');
+  if (ak && bu && user && pass) {
+    AK = ak; BU = bu; PORTAL_USER = user; PORTAL_PASS = pass;
+    document.getElementById('configScreen').style.display = 'none';
+  } else {
+    document.getElementById('cfgApiKey').value = ak || '';
+    document.getElementById('cfgBaseUrl').value = bu || '';
+    document.getElementById('cfgUser').value = user || '';
+  }
+}
+initConfig();
 
 let aS = [], fS = [], sS = [];
 let wabaTemplates = {};
@@ -559,7 +645,7 @@ const name = baseName + ' ' + sender.slice(-4) + ' ' + t.name;
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          action: 'createCampaign', apiKey: AK, baseUrl: BU,
+          action: 'createCampaign', apiKey: AK, baseUrl: BU, username: PORTAL_USER, password: PORTAL_PASS,
           campaignName: name, sender: sender, templateName: t.name,
           language: t.language || 'pt_BR', placeholders: ph,
           imageUrl: hi ? img : undefined,
