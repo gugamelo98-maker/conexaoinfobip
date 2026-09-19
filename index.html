@@ -6,505 +6,519 @@
 <title>Campanhas WhatsApp</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --bg: #07090f; --s1: #0d1117; --s2: #131922; --s3: #192130;
-  --border: #1e2d3d; --green: #25d366; --green-dim: rgba(37,211,102,0.08);
-  --blue: #3b82f6; --blue-dim: rgba(59,130,246,0.08);
-  --red: #ef4444; --red-dim: rgba(239,68,68,0.08);
-  --yellow: #f59e0b; --yellow-dim: rgba(245,158,11,0.08);
-  --text: #e2e8f0; --muted: #4a6080; --dim: #7a9ab8;
-  --mono: 'JetBrains Mono', monospace;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; padding: 28px 20px; }
-.wrap { max-width: 960px; margin: 0 auto; }
+:root{--bg:#07090f;--s1:#0d1117;--s2:#131922;--s3:#192130;--border:#1e2d3d;--green:#25d366;--gdim:rgba(37,211,102,.08);--gbdr:rgba(37,211,102,.2);--blue:#3b82f6;--bdim:rgba(59,130,246,.08);--bbdr:rgba(59,130,246,.2);--red:#ef4444;--rdim:rgba(239,68,68,.08);--yellow:#f59e0b;--ydim:rgba(245,158,11,.08);--text:#e2e8f0;--muted:#4a6080;--dim:#7a9ab8;--mono:'JetBrains Mono',monospace}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:24px 20px}
+.wrap{max-width:980px;margin:0 auto}
+.hdr{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+.logo{width:36px;height:36px;background:var(--gdim);border:1px solid var(--gbdr);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo svg{width:17px;height:17px;fill:var(--green)}
+h1{font-size:17px;font-weight:700}.hsub{font-size:11px;color:var(--muted)}
+.snav{display:flex;align-items:center;margin-bottom:22px}
+.sd{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);white-space:nowrap}
+.sd.act{color:var(--text)}.sd.done{color:var(--green)}
+.sn{width:21px;height:21px;border-radius:50%;border:1.5px solid var(--border);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sd.act .sn{border-color:var(--blue);color:var(--blue)}.sd.done .sn{border-color:var(--green);color:var(--green);background:var(--gdim)}
+.sl{flex:1;height:1px;background:var(--border);margin:0 10px}
+.step{display:none}.step.act{display:block}
+.card{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:12px}
+.chead{font-size:11px;font-weight:600;color:var(--dim);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.selbar{display:flex;gap:8px;margin-bottom:12px}
+.selbar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .15s}
+.selbar input:focus{border-color:var(--blue)}.selbar input::placeholder{color:var(--muted)}
+.btn{padding:8px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
+.btn-green{background:var(--green);color:#000}.btn-green:hover{background:#20c55a}.btn-green:disabled{opacity:.4;cursor:not-allowed}
+.btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#2563eb}.btn-blue:disabled{opacity:.4;cursor:not-allowed}
+.btn-ghost{background:var(--s2);border:1px solid var(--border);color:var(--dim)}.btn-ghost:hover{border-color:var(--green);color:var(--green)}
+.btn-all{background:var(--gdim);border:1px solid var(--gbdr);color:var(--green);padding:7px 12px;font-size:11px}.btn-all:hover{background:rgba(37,211,102,.15)}
+.btn-all-b{background:var(--bdim);border:1px solid var(--bbdr);color:var(--blue)}.btn-all-b:hover{background:rgba(59,130,246,.15)}
+.brow{display:flex;gap:8px;margin-top:14px}
+.brow .btn{flex:1;justify-content:center;padding:11px;font-size:13px}
+.spin{width:12px;height:12px;border:2px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.btn.loading .spin{display:block}.btn.loading .lbl{display:none}
+.spin-w{border-top-color:#fff}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lst{display:flex;flex-direction:column;gap:5px;max-height:300px;overflow-y:auto;padding-right:2px}
+.lst::-webkit-scrollbar{width:3px}.lst::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.it{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;cursor:pointer;transition:all .15s;user-select:none}
+.it:hover{border-color:var(--dim)}.it.sg{border-color:var(--green);background:var(--gdim)}.it.sb{border-color:var(--blue);background:var(--bdim)}
+.ck{width:15px;height:15px;border:1.5px solid var(--border);border-radius:4px;flex-shrink:0;position:relative;transition:all .15s}
+.it.sg .ck{background:var(--green);border-color:var(--green)}.it.sb .ck{background:var(--blue);border-color:var(--blue)}
+.it.sg .ck::after,.it.sb .ck::after{content:'';width:7px;height:4px;border-left:1.5px solid #000;border-bottom:1.5px solid #000;transform:rotate(-45deg) translate(1px,-1px);position:absolute}
+.it.sb .ck::after{border-left-color:#fff;border-bottom-color:#fff}
+.ii{flex:1;min-width:0}.im{font-size:12px;font-weight:600;font-family:var(--mono)}.is{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
+.bdg{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;flex-shrink:0}
+.bg{background:var(--gdim);color:var(--green);border:1px solid var(--gbdr)}
+.br{background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.bb{background:var(--bdim);color:var(--blue);border:1px solid var(--bbdr)}
+.by{background:var(--ydim);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
+.cnt{font-size:11px;color:var(--muted);margin-top:8px}
+.cnt .cg{color:var(--green);font-weight:600}.cnt .cb{color:var(--blue);font-weight:600}
 
-/* Header */
-.header { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; }
-.logo { width: 38px; height: 38px; background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-.logo svg { width: 18px; height: 18px; fill: var(--green); }
-h1 { font-size: 18px; font-weight: 700; }
-.h-sub { font-size: 11px; color: var(--muted); }
+/* WABA group */
+.waba-group{margin-bottom:14px}
+.waba-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--s3);border:1px solid var(--border);border-radius:7px 7px 0 0;border-bottom:none}
+.waba-name{font-size:11px;font-weight:600;color:var(--dim);font-family:var(--mono)}
+.waba-acts{display:flex;gap:6px}
+.waba-group .lst{border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px}
+.waba-loading{padding:10px;text-align:center;font-size:11px;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:0 0 7px 7px}
 
-/* Steps */
-.steps { display: flex; align-items: center; margin-bottom: 24px; }
-.sdot { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); white-space: nowrap; }
-.sdot.active { color: var(--text); }
-.sdot.done { color: var(--green); }
-.snum { width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--border); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-.sdot.active .snum { border-color: var(--blue); color: var(--blue); }
-.sdot.done .snum { border-color: var(--green); color: var(--green); background: var(--green-dim); }
-.sline { flex: 1; height: 1px; background: var(--border); margin: 0 10px; }
-
-/* Step panels */
-.step { display: none; }
-.step.active { display: block; }
-
-/* Card */
-.card { background: var(--s1); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
-.card-head { font-size: 11px; font-weight: 600; color: var(--dim); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-
-/* Search */
-.search-row { display: flex; gap: 8px; margin-bottom: 14px; }
-.search-row input { flex: 1; background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; font-size: 12px; color: var(--text); font-family: 'Inter', sans-serif; outline: none; transition: border-color 0.15s; }
-.search-row input:focus { border-color: var(--blue); }
-.search-row input::placeholder { color: var(--muted); }
-
-/* Buttons */
-.btn { padding: 9px 16px; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.15s; }
-.btn-green { background: var(--green); color: #000; }
-.btn-green:hover { background: #20c55a; }
-.btn-green:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-blue { background: var(--blue); color: #fff; }
-.btn-blue:hover { background: #2563eb; }
-.btn-blue:disabled { opacity: 0.4; cursor: not-allowed; }
-.btn-ghost { background: var(--s2); border: 1px solid var(--border); color: var(--dim); }
-.btn-ghost:hover { border-color: var(--green); color: var(--green); }
-.btn-sm { padding: 5px 10px; font-size: 10px; }
-.btn-row { display: flex; gap: 10px; margin-top: 16px; }
-.btn-row .btn { flex: 1; justify-content: center; padding: 12px; font-size: 13px; }
-.spin { width: 13px; height: 13px; border: 2px solid rgba(0,0,0,0.2); border-top-color: #000; border-radius: 50%; animation: spin 0.7s linear infinite; display: none; }
-.btn.loading .spin { display: block; }
-.btn.loading .lbl { display: none; }
-.spin-w { border-top-color: #fff; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* List items */
-.list { display: flex; flex-direction: column; gap: 6px; max-height: 320px; overflow-y: auto; padding-right: 2px; }
-.list::-webkit-scrollbar { width: 3px; }
-.list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.item { display: flex; align-items: center; gap: 9px; background: var(--s2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; user-select: none; }
-.item:hover { border-color: var(--dim); }
-.item.sel-g { border-color: var(--green); background: var(--green-dim); }
-.item.sel-b { border-color: var(--blue); background: var(--blue-dim); }
-.chk { width: 15px; height: 15px; border: 1.5px solid var(--border); border-radius: 4px; flex-shrink: 0; position: relative; transition: all 0.15s; }
-.item.sel-g .chk { background: var(--green); border-color: var(--green); }
-.item.sel-g .chk::after, .item.sel-b .chk::after { content: ''; width: 7px; height: 4px; border-left: 1.5px solid #000; border-bottom: 1.5px solid #000; transform: rotate(-45deg) translate(1px,-1px); position: absolute; }
-.item.sel-b .chk { background: var(--blue); border-color: var(--blue); }
-.item.sel-b .chk::after { border-left-color: #fff; border-bottom-color: #fff; }
-.item-info { flex: 1; min-width: 0; }
-.item-main { font-size: 12px; font-weight: 600; font-family: var(--mono); }
-.item-sub { font-size: 11px; color: var(--muted); margin-top: 1px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: 500; flex-shrink: 0; }
-.bg { background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
-.br { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
-.bb { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
-.by { background: var(--yellow-dim); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
-
-.sel-info { font-size: 11px; color: var(--muted); margin-top: 10px; }
-.sel-info span { font-weight: 600; }
-.sel-info .sg { color: var(--green); }
-.sel-info .sb { color: var(--blue); }
-
-/* Fields */
-.field { margin-bottom: 12px; }
-.field:last-child { margin-bottom: 0; }
-label { display: block; font-size: 11px; font-weight: 600; color: var(--dim); margin-bottom: 5px; }
-input[type=text], input[type=url], input[type=password], textarea {
-  width: 100%; background: var(--s2); border: 1px solid var(--border); border-radius: 8px;
-  padding: 9px 12px; font-size: 12px; font-family: 'Inter', sans-serif; color: var(--text);
-  outline: none; transition: border-color 0.15s;
-}
-input:focus, textarea:focus { border-color: var(--blue); }
-input::placeholder, textarea::placeholder { color: var(--muted); }
-textarea { resize: vertical; min-height: 56px; line-height: 1.5; }
-
-/* Two col */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-/* Preview */
-.preview-box { background: var(--s2); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
-.prev-img { width: 100%; height: 80px; background: var(--s3); border-radius: 7px; margin-bottom: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-.prev-img img { width: 100%; height: 100%; object-fit: cover; }
-.prev-ph { font-size: 11px; color: var(--muted); }
-.prev-txt { font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
-.prev-footer { font-size: 11px; color: var(--muted); margin-top: 5px; }
-.prev-btn { font-size: 12px; color: var(--blue); text-align: center; margin-top: 7px; padding-top: 7px; border-top: 1px solid var(--border); }
-
-/* Pills */
-.pills { display: flex; flex-wrap: wrap; gap: 5px; }
-.pill { font-size: 11px; font-family: var(--mono); padding: 3px 9px; border-radius: 20px; }
-.pill-g { background: var(--green-dim); color: var(--green); border: 1px solid rgba(37,211,102,0.2); }
-.pill-b { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
-
-/* Status */
-.status { border-radius: 9px; padding: 12px 14px; margin-top: 12px; display: none; gap: 9px; align-items: flex-start; }
-.status.show { display: flex; }
-.status.ok { background: var(--green-dim); border: 1px solid rgba(37,211,102,0.25); }
-.status.err { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); }
-.status.wait { background: var(--yellow-dim); border: 1px solid rgba(245,158,11,0.25); }
-.s-icon { font-size: 16px; flex-shrink: 0; }
-.s-title { font-size: 12px; font-weight: 600; }
-.status.ok .s-title { color: var(--green); }
-.status.err .s-title { color: var(--red); }
-.status.wait .s-title { color: var(--yellow); }
-.s-msg { font-size: 11px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
-
-.empty { padding: 16px; text-align: center; color: var(--muted); font-size: 11px; }
-.hint { font-size: 10px; color: var(--muted); margin-top: 4px; }
+.fld{margin-bottom:11px}.fld:last-child{margin-bottom:0}
+label{display:block;font-size:11px;font-weight:600;color:var(--dim);margin-bottom:4px}
+input[type=text],input[type=url],textarea{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+input:focus,textarea:focus{border-color:var(--blue)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+textarea{resize:vertical;min-height:52px;line-height:1.5}
+.tcol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pvbox{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px}
+.pimg{width:100%;height:76px;background:var(--s3);border-radius:6px;margin-bottom:7px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.pimg img{width:100%;height:100%;object-fit:cover}
+.pph{font-size:11px;color:var(--muted)}.ptxt{font-size:12px;line-height:1.6;white-space:pre-wrap}.pft{font-size:11px;color:var(--muted);margin-top:4px}.pbtn{font-size:12px;color:var(--blue);text-align:center;margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+.pills{display:flex;flex-wrap:wrap;gap:5px}
+.pill{font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:20px}
+.pg{background:var(--gdim);color:var(--green);border:1px solid var(--gbdr)}.pb{background:var(--bdim);color:var(--blue);border:1px solid var(--bbdr)}
+.sts{border-radius:8px;padding:11px 13px;margin-top:11px;display:none;gap:8px;align-items:flex-start}
+.sts.show{display:flex}.sts.ok{background:var(--gdim);border:1px solid var(--gbdr)}.sts.err{background:var(--rdim);border:1px solid rgba(239,68,68,.25)}.sts.wait{background:var(--ydim);border:1px solid rgba(245,158,11,.25)}
+.si{font-size:15px;flex-shrink:0}.st{font-size:12px;font-weight:600}.sts.ok .st{color:var(--green)}.sts.err .st{color:var(--red)}.sts.wait .st{color:var(--yellow)}.sm{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+.empty{padding:14px;text-align:center;color:var(--muted);font-size:11px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="header">
-    <div class="logo">
-      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-    </div>
-    <div>
-      <h1>Campanhas WhatsApp</h1>
-      <div class="h-sub">Infobip · Criação de transmissões</div>
-    </div>
-  </div>
+<div class="hdr">
+  <div class="logo"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+  <div><h1>Campanhas WhatsApp</h1><div class="hsub">Infobip · Criação de transmissões em massa</div></div>
+</div>
 
-  <div class="steps">
-    <div class="sdot active" id="sd1"><div class="snum">1</div><span>Remetentes</span></div>
-    <div class="sline"></div>
-    <div class="sdot" id="sd2"><div class="snum">2</div><span>Templates</span></div>
-    <div class="sline"></div>
-    <div class="sdot" id="sd3"><div class="snum">3</div><span>Conteúdo</span></div>
-    <div class="sline"></div>
-    <div class="sdot" id="sd4"><div class="snum">4</div><span>Criar</span></div>
-  </div>
+<div class="snav">
+  <div class="sd act" id="sd1"><div class="sn">1</div><span>Remetentes</span></div><div class="sl"></div>
+  <div class="sd" id="sd2"><div class="sn">2</div><span>Templates</span></div><div class="sl"></div>
+  <div class="sd" id="sd3"><div class="sn">3</div><span>Conteúdo</span></div><div class="sl"></div>
+  <div class="sd" id="sd4"><div class="sn">4</div><span>Criar</span></div>
+</div>
 
-  <!-- STEP 1 -->
-  <div class="step active" id="step1">
-    <div class="card">
-      <div class="card-head">
-        <span>Remetentes disponíveis</span>
-        <button class="btn btn-ghost btn-sm" onclick="togAll('senders')">Todos</button>
-      </div>
-      <div class="search-row">
-        <input id="sSearch" type="text" placeholder="Filtrar por número ou nome..." oninput="filter('senders')"/>
-        <button class="btn btn-green" id="btnBS" onclick="buscarSenders()">
-          <div class="spin"></div><span class="lbl">Buscar</span>
-        </button>
-      </div>
-      <div id="sendersList"><div class="empty">Clique em "Buscar" para carregar os remetentes</div></div>
-      <div class="sel-info">Selecionados: <span class="sg" id="cntS">0</span></div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-green" id="btnGo2" onclick="goStep(2)" disabled><span class="lbl">Próximo — templates</span></button>
-    </div>
-  </div>
-
-  <!-- STEP 2 -->
-  <div class="step" id="step2">
-    <div class="card">
-      <div class="card-head">
-        <span>Templates aprovados</span>
-        <button class="btn btn-ghost btn-sm" onclick="togAll('templates')">Todos</button>
-      </div>
-      <div class="search-row">
-        <input id="tSearch" type="text" placeholder="Filtrar por nome..." oninput="filter('templates')"/>
-        <button class="btn btn-blue" id="btnBT" onclick="buscarTemplates()">
-          <div class="spin spin-w"></div><span class="lbl">Buscar</span>
-        </button>
-      </div>
-      <div id="templatesList"><div class="empty">Clique em "Buscar" para carregar os templates</div></div>
-      <div class="sel-info">Selecionados: <span class="sb" id="cntT">0</span></div>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(1)"><span class="lbl">Voltar</span></button>
-      <button class="btn btn-blue" id="btnGo3" onclick="goStep(3)" disabled><span class="lbl">Próximo — conteúdo</span></button>
-    </div>
-  </div>
-
-  <!-- STEP 3 -->
-  <div class="step" id="step3">
-    <div class="two-col">
-      <div>
-        <div class="card">
-          <div class="card-head">Variáveis do template</div>
-          <div id="varFields"><div class="empty">Nenhuma variável</div></div>
-        </div>
-        <div class="card">
-          <div class="card-head">Imagem (header)</div>
-          <div class="field">
-            <label>URL da imagem</label>
-            <input type="url" id="mediaUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="updatePrev()"/>
-          </div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-head">Prévia da mensagem</div>
-        <div id="prevArea"><div class="empty">Selecione um template</div></div>
+<!-- STEP 1 -->
+<div class="step act" id="step1">
+  <div class="card">
+    <div class="chead">
+      <span>Remetentes disponíveis</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-all" onclick="togAll('s')">✓ Todos</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAll('s')">✕ Limpar</button>
       </div>
     </div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">Voltar</span></button>
-      <button class="btn btn-green" onclick="goStep(4)"><span class="lbl">Revisar e criar</span></button>
-    </div>
-  </div>
-
-  <!-- STEP 4 -->
-  <div class="step" id="step4">
-    <div class="card">
-      <div class="card-head">Resumo</div>
-      <div style="margin-bottom:14px">
-        <label style="margin-bottom:6px;display:block">Remetentes</label>
-        <div class="pills" id="revS"></div>
-      </div>
-      <div style="margin-bottom:14px">
-        <label style="margin-bottom:6px;display:block">Templates</label>
-        <div class="pills" id="revT"></div>
-      </div>
-      <div>
-        <label style="margin-bottom:6px;display:block">Prévia</label>
-        <div id="revPrev"></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-head">Credenciais do portal (para criar transmissão)</div>
-      <div class="two-col">
-        <div class="field">
-          <label>Usuário</label>
-          <input type="text" id="portalUser" value="hurley08"/>
-        </div>
-        <div class="field">
-          <label>Senha</label>
-          <input type="password" id="portalPass" value="@Guu0809"/>
-        </div>
-      </div>
-      <p class="hint">Usado para autenticar no portal e criar as transmissões como rascunho.</p>
-    </div>
-    <div class="btn-row">
-      <button class="btn btn-ghost" onclick="goStep(3)"><span class="lbl">Voltar</span></button>
-      <button class="btn btn-green" id="btnCriar" onclick="criarCampanhas()">
-        <div class="spin"></div><span class="lbl">Criar transmissões</span>
+    <div class="selbar">
+      <input id="sSearch" type="text" placeholder="Filtrar por número ou nome..." oninput="filterS()"/>
+      <button class="btn btn-green" id="btnBS" onclick="buscarSenders()">
+        <div class="spin"></div><span class="lbl">Buscar remetentes</span>
       </button>
     </div>
-    <div class="status" id="statusBox">
-      <div class="s-icon" id="sIcon"></div>
-      <div><div class="s-title" id="sTitle"></div><div class="s-msg" id="sMsg"></div></div>
+    <div id="sendersList"><div class="empty">Clique em "Buscar remetentes" para carregar</div></div>
+    <div class="cnt">Selecionados: <span class="cg" id="cntS">0</span> de <span id="totalS">0</span></div>
+  </div>
+  <div class="brow">
+    <button class="btn btn-green" id="btnGo2" onclick="goStep(2)" disabled>
+      <span class="lbl">Próximo — buscar templates →</span>
+    </button>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+  <div class="card">
+    <div class="chead">
+      <span>Templates por WABA</span>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-all btn-all-b" onclick="togAllT()">✓ Todos</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAll('t')">✕ Limpar</button>
+      </div>
+    </div>
+    <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
+      <input id="tSearch" style="flex:1;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--text);font-family:Inter,sans-serif;outline:none" type="text" placeholder="Filtrar templates por nome..." oninput="filterT()"/>
+      <button class="btn btn-blue" id="btnBT" onclick="buscarTodosTemplates()">
+        <div class="spin spin-w"></div><span class="lbl">Buscar templates</span>
+      </button>
+    </div>
+    <div id="templatesByWaba"><div class="empty">Clique em "Buscar templates" para carregar os templates dos WABAs selecionados</div></div>
+    <div class="cnt">Selecionados: <span class="cb" id="cntT">0</span></div>
+  </div>
+  <div class="brow">
+    <button class="btn btn-ghost" onclick="goStep(1)"><span class="lbl">← Voltar</span></button>
+    <button class="btn btn-blue" id="btnGo3" onclick="goStep(3)" disabled>
+      <span class="lbl">Próximo — preencher conteúdo →</span>
+    </button>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+  <div class="tcol">
+    <div>
+      <div class="card">
+        <div class="chead">Variáveis do template</div>
+        <div id="varFields"><div class="empty">Nenhuma variável</div></div>
+      </div>
+      <div class="card">
+        <div class="chead">URL da imagem (header)</div>
+        <div class="fld"><input type="url" id="mediaUrl" placeholder="https://exemplo.com/imagem.jpg" oninput="updatePrev()"/></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="chead">Prévia da mensagem</div>
+      <div id="prevArea"><div class="empty">Preencha as variáveis para ver a prévia</div></div>
     </div>
   </div>
+  <div class="brow">
+    <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">← Voltar</span></button>
+    <button class="btn btn-green" onclick="goStep(4)"><span class="lbl">Revisar e criar →</span></button>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="step4">
+  <div class="card">
+    <div class="chead">Resumo</div>
+    <div style="margin-bottom:12px">
+      <label style="margin-bottom:6px;display:block">Remetentes (<span id="revCntS">0</span>)</label>
+      <div class="pills" id="revS"></div>
+    </div>
+    <div style="margin-bottom:12px">
+      <label style="margin-bottom:6px;display:block">Templates (<span id="revCntT">0</span>)</label>
+      <div class="pills" id="revT"></div>
+    </div>
+    <div>
+      <label style="margin-bottom:6px;display:block">Total de transmissões: <strong id="revTotal" style="color:var(--green)">0</strong></label>
+    </div>
+  </div>
+  <div class="card">
+    <div class="chead">Prévia</div>
+    <div id="revPrev"></div>
+  </div>
+  <div class="brow">
+    <button class="btn btn-ghost" onclick="goStep(3)"><span class="lbl">← Voltar</span></button>
+    <button class="btn btn-green" id="btnCriar" onclick="criarCampanhas()">
+      <div class="spin"></div><span class="lbl">🚀 Criar transmissões</span>
+    </button>
+  </div>
+  <div class="sts" id="stsBox">
+    <div class="si" id="sIcon"></div>
+    <div><div class="st" id="sTitle"></div><div class="sm" id="sMsg"></div></div>
+  </div>
+</div>
 
 </div>
 <script>
-const WEBHOOK = 'https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
-const API_KEY = '5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
-const BASE_URL = 'qdn5nq.api.infobip.com';
+const WH='https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
+const AK='5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
+const BU='qdn5nq.api.infobip.com';
 
-let allSenders=[], filtSenders=[], selSenders=[];
-let allTemplates=[], filtTemplates=[], selTemplates=[];
-let step=1;
+let aS=[],fS=[],sS=[];
+// wabaTemplates: { wabaId: { name, senders:[], templates:[], filtered:[] } }
+let wabaTemplates={};
+let sT=[]; // templates selecionados: [{...template, senderUsed}]
+let cur=1;
 
-// ── Senders ──
+// ─ STEP 1: Senders ─
 async function buscarSenders(){
   const btn=document.getElementById('btnBS');
-  btn.classList.add('loading'); btn.disabled=true;
+  btn.classList.add('loading');btn.disabled=true;
   document.getElementById('sendersList').innerHTML='<div class="empty">Buscando...</div>';
   try{
-    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'listSenders',apiKey:API_KEY,baseUrl:BASE_URL})});
+    const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'listSenders',apiKey:AK,baseUrl:BU})});
     const d=await r.json();
-    allSenders=(d.senders&&d.senders.results)||[];
-    filtSenders=[...allSenders]; renderSenders();
-  }catch(e){ document.getElementById('sendersList').innerHTML='<div class="empty">Erro ao buscar</div>'; }
-  btn.classList.remove('loading'); btn.disabled=false;
+    aS=(d.senders&&d.senders.results)||[];
+    fS=[...aS];renderS();
+  }catch(e){document.getElementById('sendersList').innerHTML='<div class="empty">Erro ao buscar. Verifique o N8N.</div>';}
+  btn.classList.remove('loading');btn.disabled=false;
 }
 
-function filter(type){
-  if(type==='senders'){
-    const q=document.getElementById('sSearch').value.toLowerCase();
-    filtSenders=q?allSenders.filter(s=>s.sender.includes(q)||(s.displayName||'').toLowerCase().includes(q)):[...allSenders];
-    renderSenders();
-  } else {
-    const q=document.getElementById('tSearch').value.toLowerCase();
-    filtTemplates=q?allTemplates.filter(t=>t.name.toLowerCase().includes(q)):[...allTemplates];
-    renderTemplates();
-  }
+function filterS(){
+  const q=document.getElementById('sSearch').value.toLowerCase();
+  fS=q?aS.filter(s=>s.sender.includes(q)||(s.displayName||'').toLowerCase().includes(q)):[...aS];
+  renderS();
 }
 
-function renderSenders(){
+function renderS(){
   const el=document.getElementById('sendersList');
-  if(!filtSenders.length){el.innerHTML='<div class="empty">Nenhum remetente</div>';return;}
-  el.innerHTML='<div class="list">'+filtSenders.map(s=>{
-    const sel=selSenders.includes(s.sender);
+  if(!fS.length){el.innerHTML='<div class="empty">Nenhum remetente encontrado</div>';return;}
+  el.innerHTML='<div class="lst">'+fS.map(s=>{
+    const sel=sS.includes(s.sender);
     const st=(s.connectionStatus||s.registrationStatus||'').toUpperCase();
     const bc=st==='FINISHED'?'bg':st==='BANNED'?'br':'by';
     const bt=st==='FINISHED'?'Ativo':st||'?';
-    return `<div class="item ${sel?'sel-g':''}" onclick="togS('${s.sender}')">
-      <div class="chk"></div>
-      <div class="item-info"><div class="item-main">+${s.sender}</div><div class="item-sub">${s.displayName||'WhatsApp'}</div></div>
-      <div class="badge ${bc}">${bt}</div>
+    return `<div class="it ${sel?'sg':''}" onclick="togS('${s.sender}')">
+      <div class="ck"></div>
+      <div class="ii">
+        <div class="im">+${s.sender}</div>
+        <div class="is">${s.displayName||'WhatsApp'} · WABA ${s.whatsAppBusinessAccountId||''}</div>
+      </div>
+      <div class="bdg ${bc}">${bt}</div>
     </div>`;
   }).join('')+'</div>';
-  document.getElementById('cntS').textContent=selSenders.length;
-  document.getElementById('btnGo2').disabled=selSenders.length===0;
+  document.getElementById('cntS').textContent=sS.length;
+  document.getElementById('totalS').textContent=aS.length;
+  document.getElementById('btnGo2').disabled=sS.length===0;
 }
 
-function togS(num){
-  selSenders.includes(num)?selSenders=selSenders.filter(n=>n!==num):selSenders.push(num);
-  renderSenders();
-}
-
+function togS(n){sS.includes(n)?sS=sS.filter(x=>x!==n):sS.push(n);renderS();}
 function togAll(type){
-  if(type==='senders'){
-    const all=filtSenders.map(s=>s.sender);
-    const allSel=all.every(n=>selSenders.includes(n));
-    if(allSel) selSenders=selSenders.filter(n=>!all.includes(n));
-    else all.forEach(n=>{if(!selSenders.includes(n))selSenders.push(n);});
-    renderSenders();
-  } else {
-    const allSel=filtTemplates.every(t=>selTemplates.find(x=>x.name===t.name));
-    if(allSel) selTemplates=selTemplates.filter(x=>!filtTemplates.find(t=>t.name===x.name));
-    else filtTemplates.forEach(t=>{if(!selTemplates.find(x=>x.name===t.name))selTemplates.push(t);});
-    renderTemplates(); buildVars();
+  if(type==='s'){
+    const all=fS.map(s=>s.sender);
+    all.every(n=>sS.includes(n))?sS=sS.filter(n=>!all.includes(n)):all.forEach(n=>{if(!sS.includes(n))sS.push(n);});
+    renderS();
+  }
+}
+function desAll(type){
+  if(type==='s'){sS=[];renderS();}
+  else{sT=[];renderWabaTemplates();updateCntT();}
+}
+
+// ─ STEP 2: Templates por WABA ─
+async function buscarTodosTemplates(){
+  if(!sS.length)return;
+  const btn=document.getElementById('btnBT');
+  btn.classList.add('loading');btn.disabled=true;
+
+  // Agrupar senders selecionados por WABA
+  const wabaMap={};
+  sS.forEach(num=>{
+    const s=aS.find(x=>x.sender===num);
+    if(!s)return;
+    const wid=String(s.whatsAppBusinessAccountId||'unknown');
+    if(!wabaMap[wid])wabaMap[wid]={name:s.whatsAppBusinessAccountName||wid,senders:[],firstSender:num};
+    wabaMap[wid].senders.push(num);
+  });
+
+  // Mostrar loading por WABA
+  document.getElementById('templatesByWaba').innerHTML=Object.entries(wabaMap).map(([wid,w])=>`
+    <div class="waba-group" id="wg_${wid}">
+      <div class="waba-head">
+        <span class="waba-name">WABA: ${w.name} · ${w.senders.length} número(s)</span>
+        <div class="waba-acts">
+          <button class="btn btn-all btn-all-b" style="padding:4px 8px;font-size:10px" onclick="togWaba('${wid}',true)">✓ Todos</button>
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="togWaba('${wid}',false)">✕ Limpar</button>
+        </div>
+      </div>
+      <div class="waba-loading">Carregando templates...</div>
+    </div>`).join('');
+
+  // Buscar templates de cada WABA
+  wabaTemplates={};
+  for(const [wid,w] of Object.entries(wabaMap)){
+    try{
+      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'listTemplates',apiKey:AK,baseUrl:BU,sender:w.firstSender})});
+      const d=await r.json();
+      wabaTemplates[wid]={...w,templates:d.templates||[],filtered:d.templates||[]};
+    }catch(e){
+      wabaTemplates[wid]={...w,templates:[],filtered:[]};
+    }
+    renderWabaGroup(wid);
+  }
+
+  btn.classList.remove('loading');btn.disabled=false;
+  updateCntT();
+}
+
+function filterT(){
+  const q=document.getElementById('tSearch').value.toLowerCase();
+  Object.keys(wabaTemplates).forEach(wid=>{
+    wabaTemplates[wid].filtered=q
+      ?wabaTemplates[wid].templates.filter(t=>t.name.toLowerCase().includes(q))
+      :[...wabaTemplates[wid].templates];
+    renderWabaGroup(wid);
+  });
+}
+
+function renderWabaTemplates(){
+  Object.keys(wabaTemplates).forEach(wid=>renderWabaGroup(wid));
+}
+
+function renderWabaGroup(wid){
+  const w=wabaTemplates[wid];
+  const container=document.getElementById(`wg_${wid}`);
+  if(!container)return;
+  const listEl=container.querySelector('.waba-loading,.lst-wrap');
+  const html=w.filtered.length===0
+    ?'<div class="waba-loading">Nenhum template encontrado</div>'
+    :`<div class="lst lst-wrap" style="border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px">`+
+      w.filtered.map(t=>{
+        const sel=sT.find(x=>x.name===t.name&&x._waba===wid);
+        const body=(t.structure&&t.structure.body||'').replace(/\n/g,' ').substring(0,50)+'...';
+        const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
+        return `<div class="it ${sel?'sb':''}" onclick="togT('${wid}','${t.name}')">
+          <div class="ck"></div>
+          <div class="ii"><div class="im">${t.name}</div><div class="is">${body}</div></div>
+          ${hasImg?'<div class="bdg bb">IMG</div>':''}
+        </div>`;
+      }).join('')+'</div>';
+  if(listEl){listEl.outerHTML=html;}
+  else{
+    const old=container.querySelector('.lst-wrap,.waba-loading');
+    if(old)old.outerHTML=html;
   }
 }
 
-// ── Templates ──
-async function buscarTemplates(){
-  if(!selSenders.length)return;
-  const btn=document.getElementById('btnBT');
-  btn.classList.add('loading'); btn.disabled=true;
-  document.getElementById('templatesList').innerHTML='<div class="empty">Buscando...</div>';
-  try{
-    const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'listTemplates',apiKey:API_KEY,baseUrl:BASE_URL,sender:selSenders[0]})});
-    const d=await r.json();
-    allTemplates=d.templates||[];
-    filtTemplates=[...allTemplates]; renderTemplates();
-  }catch(e){ document.getElementById('templatesList').innerHTML='<div class="empty">Erro ao buscar</div>'; }
-  btn.classList.remove('loading'); btn.disabled=false;
+function togT(wid,name){
+  const w=wabaTemplates[wid];
+  const t=w&&w.templates.find(x=>x.name===name);
+  if(!t)return;
+  const idx=sT.findIndex(x=>x.name===name&&x._waba===wid);
+  if(idx>=0)sT.splice(idx,1);
+  else sT.push({...t,_waba:wid,_senders:w.senders});
+  renderWabaGroup(wid);
+  updateCntT();
+  buildVars();
 }
 
-function renderTemplates(){
-  const el=document.getElementById('templatesList');
-  if(!filtTemplates.length){el.innerHTML='<div class="empty">Nenhum template</div>';return;}
-  el.innerHTML='<div class="list">'+filtTemplates.map(t=>{
-    const sel=selTemplates.find(x=>x.name===t.name);
-    const body=(t.structure&&t.structure.body||'').replace(/\n/g,' ').substring(0,50)+'...';
-    const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-    return `<div class="item ${sel?'sel-b':''}" onclick="togT('${t.name}')">
-      <div class="chk"></div>
-      <div class="item-info"><div class="item-main">${t.name}</div><div class="item-sub">${body}</div></div>
-      ${hasImg?'<div class="badge bb">IMG</div>':''}
-    </div>`;
-  }).join('')+'</div>';
-  document.getElementById('cntT').textContent=selTemplates.length;
-  document.getElementById('btnGo3').disabled=selTemplates.length===0;
+function togWaba(wid,select){
+  const w=wabaTemplates[wid];
+  if(!w)return;
+  // remove todos desse waba
+  sT=sT.filter(x=>x._waba!==wid);
+  if(select) w.filtered.forEach(t=>sT.push({...t,_waba:wid,_senders:w.senders}));
+  renderWabaGroup(wid);
+  updateCntT();
+  buildVars();
 }
 
-function togT(name){
-  const t=allTemplates.find(x=>x.name===name);
-  selTemplates.find(x=>x.name===name)?selTemplates=selTemplates.filter(x=>x.name!==name):(t&&selTemplates.push(t));
-  renderTemplates(); buildVars();
+function togAllT(){
+  Object.keys(wabaTemplates).forEach(wid=>togWaba(wid,true));
 }
 
-// ── Vars ──
+function updateCntT(){
+  document.getElementById('cntT').textContent=sT.length;
+  document.getElementById('btnGo3').disabled=sT.length===0;
+}
+
+// ─ STEP 3: Vars ─
 function buildVars(){
-  if(!selTemplates.length){document.getElementById('varFields').innerHTML='<div class="empty">Selecione um template</div>';return;}
-  const t=selTemplates[0];
+  if(!sT.length){document.getElementById('varFields').innerHTML='<div class="empty">Selecione ao menos um template</div>';return;}
+  const t=sT[0];
   const body=t.structure&&t.structure.body||'';
   const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
   if(!nums.length){document.getElementById('varFields').innerHTML='<div class="empty">Sem variáveis</div>';return;}
+  const existing={};
+  nums.forEach(n=>{const el=document.getElementById(`v${n}`);if(el)existing[n]=el.value;});
   document.getElementById('varFields').innerHTML=nums.map(n=>`
-    <div class="field">
+    <div class="fld">
       <label>Variável {{${n}}}</label>
-      <input type="text" id="v${n}" placeholder="Conteúdo para {{${n}}}" oninput="updatePrev()"/>
+      <input type="text" id="v${n}" placeholder="Conteúdo da variável ${n}" oninput="updatePrev()" value="${existing[n]||''}"/>
     </div>`).join('');
   updatePrev();
 }
 
-function getPlaceholders(t){
+function getPH(t){
   const body=t.structure&&t.structure.body||'';
   const nums=[...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
   return nums.map(n=>document.getElementById(`v${n}`)?.value||'');
 }
 
 function updatePrev(){
-  if(!selTemplates.length)return;
+  if(!sT.length)return;
   const img=document.getElementById('mediaUrl')?.value||'';
-  document.getElementById('prevArea').innerHTML=buildPrev(selTemplates[0],img);
-  document.getElementById('revPrev').innerHTML=buildPrev(selTemplates[0],img);
+  document.getElementById('prevArea').innerHTML=mkPrev(sT[0],img);
+  if(document.getElementById('revPrev'))
+    document.getElementById('revPrev').innerHTML=mkPrev(sT[0],img);
 }
 
-function buildPrev(t,img){
+function mkPrev(t,img){
   let body=t.structure&&t.structure.body||'';
   [...body.matchAll(/\{\{(\d+)\}\}/g)].forEach(m=>{
     const v=document.getElementById(`v${m[1]}`)?.value||m[0];
     body=body.split(m[0]).join(`<strong>${v}</strong>`);
   });
-  const footer=t.structure&&t.structure.footer||'';
-  const btn=t.structure&&t.structure.buttons&&t.structure.buttons[0];
-  const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-  return `<div class="preview-box">
-    ${hasImg?`<div class="prev-img">${img?`<img src="${img}"/>`:'<span class="prev-ph">Imagem aqui</span>'}</div>`:''}
-    <div class="prev-txt">${body.replace(/\n/g,'<br>')}</div>
-    ${footer?`<div class="prev-footer">${footer}</div>`:''}
-    ${btn?`<div class="prev-btn">${btn.text}</div>`:''}
+  const ft=t.structure&&t.structure.footer||'';
+  const bt=t.structure&&t.structure.buttons&&t.structure.buttons[0];
+  const hi=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
+  return `<div class="pvbox">
+    ${hi?`<div class="pimg">${img?`<img src="${img}"/>`:'<span class="pph">Imagem aqui</span>'}</div>`:''}
+    <div class="ptxt">${body.replace(/\n/g,'<br>')}</div>
+    ${ft?`<div class="pft">${ft}</div>`:''}
+    ${bt?`<div class="pbtn">${bt.text}</div>`:''}
   </div>`;
 }
 
-// ── Review ──
+// ─ STEP 4: Review + Create ─
 function buildReview(){
-  document.getElementById('revS').innerHTML=selSenders.map(s=>`<div class="pill pill-g">+${s}</div>`).join('');
-  document.getElementById('revT').innerHTML=selTemplates.map(t=>`<div class="pill pill-b">${t.name}</div>`).join('');
+  // Total: cada template tem seus próprios senders (_senders)
+  // Por sender × template onde o sender pertence ao WABA do template
+  let total=0;
+  sT.forEach(t=>{
+    const sendersDoWaba=(t._senders||[]).filter(s=>sS.includes(s));
+    total+=sendersDoWaba.length;
+  });
+  document.getElementById('revCntS').textContent=sS.length;
+  document.getElementById('revCntT').textContent=sT.length;
+  document.getElementById('revTotal').textContent=total;
+  document.getElementById('revS').innerHTML=sS.map(s=>`<div class="pill pg">+${s}</div>`).join('');
+  document.getElementById('revT').innerHTML=sT.map(t=>`<div class="pill pb">${t.name}</div>`).join('');
   updatePrev();
 }
 
-// ── Create ──
 async function criarCampanhas(){
   const btn=document.getElementById('btnCriar');
-  const user=document.getElementById('portalUser').value;
-  const pass=document.getElementById('portalPass').value;
-  if(!user||!pass){setStatus('err','Credenciais necessárias','Preencha usuário e senha do portal Infobip.');return;}
-  btn.classList.add('loading'); btn.disabled=true;
-  const total=selSenders.length*selTemplates.length;
-  setStatus('wait','Criando transmissões...', `0 de ${total} criada(s)`);
-  let ok=0, fail=0, n=0;
-  for(const sender of selSenders){
-    for(const t of selTemplates){
-      const img=document.getElementById('mediaUrl')?.value||'';
-      const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-      const ph=getPlaceholders(t);
-      const name=`${t.name}_${sender}_${Date.now()}`;
-      try{
-        const r=await fetch(WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            action:'createCampaign', apiKey:API_KEY, baseUrl:BASE_URL,
-            username:user, password:pass,
-            campaignName:name, sender, templateName:t.name,
-            language:t.language||'pt_BR', placeholders:ph,
-            imageUrl:hasImg?img:undefined,
-            buttonUrl:t.structure?.buttons?.[0]?.url||''
-          })});
-        const d=await r.json();
-        if(d.status===200&&d.body&&d.body.status==='DRAFT') ok++;
-        else fail++;
-      }catch(e){fail++;}
-      n++;
-      setStatus('wait','Criando transmissões...',`${n} de ${total} processada(s)`);
-    }
+  btn.classList.add('loading');btn.disabled=true;
+
+  // Montar lista de (sender, template) respeitando o WABA
+  const jobs=[];
+  sT.forEach(t=>{
+    const sendersDoWaba=(t._senders||[]).filter(s=>sS.includes(s));
+    sendersDoWaba.forEach(sender=>jobs.push({sender,t}));
+  });
+
+  const total=jobs.length;
+  setSts('wait',`Criando ${total} transmissão(ões)...`,`0 de ${total} criada(s)`);
+  let ok=0,fail=0,n=0;
+
+  for(const {sender,t} of jobs){
+    const img=document.getElementById('mediaUrl')?.value||'';
+    const hi=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
+    const ph=getPH(t);
+    const name=`${t.name}_${sender.slice(-4)}_${new Date().toISOString().slice(0,10)}`;
+    try{
+      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          action:'createCampaign',apiKey:AK,baseUrl:BU,
+          campaignName:name,sender,templateName:t.name,
+          language:t.language||'pt_BR',placeholders:ph,
+          imageUrl:hi?img:undefined,
+          buttonUrl:t.structure?.buttons?.[0]?.url||''
+        })});
+      const d=await r.json();
+      (d.status===200&&d.body&&d.body.status==='DRAFT')?ok++:fail++;
+    }catch(e){fail++;}
+    n++;
+    setSts('wait',`Criando transmissões...`,`${n} de ${total} · ✅ ${ok} · ❌ ${fail}`);
   }
-  btn.classList.remove('loading'); btn.disabled=false;
-  if(fail===0) setStatus('ok',`${ok} transmissão(ões) criada(s)!`,'Acesse Transmissão no portal Infobip para adicionar destinatários e disparar.');
-  else setStatus('err',`${ok} criada(s), ${fail} falhou`,'Verifique os logs no N8N.');
+
+  btn.classList.remove('loading');btn.disabled=false;
+  fail===0
+    ?setSts('ok',`${ok} transmissão(ões) criada(s)!`,'Acesse Transmissão no portal para adicionar destinatários e disparar.')
+    :setSts('err',`${ok} criada(s), ${fail} falhou`,'Verifique os logs no N8N.');
 }
 
-function setStatus(type,title,msg){
-  const b=document.getElementById('statusBox');
-  b.className='status show '+(type==='ok'?'ok':type==='err'?'err':'wait');
+function setSts(type,title,msg){
+  const b=document.getElementById('stsBox');
+  b.className='sts show '+(type==='ok'?'ok':type==='err'?'err':'wait');
   document.getElementById('sIcon').textContent=type==='ok'?'✅':type==='err'?'❌':'⏳';
   document.getElementById('sTitle').textContent=title;
   document.getElementById('sMsg').textContent=msg;
 }
 
-// ── Nav ──
 function goStep(n){
   if(n===3)buildVars();
   if(n===4)buildReview();
-  document.getElementById(`step${step}`).classList.remove('active');
-  document.getElementById(`step${n}`).classList.add('active');
+  document.getElementById(`step${cur}`).classList.remove('act');
+  document.getElementById(`step${n}`).classList.add('act');
   for(let i=1;i<=4;i++){
     const d=document.getElementById(`sd${i}`);
-    d.className='sdot'+(i<n?' done':i===n?' active':'');
-    d.querySelector('.snum').textContent=i<n?'✓':i;
+    d.className='sd'+(i<n?' done':i===n?' act':'');
+    d.querySelector('.sn').textContent=i<n?'✓':i;
   }
-  step=n; window.scrollTo(0,0);
+  cur=n;window.scrollTo(0,0);
 }
 </script>
 </body>
