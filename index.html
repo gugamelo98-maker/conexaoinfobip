@@ -311,7 +311,8 @@ async function buscarTodosTemplates(){
       const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
         body:JSON.stringify({action:'listTemplates',apiKey:AK,baseUrl:BU,sender:w.firstSender})});
       const d=await r.json();
-      wabaTemplates[wid]={...w,templates:d.templates||[],filtered:d.templates||[]};
+      const approved=(d.templates||[]).filter(t=>t.status==='APPROVED');
+      wabaTemplates[wid]={...w,templates:approved,filtered:approved};
     }catch(e){
       wabaTemplates[wid]={...w,templates:[],filtered:[]};
     }
@@ -443,12 +444,15 @@ function mkPrev(t,img){
 
 // ─ STEP 4: Review + Create ─
 function buildReview(){
-  // Total: cada template tem seus próprios senders (_senders)
-  // Por sender × template onde o sender pertence ao WABA do template
+  // Total: sender selecionado do WABA correto × template
   let total=0;
   sT.forEach(t=>{
-    const sendersDoWaba=(t._senders||[]).filter(s=>sS.includes(s));
-    total+=sendersDoWaba.length;
+    const waba=t._waba;
+    const sendersDoWabaSelecionados=sS.filter(s=>{
+      const info=aS.find(x=>x.sender===s);
+      return info && String(info.whatsAppBusinessAccountId)===String(waba);
+    });
+    total+=sendersDoWabaSelecionados.length;
   });
   document.getElementById('revCntS').textContent=sS.length;
   document.getElementById('revCntT').textContent=sT.length;
@@ -463,10 +467,15 @@ async function criarCampanhas(){
   btn.classList.add('loading');btn.disabled=true;
 
   // Montar lista de (sender, template) respeitando o WABA
+  // _senders = todos os senders do WABA — filtrar apenas os selecionados
   const jobs=[];
   sT.forEach(t=>{
-    const sendersDoWaba=(t._senders||[]).filter(s=>sS.includes(s));
-    sendersDoWaba.forEach(sender=>jobs.push({sender,t}));
+    const waba=t._waba;
+    const sendersDoWabaSelecionados=sS.filter(s=>{
+      const info=aS.find(x=>x.sender===s);
+      return info && String(info.whatsAppBusinessAccountId)===String(waba);
+    });
+    sendersDoWabaSelecionados.forEach(sender=>jobs.push({sender,t}));
   });
 
   const total=jobs.length;
