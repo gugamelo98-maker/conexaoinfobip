@@ -6,26 +6,43 @@
 <title>Campanhas WhatsApp</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#07090f;--s1:#0d1117;--s2:#131922;--s3:#192130;--border:#1e2d3d;--green:#25d366;--gdim:rgba(37,211,102,.08);--gbdr:rgba(37,211,102,.2);--blue:#3b82f6;--bdim:rgba(59,130,246,.08);--bbdr:rgba(59,130,246,.2);--red:#ef4444;--rdim:rgba(239,68,68,.08);--yellow:#f59e0b;--ydim:rgba(245,158,11,.08);--text:#e2e8f0;--muted:#4a6080;--dim:#7a9ab8;--mono:'JetBrains Mono',monospace}
+:root{--bg:#07090f;--s1:#0d1117;--s2:#131922;--s3:#192130;--border:#1e2d3d;--green:#25d366;--gdim:rgba(37,211,102,.08);--gbdr:rgba(37,211,102,.2);--blue:#3b82f6;--bdim:rgba(59,130,246,.08);--bbdr:rgba(59,130,246,.2);--red:#ef4444;--rdim:rgba(239,68,68,.08);--rbdr:rgba(239,68,68,.2);--yellow:#f59e0b;--ydim:rgba(245,158,11,.08);--text:#e2e8f0;--muted:#4a6080;--dim:#7a9ab8;--mono:'JetBrains Mono',monospace}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;padding:24px 20px}
 .wrap{max-width:980px;margin:0 auto}
+/* Config screen */
+.cfg-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
+.cfg-box{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:32px;width:100%;max-width:440px}
+.cfg-foot{font-size:11px;color:var(--muted);margin-top:14px;text-align:center}
+.cfg-foot a{color:var(--green);cursor:pointer}
+/* Header */
 .hdr{display:flex;align-items:center;gap:12px;margin-bottom:24px}
 .logo{width:36px;height:36px;background:var(--gdim);border:1px solid var(--gbdr);border-radius:9px;display:flex;align-items:center;justify-content:center}
 .logo svg{width:17px;height:17px;fill:var(--green)}
 h1{font-size:17px;font-weight:700}.hsub{font-size:11px;color:var(--muted)}
+/* Steps nav */
 .snav{display:flex;align-items:center;margin-bottom:22px}
 .sd{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);white-space:nowrap}
 .sd.act{color:var(--text)}.sd.done{color:var(--green)}
 .sn{width:21px;height:21px;border-radius:50%;border:1.5px solid var(--border);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .sd.act .sn{border-color:var(--blue);color:var(--blue)}.sd.done .sn{border-color:var(--green);color:var(--green);background:var(--gdim)}
 .sl{flex:1;height:1px;background:var(--border);margin:0 10px}
+/* Steps */
 .step{display:none}.step.act{display:block}
+/* Cards */
 .card{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:18px;margin-bottom:12px}
 .chead{font-size:11px;font-weight:600;color:var(--dim);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+/* Inputs */
+.fld{margin-bottom:11px}.fld:last-child{margin-bottom:0}
+label{display:block;font-size:11px;font-weight:600;color:var(--dim);margin-bottom:4px}
+input[type=text],input[type=url],input[type=password],textarea{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
+input[type=text]:focus,input[type=url]:focus,input[type=password]:focus,textarea:focus{border-color:var(--blue)}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+/* Search bar */
 .selbar{display:flex;gap:8px;margin-bottom:12px}
 .selbar input{flex:1;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .15s}
 .selbar input:focus{border-color:var(--blue)}.selbar input::placeholder{color:var(--muted)}
+/* Buttons */
 .btn{padding:8px 14px;border:none;border-radius:7px;font-size:12px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;white-space:nowrap}
 .btn-green{background:var(--green);color:#000}.btn-green:hover{background:#20c55a}.btn-green:disabled{opacity:.4;cursor:not-allowed}
 .btn-blue{background:var(--blue);color:#fff}.btn-blue:hover{background:#2563eb}.btn-blue:disabled{opacity:.4;cursor:not-allowed}
@@ -38,6 +55,7 @@ h1{font-size:17px;font-weight:700}.hsub{font-size:11px;color:var(--muted)}
 .btn.loading .spin{display:block}.btn.loading .lbl{display:none}
 .spin-w{border-top-color:#fff}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Lists */
 .lst{display:flex;flex-direction:column;gap:5px;max-height:300px;overflow-y:auto;padding-right:2px}
 .lst::-webkit-scrollbar{width:3px}.lst::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .it{display:flex;align-items:center;gap:8px;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:9px 11px;cursor:pointer;transition:all .15s;user-select:none}
@@ -49,77 +67,54 @@ h1{font-size:17px;font-weight:700}.hsub{font-size:11px;color:var(--muted)}
 .ii{flex:1;min-width:0}.im{font-size:12px;font-weight:600;font-family:var(--mono)}.is{font-size:11px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:1px}
 .bdg{font-size:10px;padding:2px 6px;border-radius:4px;font-weight:500;flex-shrink:0}
 .bg{background:var(--gdim);color:var(--green);border:1px solid var(--gbdr)}
-.br{background:var(--rdim);color:var(--red);border:1px solid rgba(239,68,68,.2)}
+.br{background:var(--rdim);color:var(--red);border:1px solid var(--rbdr)}
 .bb{background:var(--bdim);color:var(--blue);border:1px solid var(--bbdr)}
 .by{background:var(--ydim);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
 .cnt{font-size:11px;color:var(--muted);margin-top:8px}
-.cnt .cg{color:var(--green);font-weight:600}.cnt .cb{color:var(--blue);font-weight:600}
-.waba-group{margin-bottom:14px}
-.waba-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--s3);border:1px solid var(--border);border-radius:7px 7px 0 0;border-bottom:none}
-.waba-name{font-size:11px;font-weight:600;color:var(--dim);font-family:var(--mono)}
-.waba-acts{display:flex;gap:6px}
-.waba-lst{border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
-.waba-lst::-webkit-scrollbar{width:3px}.waba-lst::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.waba-loading{padding:10px;text-align:center;font-size:11px;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:0 0 7px 7px}
-.fld{margin-bottom:11px}.fld:last-child{margin-bottom:0}
-label{display:block;font-size:11px;font-weight:600;color:var(--dim);margin-bottom:4px}
-input[type=text],input[type=url],textarea{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
-input[type=text]:focus,input[type=url]:focus,textarea:focus{border-color:var(--blue)}
-input::placeholder,textarea::placeholder{color:var(--muted)}
-textarea{resize:vertical;min-height:52px;line-height:1.5}
-.tcol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cg{color:var(--green);font-weight:600}.cb{color:var(--blue);font-weight:600}
+/* WABA groups */
+.wg{margin-bottom:12px}
+.wg-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--s3);border:1px solid var(--border);border-radius:7px 7px 0 0;border-bottom:none}
+.wg-name{font-size:11px;font-weight:600;color:var(--dim);font-family:var(--mono)}
+.wg-acts{display:flex;gap:6px}
+.wg-lst{border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.wg-lst::-webkit-scrollbar{width:3px}.wg-lst::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.wg-loading{padding:10px;text-align:center;font-size:11px;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:0 0 7px 7px}
+/* Two col */
+.tcol{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+/* Preview */
 .pvbox{background:var(--s2);border:1px solid var(--border);border-radius:9px;padding:11px}
 .pimg{width:100%;height:76px;background:var(--s3);border-radius:6px;margin-bottom:7px;overflow:hidden;display:flex;align-items:center;justify-content:center}
 .pimg img{width:100%;height:100%;object-fit:cover}
 .pph{font-size:11px;color:var(--muted)}.ptxt{font-size:12px;line-height:1.6;white-space:pre-wrap}.pft{font-size:11px;color:var(--muted);margin-top:4px}.pbtn{font-size:12px;color:var(--blue);text-align:center;margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+/* Pills */
 .pills{display:flex;flex-wrap:wrap;gap:5px}
 .pill{font-size:11px;font-family:var(--mono);padding:3px 9px;border-radius:20px}
 .pg{background:var(--gdim);color:var(--green);border:1px solid var(--gbdr)}.pb{background:var(--bdim);color:var(--blue);border:1px solid var(--bbdr)}
+/* Status */
 .sts{border-radius:8px;padding:11px 13px;margin-top:11px;display:none;gap:8px;align-items:flex-start}
-.sts.show{display:flex}.sts.ok{background:var(--gdim);border:1px solid var(--gbdr)}.sts.err{background:var(--rdim);border:1px solid rgba(239,68,68,.25)}.sts.wait{background:var(--ydim);border:1px solid rgba(245,158,11,.25)}
+.sts.show{display:flex}.sts.ok{background:var(--gdim);border:1px solid var(--gbdr)}.sts.err{background:var(--rdim);border:1px solid var(--rbdr)}.sts.wait{background:var(--ydim);border:1px solid rgba(245,158,11,.25)}
 .si{font-size:15px;flex-shrink:0}.st{font-size:12px;font-weight:600}.sts.ok .st{color:var(--green)}.sts.err .st{color:var(--red)}.sts.wait .st{color:var(--yellow)}.sm{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
 .empty{padding:14px;text-align:center;color:var(--muted);font-size:11px}
-
-.config-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
-.config-box{background:var(--s1);border:1px solid var(--border);border-radius:14px;padding:32px;width:100%;max-width:440px}
-.config-logo{display:flex;align-items:center;gap:10px;margin-bottom:24px}
-.config-title{font-size:16px;font-weight:700}
-.config-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.config-footer{font-size:11px;color:var(--muted);margin-top:16px;text-align:center}
-.config-footer a{color:var(--green);cursor:pointer;text-decoration:none}
+.hint{font-size:11px;color:var(--muted);margin-top:4px}
+.warn{background:var(--rdim);border:1px solid var(--rbdr);border-radius:7px;padding:8px 10px;font-size:11px;color:var(--red);margin-top:8px}
 </style>
 </head>
 <body>
 
-<div class="config-screen" id="configScreen">
-  <div class="config-box">
-    <div class="config-logo">
+<!-- Config screen -->
+<div class="cfg-screen" id="cfgScreen">
+  <div class="cfg-box">
+    <div class="hdr" style="margin-bottom:20px">
       <div class="logo"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-      <div>
-        <div class="config-title">Campanhas WhatsApp</div>
-        <div class="config-sub">Configure as credenciais da conta Infobip</div>
-      </div>
+      <div><h1>Campanhas WhatsApp</h1><div class="hsub">Configure as credenciais da conta Infobip</div></div>
     </div>
-    <div class="fld">
-      <label>API Key</label>
-      <input type="text" id="cfgApiKey" placeholder="5d85f30d4b42757f..."/>
-    </div>
-    <div class="fld">
-      <label>Base URL</label>
-      <input type="text" id="cfgBaseUrl" placeholder="xxxxx.api.infobip.com"/>
-    </div>
-    <div class="fld">
-      <label>Usuário do portal</label>
-      <input type="text" id="cfgUser" placeholder="hurley08"/>
-    </div>
-    <div class="fld">
-      <label>Senha do portal</label>
-      <input type="password" id="cfgPass" placeholder="••••••••"/>
-    </div>
-    <button class="btn btn-green" style="width:100%;justify-content:center;padding:12px;font-size:13px" onclick="salvarConfig()">
-      Entrar
-    </button>
-    <div class="config-footer">Credenciais salvas localmente no navegador · <a onclick="limparConfig()">Trocar de conta</a></div>
+    <div class="fld"><label>API Key</label><input type="text" id="cfgAK" placeholder="5d85f30d..."/></div>
+    <div class="fld"><label>Base URL</label><input type="text" id="cfgBU" placeholder="xxxxx.api.infobip.com"/></div>
+    <div class="fld"><label>Usuário do portal</label><input type="text" id="cfgUser" placeholder="hurley08"/></div>
+    <div class="fld"><label>Senha do portal</label><input type="password" id="cfgPass" placeholder="••••••••"/></div>
+    <button class="btn btn-green" style="width:100%;justify-content:center;padding:12px;font-size:13px" onclick="salvarCfg()">Entrar</button>
+    <div class="cfg-foot">Salvo localmente no navegador · <a onclick="limparCfg()">Trocar de conta</a></div>
   </div>
 </div>
 
@@ -127,7 +122,8 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 
 <div class="hdr">
   <div class="logo"><svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-  <div style="flex:1"><h1>Campanhas WhatsApp</h1><div class="hsub">Infobip · Criação de transmissões em massa</div></div><button class="btn btn-ghost" style="font-size:11px;padding:6px 12px" onclick="limparConfig()">⚙ Trocar conta</button>
+  <div style="flex:1"><h1>Campanhas WhatsApp</h1><div class="hsub">Infobip · Criação de transmissões em massa</div></div>
+  <button class="btn btn-ghost" style="font-size:11px;padding:6px 12px" onclick="limparCfg()">⚙ Trocar conta</button>
 </div>
 
 <div class="snav">
@@ -137,13 +133,13 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
   <div class="sd" id="sd4"><div class="sn">4</div><span>Criar</span></div>
 </div>
 
-<!-- STEP 1 -->
+<!-- STEP 1: Senders -->
 <div class="step act" id="step1">
   <div class="card">
     <div class="chead">
       <span>Remetentes disponíveis</span>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-all" onclick="togAll()">✓ Todos</button>
+        <button class="btn btn-all" onclick="togAllS()">✓ Todos</button>
         <button class="btn btn-all" style="background:var(--bdim);border-color:var(--bbdr);color:var(--blue)" onclick="togAtivos()">✓ Apenas ativos</button>
         <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAllS()">✕ Limpar</button>
       </div>
@@ -164,7 +160,7 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
   </div>
 </div>
 
-<!-- STEP 2 -->
+<!-- STEP 2: Templates -->
 <div class="step" id="step2">
   <div class="card">
     <div class="chead">
@@ -176,7 +172,7 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
     </div>
     <div class="selbar">
       <input id="tSearch" type="text" placeholder="Filtrar por nome do template..." oninput="filterT()"/>
-      <button class="btn btn-blue" id="btnBT" onclick="buscarTodosTemplates()">
+      <button class="btn btn-blue" id="btnBT" onclick="buscarTemplates()">
         <div class="spin spin-w"></div><span class="lbl">Buscar templates</span>
       </button>
     </div>
@@ -191,54 +187,46 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
   </div>
 </div>
 
-<!-- STEP 3 -->
+<!-- STEP 3: Conteúdo -->
 <div class="step" id="step3">
   <div class="card">
     <div class="chead">Nome da campanha</div>
     <div class="fld">
-      <input type="text" id="campaignBaseName" placeholder="Ex: Promoção Julho" />
-      <div style="font-size:11px;color:var(--muted);margin-top:5px">Nome final: <strong style="color:var(--dim)">[nome] [4 últimos dígitos] [template]</strong></div>
+      <input type="text" id="campaignBaseName" placeholder="Ex: Promoção Julho"/>
+      <div class="hint">Nome final: <strong style="color:var(--dim)">[nome] [4 últimos dígitos] [template]</strong></div>
     </div>
   </div>
   <div class="card">
-    <div class="chead">URL da imagem (header) — mesma para todos os templates</div>
+    <div class="chead">URL da imagem (header) — mesma para todos</div>
     <div class="fld">
-      <input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/>
+      <input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updatePrevs()"/>
     </div>
   </div>
   <div class="card">
-    <div class="chead">Destinatários — Upload CSV/TXT</div>
+    <div class="chead">Destinatários — Upload CSV/TXT (opcional)</div>
     <div class="fld">
       <input type="file" id="csvFile" accept=".csv,.txt" onchange="importCSV(event)" style="background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px;width:100%;color:var(--text);font-size:12px"/>
     </div>
-    <div id="csvInfo" style="font-size:11px;color:var(--muted);margin-top:4px">Nenhum arquivo carregado</div>
-    <div id="csvPreview" style="margin-top:8px"></div>
+    <div id="csvInfo" class="hint">Nenhum arquivo carregado — as campanhas serão criadas sem destinatários</div>
+    <div id="csvWarn"></div>
   </div>
-  <div id="templateVarCards"></div>
+  <div id="varCards"></div>
   <div class="brow">
     <button class="btn btn-ghost" onclick="goStep(2)"><span class="lbl">← Voltar</span></button>
     <button class="btn btn-green" onclick="goStep(4)"><span class="lbl">Revisar e criar →</span></button>
   </div>
 </div>
 
-<!-- STEP 4 -->
+<!-- STEP 4: Criar -->
 <div class="step" id="step4">
   <div class="card">
     <div class="chead">Resumo</div>
-    <div style="margin-bottom:12px">
-      <label style="margin-bottom:6px;display:block">Remetentes (<span id="revCntS">0</span>)</label>
-      <div class="pills" id="revS"></div>
-    </div>
-    <div style="margin-bottom:12px">
-      <label style="margin-bottom:6px;display:block">Templates (<span id="revCntT">0</span>)</label>
-      <div class="pills" id="revT"></div>
-    </div>
+    <div style="margin-bottom:12px"><label style="margin-bottom:6px;display:block">Remetentes (<span id="revCS">0</span>)</label><div class="pills" id="revS"></div></div>
+    <div style="margin-bottom:12px"><label style="margin-bottom:6px;display:block">Templates (<span id="revCT">0</span>)</label><div class="pills" id="revT"></div></div>
     <div><label style="margin-bottom:4px;display:block">Total de transmissões: <strong id="revTotal" style="color:var(--green)">0</strong></label></div>
+    <div id="revContatos" style="margin-top:8px"></div>
   </div>
-  <div class="card">
-    <div class="chead">Prévia</div>
-    <div id="revPrev"></div>
-  </div>
+  <div class="card"><div class="chead">Prévia</div><div id="revPrev"></div></div>
   <div class="brow">
     <button class="btn btn-ghost" onclick="goStep(3)"><span class="lbl">← Voltar</span></button>
     <button class="btn btn-green" id="btnCriar" onclick="criarCampanhas()">
@@ -251,119 +239,70 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
   </div>
 </div>
 
-</div>
+</div><!-- .wrap -->
+
 <script>
 const WH = 'https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
-let AK = '';
-let BU = '';
-let PORTAL_USER = '';
-let PORTAL_PASS = '';
+let AK = '', BU = '', PORTAL_USER = '', PORTAL_PASS = '';
 
-function importCSV(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const text = ev.target.result;
-    const lines = text.split(String.fromCharCode(10));
-    allContacts = [];
-    lines.forEach(function(line) {
-      const col = line.trim().split(',')[0];
-      const num = col.replace(/[^0-9]/g, '');
-      if (num.length >= 10) allContacts.push(num);
-    });
-    const info = document.getElementById('csvInfo');
-    info.innerHTML = '<span style="color:var(--green);font-weight:600">' + allContacts.length + ' contatos</span> carregados de ' + file.name;
-    updateDistribuicao();
-  };
-  reader.readAsText(file);
-  e.target.value = '';
-}
-
-function updateDistribuicao() {
-  const el = document.getElementById('csvPreview');
-  if (!allContacts.length || !sS.length) { el.innerHTML = ''; return; }
-  const porSender = Math.floor(allContacts.length / sS.length);
-  const resto = allContacts.length % sS.length;
-  const limite = 20000;
-  const ok = porSender <= limite;
-  const cor = ok ? 'var(--green)' : 'var(--red)';
-  const aviso = !ok
-    ? '<div style="margin-top:8px;background:var(--rdim);border:1px solid rgba(239,68,68,.25);border-radius:7px;padding:8px;font-size:11px;color:var(--red)">' +
-      '⚠️ Limite de 20.000 por campanha excedido! Adicione pelo menos <strong>' +
-      Math.ceil(allContacts.length / limite) + '</strong> senders para distribuir corretamente.' +
-      '</div>'
-    : '';
-  el.innerHTML = '<div style="background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:10px;font-size:11px;color:var(--dim)">' +
-    '<strong style="color:var(--text)">' + allContacts.length + '</strong> contatos ÷ ' +
-    '<strong style="color:var(--green)">' + sS.length + '</strong> senders = ' +
-    '<strong style="color:' + cor + '">' + porSender + '</strong> por campanha' +
-    (resto > 0 ? ' (+ ' + resto + ' no último)' : '') +
-    (ok ? ' ✅' : ' ❌ acima do limite') +
-    '</div>' + aviso;
-  document.getElementById('btnCriar') && (document.getElementById('btnCriar').disabled = !ok && allContacts.length > 0);
-}
-
-function salvarConfig() {
-  const ak = document.getElementById('cfgApiKey').value.trim();
-  const bu = document.getElementById('cfgBaseUrl').value.trim().replace('https://', '');
-  const user = document.getElementById('cfgUser').value.trim();
-  const pass = document.getElementById('cfgPass').value;
+// ─ Config ─
+function salvarCfg() {
+  var ak = document.getElementById('cfgAK').value.trim();
+  var bu = document.getElementById('cfgBU').value.trim().replace('https://', '');
+  var user = document.getElementById('cfgUser').value.trim();
+  var pass = document.getElementById('cfgPass').value;
   if (!ak || !bu || !user || !pass) { alert('Preencha todos os campos!'); return; }
   localStorage.setItem('ib_ak', ak);
   localStorage.setItem('ib_bu', bu);
   localStorage.setItem('ib_user', user);
   localStorage.setItem('ib_pass', pass);
   AK = ak; BU = bu; PORTAL_USER = user; PORTAL_PASS = pass;
-  document.getElementById('configScreen').style.display = 'none';
+  document.getElementById('cfgScreen').style.display = 'none';
 }
 
-function limparConfig() {
-  localStorage.removeItem('ib_ak');
-  localStorage.removeItem('ib_bu');
-  localStorage.removeItem('ib_user');
-  localStorage.removeItem('ib_pass');
+function limparCfg() {
+  ['ib_ak','ib_bu','ib_user','ib_pass'].forEach(function(k) { localStorage.removeItem(k); });
   AK = ''; BU = ''; PORTAL_USER = ''; PORTAL_PASS = '';
-  document.getElementById('cfgApiKey').value = '';
-  document.getElementById('cfgBaseUrl').value = '';
+  document.getElementById('cfgAK').value = '';
+  document.getElementById('cfgBU').value = '';
   document.getElementById('cfgUser').value = '';
   document.getElementById('cfgPass').value = '';
-  document.getElementById('configScreen').style.display = 'flex';
+  document.getElementById('cfgScreen').style.display = 'flex';
 }
 
-function initConfig() {
-  const ak = localStorage.getItem('ib_ak');
-  const bu = localStorage.getItem('ib_bu');
-  const user = localStorage.getItem('ib_user');
-  const pass = localStorage.getItem('ib_pass');
+(function initCfg() {
+  var ak = localStorage.getItem('ib_ak');
+  var bu = localStorage.getItem('ib_bu');
+  var user = localStorage.getItem('ib_user');
+  var pass = localStorage.getItem('ib_pass');
   if (ak && bu && user && pass) {
     AK = ak; BU = bu; PORTAL_USER = user; PORTAL_PASS = pass;
-    document.getElementById('configScreen').style.display = 'none';
+    document.getElementById('cfgScreen').style.display = 'none';
   } else {
-    document.getElementById('cfgApiKey').value = ak || '';
-    document.getElementById('cfgBaseUrl').value = bu || '';
-    document.getElementById('cfgUser').value = user || '';
+    if (ak) document.getElementById('cfgAK').value = ak;
+    if (bu) document.getElementById('cfgBU').value = bu;
+    if (user) document.getElementById('cfgUser').value = user;
   }
-}
-initConfig();
+})();
 
-let aS = [], fS = [], sS = [];
-let allContacts = [];
-let wabaTemplates = {};
-let sT = [];
-let cur = 1;
+// ─ State ─
+var aS = [], fS = [], sS = [];
+var wabaT = {};
+var sT = [];
+var allContacts = [];
+var cur = 1;
 
 // ─ STEP 1: Senders ─
 async function buscarSenders() {
-  const btn = document.getElementById('btnBS');
+  var btn = document.getElementById('btnBS');
   btn.classList.add('loading'); btn.disabled = true;
   document.getElementById('sendersList').innerHTML = '<div class="empty">Buscando...</div>';
   try {
-    const r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+    var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'listSenders', apiKey: AK, baseUrl: BU }) });
-    const d = await r.json();
+    var d = await r.json();
     aS = (d.senders && d.senders.results) || [];
-    fS = [...aS];
+    fS = aS.slice();
     document.getElementById('sSearch').value = '';
     renderS();
   } catch(e) {
@@ -374,108 +313,109 @@ async function buscarSenders() {
 
 function filterS() {
   if (!aS.length) return;
-  const q = document.getElementById('sSearch').value.toLowerCase().trim();
-  if (!q) {
-    fS = [...aS];
-  } else {
-    fS = aS.filter(function(s) {
-      return s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q);
-    });
-  }
+  var q = document.getElementById('sSearch').value.toLowerCase().trim();
+  fS = q ? aS.filter(function(s) {
+    return s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q);
+  }) : aS.slice();
   renderS();
 }
 
 function renderS() {
-  const el = document.getElementById('sendersList');
+  var el = document.getElementById('sendersList');
   if (!fS.length) { el.innerHTML = '<div class="empty">Nenhum remetente encontrado</div>'; return; }
-  el.innerHTML = '<div class="lst">' + fS.map(s => {
-    const sel = sS.includes(s.sender);
-    const st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
-    const bc = st === 'FINISHED' || st === 'UNKNOWN' || st === '' ? 'bg' : st === 'BANNED' ? 'br' : 'by';
-    const bt = st === 'FINISHED' || st === 'UNKNOWN' || st === '' ? 'Ativo' : st || '?';
-    return '<div class="it ' + (sel ? 'sg' : '') + '" onclick="togS(\'' + s.sender + '\')">' +
+  var html = '<div class="lst">';
+  fS.forEach(function(s) {
+    var sel = sS.includes(s.sender);
+    var st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
+    var isAtivo = st === 'FINISHED' || st === 'CONNECTED' || st === 'UNKNOWN' || st === '';
+    var bc = isAtivo ? 'bg' : st === 'BANNED' ? 'br' : 'by';
+    var bt = isAtivo ? 'Ativo' : st || '?';
+    // Salvar scroll
+    html += '<div class="it ' + (sel ? 'sg' : '') + '" onclick="togS(\'' + s.sender + '\')">' +
       '<div class="ck"></div>' +
       '<div class="ii"><div class="im">+' + s.sender + '</div><div class="is">' + (s.displayName || 'WhatsApp') + ' · WABA ' + (s.whatsAppBusinessAccountId || '') + '</div></div>' +
       '<div class="bdg ' + bc + '">' + bt + '</div>' +
       '</div>';
-  }).join('') + '</div>';
+  });
+  html += '</div>';
+  var lst = el.querySelector('.lst');
+  var scrollTop = lst ? lst.scrollTop : 0;
+  el.innerHTML = html;
+  var newLst = el.querySelector('.lst');
+  if (newLst) newLst.scrollTop = scrollTop;
   document.getElementById('cntS').textContent = sS.length;
   document.getElementById('totalS').textContent = aS.length;
   document.getElementById('btnGo2').disabled = sS.length === 0;
 }
 
 function togS(num) {
-  const lst = document.getElementById("sendersList");
-  const scrollTop = lst ? lst.querySelector(".lst") ? lst.querySelector(".lst").scrollTop : 0 : 0;
-  sS.includes(num) ? sS = sS.filter(x => x !== num) : sS.push(num);
+  sS.includes(num) ? sS = sS.filter(function(x) { return x !== num; }) : sS.push(num);
   renderS();
-  const el = lst ? lst.querySelector(".lst") : null;
-  if (el) el.scrollTop = scrollTop;
 }
 
-function togAll() {
-  const all = fS.map(s => s.sender);
-  all.every(n => sS.includes(n)) ? sS = sS.filter(n => !all.includes(n)) : all.forEach(n => { if (!sS.includes(n)) sS.push(n); });
+function togAllS() {
+  var all = fS.map(function(s) { return s.sender; });
+  var allSel = all.every(function(n) { return sS.includes(n); });
+  if (allSel) sS = sS.filter(function(n) { return !all.includes(n); });
+  else all.forEach(function(n) { if (!sS.includes(n)) sS.push(n); });
+  renderS();
+}
+
+function togAtivos() {
+  var ativos = fS.filter(function(s) {
+    var st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
+    return st === 'FINISHED' || st === 'CONNECTED' || st === 'UNKNOWN' || st === '';
+  }).map(function(s) { return s.sender; });
+  var allSel = ativos.every(function(n) { return sS.includes(n); });
+  if (allSel) sS = sS.filter(function(n) { return !ativos.includes(n); });
+  else ativos.forEach(function(n) { if (!sS.includes(n)) sS.push(n); });
   renderS();
 }
 
 function desAllS() { sS = []; renderS(); }
 
-function togAtivos() {
-  const ativos = fS.filter(s => {
-    const st = (s.connectionStatus || s.registrationStatus || "").toUpperCase();
-    return st === "FINISHED" || st === "CONNECTED" || st === "UNKNOWN" || st === "";
-  }).map(s => s.sender);
-  const todosAtivosJaSelecionados = ativos.every(n => sS.includes(n));
-  if (todosAtivosJaSelecionados) {
-    sS = sS.filter(n => !ativos.includes(n));
-  } else {
-    ativos.forEach(n => { if (!sS.includes(n)) sS.push(n); });
-  }
-  renderS();
-}
-
 // ─ STEP 2: Templates ─
-async function buscarTodosTemplates() {
+async function buscarTemplates() {
   if (!sS.length) return;
-  const btn = document.getElementById('btnBT');
+  var btn = document.getElementById('btnBT');
   btn.classList.add('loading'); btn.disabled = true;
 
-  const wabaMap = {};
-  sS.forEach(num => {
-    const s = aS.find(x => x.sender === num);
+  var wabaMap = {};
+  sS.forEach(function(num) {
+    var s = aS.find(function(x) { return x.sender === num; });
     if (!s) return;
-    const wid = String(s.whatsAppBusinessAccountId || 'unknown');
+    var wid = String(s.whatsAppBusinessAccountId || 'unknown');
     if (!wabaMap[wid]) wabaMap[wid] = { name: s.whatsAppBusinessAccountName || wid, senders: [], firstSender: num };
     wabaMap[wid].senders.push(num);
   });
 
-  document.getElementById('templatesByWaba').innerHTML = Object.entries(wabaMap).map(function(entry) {
-    var wid = entry[0], w = entry[1];
-    return '<div class="waba-group" id="wg_' + wid + '">' +
-      '<div class="waba-head">' +
-        '<span class="waba-name">WABA: ' + w.name + ' · ' + w.senders.length + ' número(s)</span>' +
-        '<div class="waba-acts">' +
-          '<button class="btn btn-all btn-all-b" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',true)">✓ Todos</button>' +
-          '<button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',false)">✕ Limpar</button>' +
-        '</div>' +
-      '</div>' +
-      '<div class="waba-loading">Carregando templates...</div>' +
-    '</div>';
-  }).join('');
+  var html = '';
+  Object.entries(wabaMap).forEach(function(e) {
+    var wid = e[0], w = e[1];
+    html += '<div class="wg" id="wg_' + wid + '">' +
+      '<div class="wg-head"><span class="wg-name">WABA: ' + w.name + ' · ' + w.senders.length + ' número(s)</span>' +
+      '<div class="wg-acts">' +
+        '<button class="btn btn-all btn-all-b" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',true)">✓ Todos</button>' +
+        '<button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',false)">✕</button>' +
+      '</div></div>' +
+      '<div class="wg-loading">Carregando...</div></div>';
+  });
+  document.getElementById('templatesByWaba').innerHTML = html || '<div class="empty">Nenhum WABA encontrado</div>';
 
-  wabaTemplates = {};
-  for (const [wid, w] of Object.entries(wabaMap)) {
+  wabaT = {};
+  for (var i = 0; i < Object.entries(wabaMap).length; i++) {
+    var entry = Object.entries(wabaMap)[i];
+    var wid = entry[0], w = entry[1];
     try {
-      const r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'listTemplates', apiKey: AK, baseUrl: BU, sender: w.firstSender }) });
-      const d = await r.json();
-      const approved = (d.templates || []).filter(t => t.status === 'APPROVED');
-      wabaTemplates[wid] = Object.assign({}, w, { templates: approved, filtered: approved });
+      var d = await r.json();
+      var approved = (d.templates || []).filter(function(t) { return t.status === 'APPROVED'; });
+      wabaT[wid] = Object.assign({}, w, { templates: approved, filtered: approved.slice() });
     } catch(e) {
-      wabaTemplates[wid] = Object.assign({}, w, { templates: [], filtered: [] });
+      wabaT[wid] = Object.assign({}, w, { templates: [], filtered: [] });
     }
-    renderWabaGroup(wid);
+    renderWG(wid);
   }
 
   btn.classList.remove('loading'); btn.disabled = false;
@@ -483,64 +423,66 @@ async function buscarTodosTemplates() {
 }
 
 function filterT() {
-  const q = document.getElementById('tSearch').value.toLowerCase();
-  Object.keys(wabaTemplates).forEach(function(wid) {
-    wabaTemplates[wid].filtered = q
-      ? wabaTemplates[wid].templates.filter(t => t.name.toLowerCase().includes(q))
-      : wabaTemplates[wid].templates.slice();
-    renderWabaGroup(wid);
+  var q = document.getElementById('tSearch').value.toLowerCase();
+  Object.keys(wabaT).forEach(function(wid) {
+    wabaT[wid].filtered = q
+      ? wabaT[wid].templates.filter(function(t) { return t.name.toLowerCase().includes(q); })
+      : wabaT[wid].templates.slice();
+    renderWG(wid);
   });
 }
 
-function renderWabaGroup(wid) {
-  const w = wabaTemplates[wid];
-  const container = document.getElementById('wg_' + wid);
+function renderWG(wid) {
+  var w = wabaT[wid];
+  var container = document.getElementById('wg_' + wid);
   if (!container) return;
-  const old = container.querySelector('.waba-loading, .waba-lst');
-  let html;
+  var old = container.querySelector('.wg-loading, .wg-lst');
+  var html;
   if (!w.filtered.length) {
-    html = '<div class="waba-loading">Nenhum template aprovado</div>';
+    html = '<div class="wg-loading">Nenhum template aprovado</div>';
   } else {
-    html = '<div class="waba-lst">' + w.filtered.map(function(t) {
-      const sel = sT.find(x => x.name === t.name && x._waba === wid);
-      const body = ((t.structure && t.structure.body) || '').replace(/\n/g, ' ').substring(0, 50) + '...';
-      const hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
-      return '<div class="it ' + (sel ? 'sb' : '') + '" onclick="togT(\'' + wid + '\',\'' + t.name + '\')">' +
+    html = '<div class="wg-lst">';
+    w.filtered.forEach(function(t) {
+      var sel = sT.find(function(x) { return x.name === t.name && x._waba === wid; });
+      var body = ((t.structure && t.structure.body) || '').replace(/\n/g, ' ').substring(0, 50) + '...';
+      var hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+      html += '<div class="it ' + (sel ? 'sb' : '') + '" onclick="togT(\'' + wid + '\',\'' + t.name + '\')">' +
         '<div class="ck"></div>' +
         '<div class="ii"><div class="im">' + t.name + '</div><div class="is">' + body + '</div></div>' +
         (hasImg ? '<div class="bdg bb">IMG</div>' : '') +
         '</div>';
-    }).join('') + '</div>';
+    });
+    html += '</div>';
   }
   if (old) old.outerHTML = html;
 }
 
 function togT(wid, name) {
-  const w = wabaTemplates[wid];
-  const t = w && w.templates.find(x => x.name === name);
+  var w = wabaT[wid];
+  var t = w && w.templates.find(function(x) { return x.name === name; });
   if (!t) return;
-  const lst = document.querySelector("#wg_" + wid + " .waba-lst");
-  const scrollTop = lst ? lst.scrollTop : 0;
-  const idx = sT.findIndex(x => x.name === name && x._waba === wid);
+  var lst = document.querySelector('#wg_' + wid + ' .wg-lst');
+  var scrollTop = lst ? lst.scrollTop : 0;
+  var idx = sT.findIndex(function(x) { return x.name === name && x._waba === wid; });
   if (idx >= 0) sT.splice(idx, 1);
   else sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders }));
-  renderWabaGroup(wid);
+  renderWG(wid);
   updateCntT();
-  const lst2 = document.querySelector("#wg_" + wid + " .waba-lst");
+  var lst2 = document.querySelector('#wg_' + wid + ' .wg-lst');
   if (lst2) lst2.scrollTop = scrollTop;
 }
 
-function togWaba(wid, select) {
-  const w = wabaTemplates[wid];
+function togWaba(wid, sel) {
+  var w = wabaT[wid];
   if (!w) return;
-  sT = sT.filter(x => x._waba !== wid);
-  if (select) w.filtered.forEach(t => sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders })));
-  renderWabaGroup(wid);
+  sT = sT.filter(function(x) { return x._waba !== wid; });
+  if (sel) w.filtered.forEach(function(t) { sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders })); });
+  renderWG(wid);
   updateCntT();
 }
 
-function togAllT() { Object.keys(wabaTemplates).forEach(wid => togWaba(wid, true)); }
-function desAllT() { sT = []; Object.keys(wabaTemplates).forEach(wid => renderWabaGroup(wid)); updateCntT(); }
+function togAllT() { Object.keys(wabaT).forEach(function(wid) { togWaba(wid, true); }); }
+function desAllT() { sT = []; Object.keys(wabaT).forEach(function(wid) { renderWG(wid); }); updateCntT(); }
 
 function updateCntT() {
   document.getElementById('cntT').textContent = sT.length;
@@ -549,105 +491,107 @@ function updateCntT() {
 
 // ─ STEP 3: Conteúdo ─
 function getVarNums(t) {
-  const body = (t.structure && t.structure.body) || '';
-  const matches = body.match(/\{\{(\d+)\}\}/g) || [];
-  const nums = [...new Set(matches.map(m => m.replace(/[{}]/g, '')))];
-  return nums.sort((a, b) => +a - +b);
+  var body = (t.structure && t.structure.body) || '';
+  var matches = body.match(/\{\{(\d+)\}\}/g) || [];
+  var nums = [];
+  matches.forEach(function(m) {
+    var n = m.replace(/[{}]/g, '');
+    if (!nums.includes(n)) nums.push(n);
+  });
+  return nums.sort(function(a, b) { return +a - +b; });
 }
 
-function getGroupKey(t) {
-  return 'g_' + getVarNums(t).join('_');
+function getGK(t) {
+  return 'gk_' + getVarNums(t).join('_');
 }
 
 function getPH(t) {
-  const gk = getGroupKey(t);
-  return getVarNums(t).map(n => {
-    const el = document.getElementById(gk + '_v' + n);
+  var gk = getGK(t);
+  return getVarNums(t).map(function(n) {
+    var el = document.getElementById(gk + '_v' + n);
     return el ? el.value : '';
   });
 }
 
 function buildVars() {
   if (!sT.length) {
-    document.getElementById('templateVarCards').innerHTML = '<div class="empty">Selecione ao menos um template</div>';
+    document.getElementById('varCards').innerHTML = '<div class="empty">Selecione ao menos um template</div>';
     return;
   }
 
   // Salvar valores existentes
-  const existing = {};
-  sT.forEach(t => {
-    const gk = getGroupKey(t);
-    getVarNums(t).forEach(n => {
-      const el = document.getElementById(gk + '_v' + n);
+  var existing = {};
+  sT.forEach(function(t) {
+    var gk = getGK(t);
+    getVarNums(t).forEach(function(n) {
+      var el = document.getElementById(gk + '_v' + n);
       if (el) existing[gk + '_v' + n] = el.value;
     });
   });
 
-  // Agrupar por quantidade de variáveis
-  const grupos = {};
-  sT.forEach(t => {
-    const nums = getVarNums(t);
-    const key = nums.join(',');
-    if (!grupos[key]) grupos[key] = { nums: nums, templates: [], gk: getGroupKey(t) };
+  // Agrupar por conjunto de variáveis
+  var grupos = {};
+  sT.forEach(function(t) {
+    var nums = getVarNums(t);
+    var key = nums.join(',');
+    var gk = getGK(t);
+    if (!grupos[key]) grupos[key] = { nums: nums, gk: gk, templates: [] };
     grupos[key].templates.push(t);
   });
 
-  const img = (document.getElementById('mediaUrl') || {}).value || '';
+  var img = (document.getElementById('mediaUrl') || {}).value || '';
+  var html = '';
 
-  document.getElementById('templateVarCards').innerHTML = Object.entries(grupos).map(function(entry) {
-    const key = entry[0], g = entry[1];
-    const gk = g.gk;
-    const templPills = g.templates.map(t => '<span class="pill pb" style="font-size:10px;padding:2px 7px">' + t.name + '</span>').join('');
-    const fieldsHtml = g.nums.length
-      ? g.nums.map(n =>
-          '<div class="fld">' +
-          '<label>Variável {{' + n + '}}</label>' +
-          '<input type="text" id="' + gk + '_v' + n + '" placeholder="Variável ' + n + '" oninput="updateAllPrevs()" value="' + (existing[gk + '_v' + n] || '') + '"/>' +
-          '</div>'
-        ).join('')
-      : '<div class="empty" style="padding:8px">Sem variáveis</div>';
-    return '<div class="tcol" style="margin-bottom:12px">' +
-      '<div class="card" style="margin-bottom:0">' +
-        '<div class="chead"><span>' + g.nums.length + ' variável(is)</span></div>' +
-        '<div class="pills" style="margin-bottom:12px">' + templPills + '</div>' +
-        fieldsHtml +
-      '</div>' +
-      '<div class="card" style="margin-bottom:0">' +
-        '<div class="chead">Prévia — ' + g.templates[0].name + '</div>' +
-        '<div id="prev_' + gk + '">' + mkPrev(g.templates[0], img, gk) + '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
+  Object.entries(grupos).forEach(function(e) {
+    var key = e[0], g = e[1];
+    var gk = g.gk;
+    var pills = g.templates.map(function(t) {
+      return '<span class="pill pb" style="font-size:10px;padding:2px 7px">' + t.name + '</span>';
+    }).join('');
+    var fields = g.nums.length ? g.nums.map(function(n) {
+      var val = existing[gk + '_v' + n] || '';
+      return '<div class="fld"><label>Variável {{' + n + '}}</label>' +
+        '<input type="text" id="' + gk + '_v' + n + '" placeholder="Variável ' + n + '" oninput="updatePrevs()" value="' + val + '"/></div>';
+    }).join('') : '<div class="empty" style="padding:8px">Sem variáveis</div>';
+
+    html += '<div class="tcol">' +
+      '<div class="card" style="margin-bottom:0"><div class="chead">' + g.nums.length + ' variável(is)</div>' +
+      '<div class="pills" style="margin-bottom:12px">' + pills + '</div>' + fields + '</div>' +
+      '<div class="card" style="margin-bottom:0"><div class="chead">Prévia — ' + g.templates[0].name + '</div>' +
+      '<div id="prev_' + gk + '">' + mkPrev(g.templates[0], img, gk) + '</div></div>' +
+      '</div>';
+  });
+
+  document.getElementById('varCards').innerHTML = html;
 }
 
-function updateAllPrevs() {
-  const img = (document.getElementById('mediaUrl') || {}).value || '';
-  // Agrupar e atualizar cada prévia
-  const grupos = {};
-  sT.forEach(t => {
-    const key = getVarNums(t).join(',');
-    if (!grupos[key]) grupos[key] = { t: t, gk: getGroupKey(t) };
+function updatePrevs() {
+  var img = (document.getElementById('mediaUrl') || {}).value || '';
+  var grupos = {};
+  sT.forEach(function(t) {
+    var key = getVarNums(t).join(',');
+    if (!grupos[key]) grupos[key] = { t: t, gk: getGK(t) };
   });
-  Object.values(grupos).forEach(g => {
-    const el = document.getElementById('prev_' + g.gk);
+  Object.values(grupos).forEach(function(g) {
+    var el = document.getElementById('prev_' + g.gk);
     if (el) el.innerHTML = mkPrev(g.t, img, g.gk);
   });
-  const rev = document.getElementById('revPrev');
-  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGroupKey(sT[0]));
+  var rev = document.getElementById('revPrev');
+  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGK(sT[0]));
 }
 
 function mkPrev(t, img, gk) {
-  let body = (t.structure && t.structure.body) || '';
-  const matches = body.match(/\{\{(\d+)\}\}/g) || [];
-  matches.forEach(m => {
-    const n = m.replace(/[{}]/g, '');
-    const el = document.getElementById(gk + '_v' + n);
-    const v = el ? el.value : m;
+  var body = (t.structure && t.structure.body) || '';
+  var matches = body.match(/\{\{(\d+)\}\}/g) || [];
+  matches.forEach(function(m) {
+    var n = m.replace(/[{}]/g, '');
+    var el = document.getElementById(gk + '_v' + n);
+    var v = el ? el.value : m;
     body = body.split(m).join('<strong>' + (v || m) + '</strong>');
   });
-  const ft = (t.structure && t.structure.footer) || '';
-  const bt = t.structure && t.structure.buttons && t.structure.buttons[0];
-  const hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+  var ft = (t.structure && t.structure.footer) || '';
+  var bt = t.structure && t.structure.buttons && t.structure.buttons[0];
+  var hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
   return '<div class="pvbox">' +
     (hi ? '<div class="pimg">' + (img ? '<img src="' + img + '"/>' : '<span class="pph">Imagem aqui</span>') + '</div>' : '') +
     '<div class="ptxt">' + body.replace(/\n/g, '<br>') + '</div>' +
@@ -656,72 +600,130 @@ function mkPrev(t, img, gk) {
     '</div>';
 }
 
-// ─ STEP 4: Criar ─
+// ─ CSV ─
+function importCSV(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    var text = ev.target.result;
+    var lines = text.split('\n');
+    allContacts = [];
+    lines.forEach(function(line) {
+      var col = line.trim().split(',')[0];
+      var num = col.replace(/[^0-9]/g, '');
+      if (num.length >= 10) allContacts.push(num);
+    });
+    var info = document.getElementById('csvInfo');
+    info.innerHTML = '<span style="color:var(--green);font-weight:600">' + allContacts.length + ' contatos</span> carregados de ' + file.name;
+    checkDistribuicao();
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+function checkDistribuicao() {
+  var warn = document.getElementById('csvWarn');
+  if (!allContacts.length || !sS.length) { warn.innerHTML = ''; return; }
+  var porSender = Math.floor(allContacts.length / sS.length);
+  var resto = allContacts.length % sS.length;
+  var limite = 20000;
+  var ok = porSender <= limite;
+  var cor = ok ? 'var(--green)' : 'var(--red)';
+  warn.innerHTML = '<div style="background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:10px;font-size:11px;color:var(--dim);margin-top:8px">' +
+    '<strong style="color:var(--text)">' + allContacts.length + '</strong> contatos ÷ ' +
+    '<strong style="color:var(--green)">' + sS.length + '</strong> senders = ' +
+    '<strong style="color:' + cor + '">' + porSender + '</strong> por campanha' +
+    (resto ? ' (+ ' + resto + ' no último)' : '') +
+    (ok ? ' ✅' : ' ❌') + '</div>' +
+    (!ok ? '<div class="warn">⚠️ Limite de 20.000 por campanha excedido! Adicione pelo menos <strong>' + Math.ceil(allContacts.length / limite) + '</strong> senders.</div>' : '');
+}
+
+// ─ STEP 4: Review + Create ─
 function buildReview() {
-  let total = 0;
-  sT.forEach(t => {
-    const waba = t._waba;
-    const sendersOk = sS.filter(s => {
-      const info = aS.find(x => x.sender === s);
+  var total = 0;
+  sT.forEach(function(t) {
+    var waba = t._waba;
+    var ok = sS.filter(function(s) {
+      var info = aS.find(function(x) { return x.sender === s; });
       return info && String(info.whatsAppBusinessAccountId) === String(waba);
     });
-    total += sendersOk.length;
+    total += ok.length;
   });
-  document.getElementById('revCntS').textContent = sS.length;
-  updateDistribuicao();
-  document.getElementById('revCntT').textContent = sT.length;
+  document.getElementById('revCS').textContent = sS.length;
+  document.getElementById('revCT').textContent = sT.length;
   document.getElementById('revTotal').textContent = total;
-  document.getElementById('revS').innerHTML = sS.map(s => '<div class="pill pg">+' + s + '</div>').join('');
-  document.getElementById('revT').innerHTML = sT.map(t => '<div class="pill pb">' + t.name + '</div>').join('');
-  const img = (document.getElementById('mediaUrl') || {}).value || '';
-  const rev = document.getElementById('revPrev');
-  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGroupKey(sT[0]));
+  document.getElementById('revS').innerHTML = sS.map(function(s) { return '<div class="pill pg">+' + s + '</div>'; }).join('');
+  document.getElementById('revT').innerHTML = sT.map(function(t) { return '<div class="pill pb">' + t.name + '</div>'; }).join('');
+
+  // Info contatos
+  var rc = document.getElementById('revContatos');
+  if (allContacts.length && sS.length) {
+    var por = Math.floor(allContacts.length / sS.length);
+    rc.innerHTML = '<div style="font-size:11px;color:var(--dim);margin-top:4px">' + allContacts.length + ' contatos · ' + por + ' por campanha</div>';
+  } else {
+    rc.innerHTML = '<div style="font-size:11px;color:var(--muted);margin-top:4px">Sem destinatários — campanhas criadas como rascunho limpo</div>';
+  }
+
+  var img = (document.getElementById('mediaUrl') || {}).value || '';
+  var rev = document.getElementById('revPrev');
+  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGK(sT[0]));
 }
 
 async function criarCampanhas() {
-  const btn = document.getElementById('btnCriar');
+  var btn = document.getElementById('btnCriar');
   btn.classList.add('loading'); btn.disabled = true;
 
-  // Calcular fatias de contatos por sender
-  const totalContatos = allContacts.length;
-  const totalSenders = sS.length;
-  const porSender = totalSenders > 0 && totalContatos > 0 ? Math.floor(totalContatos / totalSenders) : 0;
-
-  const jobs = [];
-  sT.forEach(t => {
-    const waba = t._waba;
-    const sendersOk = sS.filter(s => {
-      const info = aS.find(x => x.sender === s);
+  var jobs = [];
+  sT.forEach(function(t) {
+    var waba = t._waba;
+    var sendersOk = sS.filter(function(s) {
+      var info = aS.find(function(x) { return x.sender === s; });
       return info && String(info.whatsAppBusinessAccountId) === String(waba);
     });
-    sendersOk.forEach((sender, idx) => jobs.push({ sender: sender, t: t, senderIdx: sS.indexOf(sender) }));
+    sendersOk.forEach(function(sender, idx) {
+      jobs.push({ sender: sender, t: t, senderIdx: sS.indexOf(sender) });
+    });
   });
 
-  const total = jobs.length;
-  setSts('wait', 'Criando ' + total + ' transmissão(ões)...', '0 de ' + total + ' criada(s)');
-  let ok = 0, fail = 0, n = 0;
+  var total = jobs.length;
+  var totalContatos = allContacts.length;
+  var totalSenders = sS.length;
+  var porSender = totalSenders > 0 && totalContatos > 0 ? Math.floor(totalContatos / totalSenders) : 0;
 
-  for (const job of jobs) {
-    const sender = job.sender, t = job.t;
-    const img = (document.getElementById('mediaUrl') || {}).value || '';
-    const hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
-    const ph = getPH(t);
-    const baseName = (document.getElementById('campaignBaseName') || {}).value || 'Campanha';
-const name = baseName + ' ' + sender.slice(-4) + ' ' + t.name;
+  setSts('wait', 'Criando ' + total + ' transmissão(ões)...', '0 de ' + total + ' criada(s)');
+  var ok = 0, fail = 0, n = 0;
+
+  for (var i = 0; i < jobs.length; i++) {
+    var job = jobs[i];
+    var sender = job.sender, t = job.t, si = job.senderIdx;
+    var img = (document.getElementById('mediaUrl') || {}).value || '';
+    var hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+    var ph = getPH(t);
+    var baseName = (document.getElementById('campaignBaseName') || {}).value || 'Campanha';
+    var name = baseName + ' ' + sender.slice(-4) + ' ' + t.name;
+
+    // Calcular fatia de contatos
+    var fatia = null;
+    if (allContacts.length > 0 && porSender > 0) {
+      var inicio = si * porSender;
+      var fim = si === totalSenders - 1 ? totalContatos : inicio + porSender;
+      fatia = allContacts.slice(inicio, fim);
+    }
+
     try {
-      const r = await fetch(WH, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'createCampaign', apiKey: AK, baseUrl: BU, username: PORTAL_USER, password: PORTAL_PASS,
-          campaignName: name, sender: sender, templateName: t.name,
-          language: t.language || 'pt_BR', placeholders: ph,
-          imageUrl: hi ? img : undefined,
-phoneNumbers: fatia && fatia.length > 0 ? fatia : undefined,
-          buttonUrl: (t.structure && t.structure.buttons && t.structure.buttons[0] && t.structure.buttons[0].url) || ''
-        })
-      });
-      const d = await r.json();
+      var payload = {
+        action: 'createCampaign', apiKey: AK, baseUrl: BU,
+        username: PORTAL_USER, password: PORTAL_PASS,
+        campaignName: name, sender: sender, templateName: t.name,
+        language: t.language || 'pt_BR', placeholders: ph,
+        imageUrl: hi ? img : undefined,
+        buttonUrl: (t.structure && t.structure.buttons && t.structure.buttons[0] && t.structure.buttons[0].url) || ''
+      };
+      if (fatia && fatia.length > 0) payload.phoneNumbers = fatia;
+
+      var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      var d = await r.json();
       (d.status === 200 && d.body && d.body.status === 'DRAFT') ? ok++ : fail++;
     } catch(e) { fail++; }
     n++;
@@ -730,25 +732,26 @@ phoneNumbers: fatia && fatia.length > 0 ? fatia : undefined,
 
   btn.classList.remove('loading'); btn.disabled = false;
   fail === 0
-    ? setSts('ok', ok + ' transmissão(ões) criada(s)!', 'Acesse Transmissão no portal Infobip para adicionar destinatários e disparar.')
+    ? setSts('ok', ok + ' transmissão(ões) criada(s)!', 'Acesse Transmissão no portal Infobip para disparar.')
     : setSts('err', ok + ' criada(s), ' + fail + ' falhou', 'Verifique os logs no N8N.');
 }
 
 function setSts(type, title, msg) {
-  const b = document.getElementById('stsBox');
+  var b = document.getElementById('stsBox');
   b.className = 'sts show ' + (type === 'ok' ? 'ok' : type === 'err' ? 'err' : 'wait');
   document.getElementById('sIcon').textContent = type === 'ok' ? '✅' : type === 'err' ? '❌' : '⏳';
   document.getElementById('sTitle').textContent = title;
   document.getElementById('sMsg').textContent = msg;
 }
 
+// ─ Nav ─
 function goStep(n) {
   if (n === 3) buildVars();
   if (n === 4) buildReview();
   document.getElementById('step' + cur).classList.remove('act');
   document.getElementById('step' + n).classList.add('act');
-  for (let i = 1; i <= 4; i++) {
-    const d = document.getElementById('sd' + i);
+  for (var i = 1; i <= 4; i++) {
+    var d = document.getElementById('sd' + i);
     d.className = 'sd' + (i < n ? ' done' : i === n ? ' act' : '');
     d.querySelector('.sn').textContent = i < n ? '✓' : i;
   }
