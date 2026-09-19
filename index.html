@@ -54,19 +54,17 @@ h1{font-size:17px;font-weight:700}.hsub{font-size:11px;color:var(--muted)}
 .by{background:var(--ydim);color:var(--yellow);border:1px solid rgba(245,158,11,.2)}
 .cnt{font-size:11px;color:var(--muted);margin-top:8px}
 .cnt .cg{color:var(--green);font-weight:600}.cnt .cb{color:var(--blue);font-weight:600}
-
-/* WABA group */
 .waba-group{margin-bottom:14px}
 .waba-head{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--s3);border:1px solid var(--border);border-radius:7px 7px 0 0;border-bottom:none}
 .waba-name{font-size:11px;font-weight:600;color:var(--dim);font-family:var(--mono)}
 .waba-acts{display:flex;gap:6px}
-.waba-group .lst{border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px}
+.waba-lst{border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:5px}
+.waba-lst::-webkit-scrollbar{width:3px}.waba-lst::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .waba-loading{padding:10px;text-align:center;font-size:11px;color:var(--muted);background:var(--s2);border:1px solid var(--border);border-radius:0 0 7px 7px}
-
 .fld{margin-bottom:11px}.fld:last-child{margin-bottom:0}
 label{display:block;font-size:11px;font-weight:600;color:var(--dim);margin-bottom:4px}
 input[type=text],input[type=url],textarea{width:100%;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 11px;font-size:12px;font-family:'Inter',sans-serif;color:var(--text);outline:none;transition:border-color .15s}
-input:focus,textarea:focus{border-color:var(--blue)}
+input[type=text]:focus,input[type=url]:focus,textarea:focus{border-color:var(--blue)}
 input::placeholder,textarea::placeholder{color:var(--muted)}
 textarea{resize:vertical;min-height:52px;line-height:1.5}
 .tcol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -104,8 +102,8 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
     <div class="chead">
       <span>Remetentes disponíveis</span>
       <div style="display:flex;gap:6px">
-        <button class="btn btn-all" onclick="togAll('s')">✓ Todos</button>
-        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAll('s')">✕ Limpar</button>
+        <button class="btn btn-all" onclick="togAll()">✓ Todos</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAllS()">✕ Limpar</button>
       </div>
     </div>
     <div class="selbar">
@@ -131,16 +129,16 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
       <span>Templates por WABA</span>
       <div style="display:flex;gap:6px">
         <button class="btn btn-all btn-all-b" onclick="togAllT()">✓ Todos</button>
-        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAll('t')">✕ Limpar</button>
+        <button class="btn btn-ghost" style="font-size:11px;padding:5px 10px" onclick="desAllT()">✕ Limpar</button>
       </div>
     </div>
-    <div style="margin-bottom:12px;display:flex;gap:8px;align-items:center">
-      <input id="tSearch" style="flex:1;background:var(--s2);border:1px solid var(--border);border-radius:7px;padding:8px 12px;font-size:12px;color:var(--text);font-family:Inter,sans-serif;outline:none" type="text" placeholder="Filtrar templates por nome..." oninput="filterT()"/>
+    <div class="selbar">
+      <input id="tSearch" type="text" placeholder="Filtrar por nome do template..." oninput="filterT()"/>
       <button class="btn btn-blue" id="btnBT" onclick="buscarTodosTemplates()">
         <div class="spin spin-w"></div><span class="lbl">Buscar templates</span>
       </button>
     </div>
-    <div id="templatesByWaba"><div class="empty">Clique em "Buscar templates" para carregar os templates dos WABAs selecionados</div></div>
+    <div id="templatesByWaba"><div class="empty">Clique em "Buscar templates" para carregar</div></div>
     <div class="cnt">Selecionados: <span class="cb" id="cntT">0</span></div>
   </div>
   <div class="brow">
@@ -154,8 +152,10 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 <!-- STEP 3 -->
 <div class="step" id="step3">
   <div class="card">
-    <div class="chead">URL da imagem (header) — usada em todos os templates</div>
-    <div class="fld"><input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/></div>
+    <div class="chead">URL da imagem (header) — mesma para todos os templates</div>
+    <div class="fld">
+      <input type="url" id="mediaUrl" placeholder="https://i.ibb.co/exemplo/imagem.jpg" oninput="updateAllPrevs()"/>
+    </div>
   </div>
   <div id="templateVarCards"></div>
   <div class="brow">
@@ -176,9 +176,7 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
       <label style="margin-bottom:6px;display:block">Templates (<span id="revCntT">0</span>)</label>
       <div class="pills" id="revT"></div>
     </div>
-    <div>
-      <label style="margin-bottom:6px;display:block">Total de transmissões: <strong id="revTotal" style="color:var(--green)">0</strong></label>
-    </div>
+    <div><label style="margin-bottom:4px;display:block">Total de transmissões: <strong id="revTotal" style="color:var(--green)">0</strong></label></div>
   </div>
   <div class="card">
     <div class="chead">Prévia</div>
@@ -198,388 +196,378 @@ textarea{resize:vertical;min-height:52px;line-height:1.5}
 
 </div>
 <script>
-const WH='https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
-const AK='5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
-const BU='qdn5nq.api.infobip.com';
+const WH = 'https://rarelookingorca-n8n.cloudfy.live/webhook/infobip-campanha';
+const AK = '5d85f30d4b42757fad576c5d267a5469-228cc988-a388-4cc8-8acb-39b7331cc89d';
+const BU = 'qdn5nq.api.infobip.com';
 
-let aS=[],fS=[],sS=[];
-// wabaTemplates: { wabaId: { name, senders:[], templates:[], filtered:[] } }
-let wabaTemplates={};
-let sT=[]; // templates selecionados: [{...template, senderUsed}]
-let cur=1;
+let aS = [], fS = [], sS = [];
+let wabaTemplates = {};
+let sT = [];
+let cur = 1;
 
 // ─ STEP 1: Senders ─
-async function buscarSenders(){
-  const btn=document.getElementById('btnBS');
-  btn.classList.add('loading');btn.disabled=true;
-  document.getElementById('sendersList').innerHTML='<div class="empty">Buscando...</div>';
-  try{
-    const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({action:'listSenders',apiKey:AK,baseUrl:BU})});
-    const d=await r.json();
-    aS=(d.senders&&d.senders.results)||[];
-    fS=[...aS];renderS();
-  }catch(e){document.getElementById('sendersList').innerHTML='<div class="empty">Erro ao buscar. Verifique o N8N.</div>';}
-  btn.classList.remove('loading');btn.disabled=false;
+async function buscarSenders() {
+  const btn = document.getElementById('btnBS');
+  btn.classList.add('loading'); btn.disabled = true;
+  document.getElementById('sendersList').innerHTML = '<div class="empty">Buscando...</div>';
+  try {
+    const r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'listSenders', apiKey: AK, baseUrl: BU }) });
+    const d = await r.json();
+    aS = (d.senders && d.senders.results) || [];
+    fS = [...aS];
+    renderS();
+  } catch(e) {
+    document.getElementById('sendersList').innerHTML = '<div class="empty">Erro ao buscar. Verifique o N8N.</div>';
+  }
+  btn.classList.remove('loading'); btn.disabled = false;
 }
 
-function filterS(){
-  const q=document.getElementById('sSearch').value.toLowerCase();
-  fS=q?aS.filter(s=>s.sender.includes(q)||(s.displayName||'').toLowerCase().includes(q)):[...aS];
+function filterS() {
+  const q = document.getElementById('sSearch').value.toLowerCase();
+  fS = q ? aS.filter(s => s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q)) : [...aS];
   renderS();
 }
 
-function renderS(){
-  const el=document.getElementById('sendersList');
-  if(!fS.length){el.innerHTML='<div class="empty">Nenhum remetente encontrado</div>';return;}
-  el.innerHTML='<div class="lst">'+fS.map(s=>{
-    const sel=sS.includes(s.sender);
-    const st=(s.connectionStatus||s.registrationStatus||'').toUpperCase();
-    const bc=st==='FINISHED'?'bg':st==='BANNED'?'br':'by';
-    const bt=st==='FINISHED'?'Ativo':st||'?';
-    return `<div class="it ${sel?'sg':''}" onclick="togS('${s.sender}')">
-      <div class="ck"></div>
-      <div class="ii">
-        <div class="im">+${s.sender}</div>
-        <div class="is">${s.displayName||'WhatsApp'} · WABA ${s.whatsAppBusinessAccountId||''}</div>
-      </div>
-      <div class="bdg ${bc}">${bt}</div>
-    </div>`;
-  }).join('')+'</div>';
-  document.getElementById('cntS').textContent=sS.length;
-  document.getElementById('totalS').textContent=aS.length;
-  document.getElementById('btnGo2').disabled=sS.length===0;
+function renderS() {
+  const el = document.getElementById('sendersList');
+  if (!fS.length) { el.innerHTML = '<div class="empty">Nenhum remetente encontrado</div>'; return; }
+  el.innerHTML = '<div class="lst">' + fS.map(s => {
+    const sel = sS.includes(s.sender);
+    const st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
+    const bc = st === 'FINISHED' ? 'bg' : st === 'BANNED' ? 'br' : 'by';
+    const bt = st === 'FINISHED' ? 'Ativo' : st || '?';
+    return '<div class="it ' + (sel ? 'sg' : '') + '" onclick="togS(\'' + s.sender + '\')">' +
+      '<div class="ck"></div>' +
+      '<div class="ii"><div class="im">+' + s.sender + '</div><div class="is">' + (s.displayName || 'WhatsApp') + ' · WABA ' + (s.whatsAppBusinessAccountId || '') + '</div></div>' +
+      '<div class="bdg ' + bc + '">' + bt + '</div>' +
+      '</div>';
+  }).join('') + '</div>';
+  document.getElementById('cntS').textContent = sS.length;
+  document.getElementById('totalS').textContent = aS.length;
+  document.getElementById('btnGo2').disabled = sS.length === 0;
 }
 
-function togS(n){sS.includes(n)?sS=sS.filter(x=>x!==n):sS.push(n);renderS();}
-function togAll(type){
-  if(type==='s'){
-    const all=fS.map(s=>s.sender);
-    all.every(n=>sS.includes(n))?sS=sS.filter(n=>!all.includes(n)):all.forEach(n=>{if(!sS.includes(n))sS.push(n);});
-    renderS();
-  }
-}
-function desAll(type){
-  if(type==='s'){sS=[];renderS();}
-  else{sT=[];renderWabaTemplates();updateCntT();}
+function togS(num) {
+  sS.includes(num) ? sS = sS.filter(x => x !== num) : sS.push(num);
+  renderS();
 }
 
-// ─ STEP 2: Templates por WABA ─
-async function buscarTodosTemplates(){
-  if(!sS.length)return;
-  const btn=document.getElementById('btnBT');
-  btn.classList.add('loading');btn.disabled=true;
+function togAll() {
+  const all = fS.map(s => s.sender);
+  all.every(n => sS.includes(n)) ? sS = sS.filter(n => !all.includes(n)) : all.forEach(n => { if (!sS.includes(n)) sS.push(n); });
+  renderS();
+}
 
-  // Agrupar senders selecionados por WABA
-  const wabaMap={};
-  sS.forEach(num=>{
-    const s=aS.find(x=>x.sender===num);
-    if(!s)return;
-    const wid=String(s.whatsAppBusinessAccountId||'unknown');
-    if(!wabaMap[wid])wabaMap[wid]={name:s.whatsAppBusinessAccountName||wid,senders:[],firstSender:num};
+function desAllS() { sS = []; renderS(); }
+
+// ─ STEP 2: Templates ─
+async function buscarTodosTemplates() {
+  if (!sS.length) return;
+  const btn = document.getElementById('btnBT');
+  btn.classList.add('loading'); btn.disabled = true;
+
+  const wabaMap = {};
+  sS.forEach(num => {
+    const s = aS.find(x => x.sender === num);
+    if (!s) return;
+    const wid = String(s.whatsAppBusinessAccountId || 'unknown');
+    if (!wabaMap[wid]) wabaMap[wid] = { name: s.whatsAppBusinessAccountName || wid, senders: [], firstSender: num };
     wabaMap[wid].senders.push(num);
   });
 
-  // Mostrar loading por WABA
-  document.getElementById('templatesByWaba').innerHTML=Object.entries(wabaMap).map(([wid,w])=>`
-    <div class="waba-group" id="wg_${wid}">
-      <div class="waba-head">
-        <span class="waba-name">WABA: ${w.name} · ${w.senders.length} número(s)</span>
-        <div class="waba-acts">
-          <button class="btn btn-all btn-all-b" style="padding:4px 8px;font-size:10px" onclick="togWaba('${wid}',true)">✓ Todos</button>
-          <button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="togWaba('${wid}',false)">✕ Limpar</button>
-        </div>
-      </div>
-      <div class="waba-loading">Carregando templates...</div>
-    </div>`).join('');
+  document.getElementById('templatesByWaba').innerHTML = Object.entries(wabaMap).map(function(entry) {
+    var wid = entry[0], w = entry[1];
+    return '<div class="waba-group" id="wg_' + wid + '">' +
+      '<div class="waba-head">' +
+        '<span class="waba-name">WABA: ' + w.name + ' · ' + w.senders.length + ' número(s)</span>' +
+        '<div class="waba-acts">' +
+          '<button class="btn btn-all btn-all-b" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',true)">✓ Todos</button>' +
+          '<button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="togWaba(\'' + wid + '\',false)">✕ Limpar</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="waba-loading">Carregando templates...</div>' +
+    '</div>';
+  }).join('');
 
-  // Buscar templates de cada WABA
-  wabaTemplates={};
-  for(const [wid,w] of Object.entries(wabaMap)){
-    try{
-      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({action:'listTemplates',apiKey:AK,baseUrl:BU,sender:w.firstSender})});
-      const d=await r.json();
-      const approved=(d.templates||[]).filter(t=>t.status==='APPROVED');
-      wabaTemplates[wid]={...w,templates:approved,filtered:approved};
-    }catch(e){
-      wabaTemplates[wid]={...w,templates:[],filtered:[]};
+  wabaTemplates = {};
+  for (const [wid, w] of Object.entries(wabaMap)) {
+    try {
+      const r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'listTemplates', apiKey: AK, baseUrl: BU, sender: w.firstSender }) });
+      const d = await r.json();
+      const approved = (d.templates || []).filter(t => t.status === 'APPROVED');
+      wabaTemplates[wid] = Object.assign({}, w, { templates: approved, filtered: approved });
+    } catch(e) {
+      wabaTemplates[wid] = Object.assign({}, w, { templates: [], filtered: [] });
     }
     renderWabaGroup(wid);
   }
 
-  btn.classList.remove('loading');btn.disabled=false;
+  btn.classList.remove('loading'); btn.disabled = false;
   updateCntT();
 }
 
-function filterT(){
-  const q=document.getElementById('tSearch').value.toLowerCase();
-  Object.keys(wabaTemplates).forEach(wid=>{
-    wabaTemplates[wid].filtered=q
-      ?wabaTemplates[wid].templates.filter(t=>t.name.toLowerCase().includes(q))
-      :[...wabaTemplates[wid].templates];
+function filterT() {
+  const q = document.getElementById('tSearch').value.toLowerCase();
+  Object.keys(wabaTemplates).forEach(function(wid) {
+    wabaTemplates[wid].filtered = q
+      ? wabaTemplates[wid].templates.filter(t => t.name.toLowerCase().includes(q))
+      : wabaTemplates[wid].templates.slice();
     renderWabaGroup(wid);
   });
 }
 
-function renderWabaTemplates(){
-  Object.keys(wabaTemplates).forEach(wid=>renderWabaGroup(wid));
-}
-
-function renderWabaGroup(wid){
-  const w=wabaTemplates[wid];
-  const container=document.getElementById(`wg_${wid}`);
-  if(!container)return;
-  const listEl=container.querySelector('.waba-loading,.lst-wrap');
-  const html=w.filtered.length===0
-    ?'<div class="waba-loading">Nenhum template encontrado</div>'
-    :`<div class="lst lst-wrap" style="border:1px solid var(--border);border-radius:0 0 7px 7px;padding:6px;max-height:200px">`+
-      w.filtered.map(t=>{
-        const sel=sT.find(x=>x.name===t.name&&x._waba===wid);
-        const body=(t.structure&&t.structure.body||'').replace(/\n/g,' ').substring(0,50)+'...';
-        const hasImg=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-        return `<div class="it ${sel?'sb':''}" onclick="togT('${wid}','${t.name}')">
-          <div class="ck"></div>
-          <div class="ii"><div class="im">${t.name}</div><div class="is">${body}</div></div>
-          ${hasImg?'<div class="bdg bb">IMG</div>':''}
-        </div>`;
-      }).join('')+'</div>';
-  if(listEl){listEl.outerHTML=html;}
-  else{
-    const old=container.querySelector('.lst-wrap,.waba-loading');
-    if(old)old.outerHTML=html;
+function renderWabaGroup(wid) {
+  const w = wabaTemplates[wid];
+  const container = document.getElementById('wg_' + wid);
+  if (!container) return;
+  const old = container.querySelector('.waba-loading, .waba-lst');
+  let html;
+  if (!w.filtered.length) {
+    html = '<div class="waba-loading">Nenhum template aprovado</div>';
+  } else {
+    html = '<div class="waba-lst">' + w.filtered.map(function(t) {
+      const sel = sT.find(x => x.name === t.name && x._waba === wid);
+      const body = ((t.structure && t.structure.body) || '').replace(/\n/g, ' ').substring(0, 50) + '...';
+      const hasImg = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+      return '<div class="it ' + (sel ? 'sb' : '') + '" onclick="togT(\'' + wid + '\',\'' + t.name + '\')">' +
+        '<div class="ck"></div>' +
+        '<div class="ii"><div class="im">' + t.name + '</div><div class="is">' + body + '</div></div>' +
+        (hasImg ? '<div class="bdg bb">IMG</div>' : '') +
+        '</div>';
+    }).join('') + '</div>';
   }
+  if (old) old.outerHTML = html;
 }
 
-function togT(wid,name){
-  const w=wabaTemplates[wid];
-  const t=w&&w.templates.find(x=>x.name===name);
-  if(!t)return;
-  const idx=sT.findIndex(x=>x.name===name&&x._waba===wid);
-  if(idx>=0)sT.splice(idx,1);
-  else sT.push({...t,_waba:wid,_senders:w.senders});
+function togT(wid, name) {
+  const w = wabaTemplates[wid];
+  const t = w && w.templates.find(x => x.name === name);
+  if (!t) return;
+  const idx = sT.findIndex(x => x.name === name && x._waba === wid);
+  if (idx >= 0) sT.splice(idx, 1);
+  else sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders }));
   renderWabaGroup(wid);
   updateCntT();
-  buildVars();
 }
 
-function togWaba(wid,select){
-  const w=wabaTemplates[wid];
-  if(!w)return;
-  // remove todos desse waba
-  sT=sT.filter(x=>x._waba!==wid);
-  if(select) w.filtered.forEach(t=>sT.push({...t,_waba:wid,_senders:w.senders}));
+function togWaba(wid, select) {
+  const w = wabaTemplates[wid];
+  if (!w) return;
+  sT = sT.filter(x => x._waba !== wid);
+  if (select) w.filtered.forEach(t => sT.push(Object.assign({}, t, { _waba: wid, _senders: w.senders })));
   renderWabaGroup(wid);
   updateCntT();
-  buildVars();
 }
 
-function togAllT(){
-  Object.keys(wabaTemplates).forEach(wid=>togWaba(wid,true));
+function togAllT() { Object.keys(wabaTemplates).forEach(wid => togWaba(wid, true)); }
+function desAllT() { sT = []; Object.keys(wabaTemplates).forEach(wid => renderWabaGroup(wid)); updateCntT(); }
+
+function updateCntT() {
+  document.getElementById('cntT').textContent = sT.length;
+  document.getElementById('btnGo3').disabled = sT.length === 0;
 }
 
-function updateCntT(){
-  document.getElementById('cntT').textContent=sT.length;
-  document.getElementById('btnGo3').disabled=sT.length===0;
+// ─ STEP 3: Conteúdo ─
+function getVarNums(t) {
+  const body = (t.structure && t.structure.body) || '';
+  const matches = body.match(/\{\{(\d+)\}\}/g) || [];
+  const nums = [...new Set(matches.map(m => m.replace(/[{}]/g, '')))];
+  return nums.sort((a, b) => +a - +b);
 }
 
-// ─ STEP 3: Vars ─
-function buildVars(){
-  if(!sT.length){document.getElementById('templateVarCards').innerHTML='<div class="empty">Selecione ao menos um template</div>';return;}
+function getGroupKey(t) {
+  return 'g_' + getVarNums(t).join('_');
+}
 
-  // Agrupar templates com variáveis iguais para não duplicar campos
-  // Cada template único de variáveis fica num card lado a lado com a prévia
-  const img=document.getElementById('mediaUrl')?.value||'';
+function getPH(t) {
+  const gk = getGroupKey(t);
+  return getVarNums(t).map(n => {
+    const el = document.getElementById(gk + '_v' + n);
+    return el ? el.value : '';
+  });
+}
 
-  // Salvar valores existentes antes de rerender
-  const existing={};
-  sT.forEach(t=>{
-    const nums=getVarNums(t);
-    nums.forEach(n=>{
-      const key=`${t.name}_v${n}`;
-      const el=document.getElementById(key);
-      if(el)existing[key]=el.value;
+function buildVars() {
+  if (!sT.length) {
+    document.getElementById('templateVarCards').innerHTML = '<div class="empty">Selecione ao menos um template</div>';
+    return;
+  }
+
+  // Salvar valores existentes
+  const existing = {};
+  sT.forEach(t => {
+    const gk = getGroupKey(t);
+    getVarNums(t).forEach(n => {
+      const el = document.getElementById(gk + '_v' + n);
+      if (el) existing[gk + '_v' + n] = el.value;
     });
   });
 
-  // Agrupar templates pelo número de variáveis
-  const grupos={};
-  sT.forEach(t=>{
-    const nums=getVarNums(t);
-    const key=nums.join(','); // ex: "1,2,3,4" ou "1,2"
-    if(!grupos[key])grupos[key]={nums,templates:[]};
+  // Agrupar por quantidade de variáveis
+  const grupos = {};
+  sT.forEach(t => {
+    const nums = getVarNums(t);
+    const key = nums.join(',');
+    if (!grupos[key]) grupos[key] = { nums: nums, templates: [], gk: getGroupKey(t) };
     grupos[key].templates.push(t);
   });
 
-  document.getElementById('templateVarCards').innerHTML=Object.entries(grupos).map(([key,g])=>{
-    const {nums,templates}=g;
-    // Usar o primeiro template do grupo como referência para os inputs
-    const refName=`grupo_${key.replace(/,/g,'_')}`;
-    const templNames=templates.map(t=>`<span class="pill pb" style="font-size:10px">${t.name}</span>`).join('');
-    const fieldsHtml=nums.length
-      ?nums.map(n=>`
-        <div class="fld">
-          <label>Variável {{${n}}}</label>
-          <input type="text" id="${refName}_v${n}" placeholder="Variável ${n}" oninput="updateAllPrevs()" value="${existing[`${refName}_v${n}`]||''}"/>
-        </div>`).join('')
-      :'<div class="empty" style="padding:8px">Sem variáveis</div>';
-    return `<div class="tcol" style="margin-bottom:12px">
-      <div class="card" style="margin-bottom:0">
-        <div class="chead">
-          <span>${nums.length} variável(is) — usado em:</span>
-        </div>
-        <div class="pills" style="margin-bottom:12px">${templNames}</div>
-        ${fieldsHtml}
-      </div>
-      <div class="card" style="margin-bottom:0">
-        <div class="chead">Prévia — ${templates[0].name}</div>
-        <div id="prev_${refName}">${mkPrev(templates[0],img,refName)}</div>
-      </div>
-    </div>`;
+  const img = (document.getElementById('mediaUrl') || {}).value || '';
+
+  document.getElementById('templateVarCards').innerHTML = Object.entries(grupos).map(function(entry) {
+    const key = entry[0], g = entry[1];
+    const gk = g.gk;
+    const templPills = g.templates.map(t => '<span class="pill pb" style="font-size:10px;padding:2px 7px">' + t.name + '</span>').join('');
+    const fieldsHtml = g.nums.length
+      ? g.nums.map(n =>
+          '<div class="fld">' +
+          '<label>Variável {{' + n + '}}</label>' +
+          '<input type="text" id="' + gk + '_v' + n + '" placeholder="Variável ' + n + '" oninput="updateAllPrevs()" value="' + (existing[gk + '_v' + n] || '') + '"/>' +
+          '</div>'
+        ).join('')
+      : '<div class="empty" style="padding:8px">Sem variáveis</div>';
+    return '<div class="tcol" style="margin-bottom:12px">' +
+      '<div class="card" style="margin-bottom:0">' +
+        '<div class="chead"><span>' + g.nums.length + ' variável(is)</span></div>' +
+        '<div class="pills" style="margin-bottom:12px">' + templPills + '</div>' +
+        fieldsHtml +
+      '</div>' +
+      '<div class="card" style="margin-bottom:0">' +
+        '<div class="chead">Prévia — ' + g.templates[0].name + '</div>' +
+        '<div id="prev_' + gk + '">' + mkPrev(g.templates[0], img, gk) + '</div>' +
+      '</div>' +
+    '</div>';
   }).join('');
 }
 
-function getVarNums(t){
-  const body=t.structure&&t.structure.body||'';
-  return [...new Set([...body.matchAll(/\{\{(\d+)\}\}/g)].map(m=>m[1]))].sort((a,b)=>+a-+b);
-}
-
-function getGroupKey(t){
-  return `grupo_${getVarNums(t).join("_")}`;
-}
-
-function getPH(t){
-  const refName=getGroupKey(t);
-  return getVarNums(t).map(n=>document.getElementById(`${refName}_v${n}`)?.value||"");
-}
-
-_v${n}`)?.value||'');
-}
-
-
-
-function updateAllPrevs(){
-  const img=document.getElementById("mediaUrl")?.value||"";
-  const grupos={};
-  sT.forEach(t=>{
-    const key=getVarNums(t).join(",");
-    if(!grupos[key])grupos[key]=t;
+function updateAllPrevs() {
+  const img = (document.getElementById('mediaUrl') || {}).value || '';
+  // Agrupar e atualizar cada prévia
+  const grupos = {};
+  sT.forEach(t => {
+    const key = getVarNums(t).join(',');
+    if (!grupos[key]) grupos[key] = { t: t, gk: getGroupKey(t) };
   });
-  Object.entries(grupos).forEach(([key,t])=>{
-    const refName=`grupo_${key.replace(/,/g,"_")}`;
-    const el=document.getElementById(`prev_${refName}`);
-    if(el)el.innerHTML=mkPrev(t,img,refName);
+  Object.values(grupos).forEach(g => {
+    const el = document.getElementById('prev_' + g.gk);
+    if (el) el.innerHTML = mkPrev(g.t, img, g.gk);
   });
-  const rev=document.getElementById("revPrev");
-  if(rev&&sT.length)rev.innerHTML=mkPrev(sT[0],img,getGroupKey(sT[0]));
+  const rev = document.getElementById('revPrev');
+  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGroupKey(sT[0]));
 }
 
-function updatePrev(){ updateAllPrevs(); }
-
-function mkPrev(t,img,tname){
-  let body=t.structure&&t.structure.body||'';
-  [...body.matchAll(/\{\{(\d+)\}\}/g)].forEach(m=>{
-    const key=tname?`${tname}_v${m[1]}`:`v${m[1]}`;
-    const v=document.getElementById(key)?.value||m[0];
-    body=body.split(m[0]).join(`<strong>${v}</strong>`);
+function mkPrev(t, img, gk) {
+  let body = (t.structure && t.structure.body) || '';
+  const matches = body.match(/\{\{(\d+)\}\}/g) || [];
+  matches.forEach(m => {
+    const n = m.replace(/[{}]/g, '');
+    const el = document.getElementById(gk + '_v' + n);
+    const v = el ? el.value : m;
+    body = body.split(m).join('<strong>' + (v || m) + '</strong>');
   });
-  const ft=t.structure&&t.structure.footer||'';
-  const bt=t.structure&&t.structure.buttons&&t.structure.buttons[0];
-  const hi=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-  return `<div class="pvbox">
-    ${hi?`<div class="pimg">${img?`<img src="${img}"/>`:'<span class="pph">Imagem aqui</span>'}</div>`:''}
-    <div class="ptxt">${body.replace(/\n/g,'<br>')}</div>
-    ${ft?`<div class="pft">${ft}</div>`:''}
-    ${bt?`<div class="pbtn">${bt.text}</div>`:''}
-  </div>`;
+  const ft = (t.structure && t.structure.footer) || '';
+  const bt = t.structure && t.structure.buttons && t.structure.buttons[0];
+  const hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+  return '<div class="pvbox">' +
+    (hi ? '<div class="pimg">' + (img ? '<img src="' + img + '"/>' : '<span class="pph">Imagem aqui</span>') + '</div>' : '') +
+    '<div class="ptxt">' + body.replace(/\n/g, '<br>') + '</div>' +
+    (ft ? '<div class="pft">' + ft + '</div>' : '') +
+    (bt ? '<div class="pbtn">' + bt.text + '</div>' : '') +
+    '</div>';
 }
 
-// ─ STEP 4: Review + Create ─
-function buildReview(){
-  // Total: sender selecionado do WABA correto × template
-  let total=0;
-  sT.forEach(t=>{
-    const waba=t._waba;
-    const sendersDoWabaSelecionados=sS.filter(s=>{
-      const info=aS.find(x=>x.sender===s);
-      return info && String(info.whatsAppBusinessAccountId)===String(waba);
+// ─ STEP 4: Criar ─
+function buildReview() {
+  let total = 0;
+  sT.forEach(t => {
+    const waba = t._waba;
+    const sendersOk = sS.filter(s => {
+      const info = aS.find(x => x.sender === s);
+      return info && String(info.whatsAppBusinessAccountId) === String(waba);
     });
-    total+=sendersDoWabaSelecionados.length;
+    total += sendersOk.length;
   });
-  document.getElementById('revCntS').textContent=sS.length;
-  document.getElementById('revCntT').textContent=sT.length;
-  document.getElementById('revTotal').textContent=total;
-  document.getElementById('revS').innerHTML=sS.map(s=>`<div class="pill pg">+${s}</div>`).join('');
-  document.getElementById('revT').innerHTML=sT.map(t=>`<div class="pill pb">${t.name}</div>`).join('');
-  updatePrev();
+  document.getElementById('revCntS').textContent = sS.length;
+  document.getElementById('revCntT').textContent = sT.length;
+  document.getElementById('revTotal').textContent = total;
+  document.getElementById('revS').innerHTML = sS.map(s => '<div class="pill pg">+' + s + '</div>').join('');
+  document.getElementById('revT').innerHTML = sT.map(t => '<div class="pill pb">' + t.name + '</div>').join('');
+  const img = (document.getElementById('mediaUrl') || {}).value || '';
+  const rev = document.getElementById('revPrev');
+  if (rev && sT.length) rev.innerHTML = mkPrev(sT[0], img, getGroupKey(sT[0]));
 }
 
-async function criarCampanhas(){
-  const btn=document.getElementById('btnCriar');
-  btn.classList.add('loading');btn.disabled=true;
+async function criarCampanhas() {
+  const btn = document.getElementById('btnCriar');
+  btn.classList.add('loading'); btn.disabled = true;
 
-  // Montar lista de (sender, template) respeitando o WABA
-  // _senders = todos os senders do WABA — filtrar apenas os selecionados
-  const jobs=[];
-  sT.forEach(t=>{
-    const waba=t._waba;
-    const sendersDoWabaSelecionados=sS.filter(s=>{
-      const info=aS.find(x=>x.sender===s);
-      return info && String(info.whatsAppBusinessAccountId)===String(waba);
+  const jobs = [];
+  sT.forEach(t => {
+    const waba = t._waba;
+    const sendersOk = sS.filter(s => {
+      const info = aS.find(x => x.sender === s);
+      return info && String(info.whatsAppBusinessAccountId) === String(waba);
     });
-    sendersDoWabaSelecionados.forEach(sender=>jobs.push({sender,t}));
+    sendersOk.forEach(sender => jobs.push({ sender: sender, t: t }));
   });
 
-  const total=jobs.length;
-  setSts('wait',`Criando ${total} transmissão(ões)...`,`0 de ${total} criada(s)`);
-  let ok=0,fail=0,n=0;
+  const total = jobs.length;
+  setSts('wait', 'Criando ' + total + ' transmissão(ões)...', '0 de ' + total + ' criada(s)');
+  let ok = 0, fail = 0, n = 0;
 
-  for(const {sender,t} of jobs){
-    const img=document.getElementById('mediaUrl')?.value||'';
-    const hi=t.structure&&t.structure.header&&t.structure.header.format==='IMAGE';
-    const ph=getPH(t);
-    const name=`${t.name}_${sender.slice(-4)}_${new Date().toISOString().slice(0,10)}`;
-    try{
-      const r=await fetch(WH,{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          action:'createCampaign',apiKey:AK,baseUrl:BU,
-          campaignName:name,sender,templateName:t.name,
-          language:t.language||'pt_BR',placeholders:ph,
-          imageUrl:hi?img:undefined,
-          buttonUrl:t.structure?.buttons?.[0]?.url||''
-        })});
-      const d=await r.json();
-      (d.status===200&&d.body&&d.body.status==='DRAFT')?ok++:fail++;
-    }catch(e){fail++;}
+  for (const job of jobs) {
+    const sender = job.sender, t = job.t;
+    const img = (document.getElementById('mediaUrl') || {}).value || '';
+    const hi = t.structure && t.structure.header && t.structure.header.format === 'IMAGE';
+    const ph = getPH(t);
+    const name = t.name + '_' + sender.slice(-4) + '_' + new Date().toISOString().slice(0, 10);
+    try {
+      const r = await fetch(WH, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'createCampaign', apiKey: AK, baseUrl: BU,
+          campaignName: name, sender: sender, templateName: t.name,
+          language: t.language || 'pt_BR', placeholders: ph,
+          imageUrl: hi ? img : undefined,
+          buttonUrl: (t.structure && t.structure.buttons && t.structure.buttons[0] && t.structure.buttons[0].url) || ''
+        })
+      });
+      const d = await r.json();
+      (d.status === 200 && d.body && d.body.status === 'DRAFT') ? ok++ : fail++;
+    } catch(e) { fail++; }
     n++;
-    setSts('wait',`Criando transmissões...`,`${n} de ${total} · ✅ ${ok} · ❌ ${fail}`);
+    setSts('wait', 'Criando transmissões...', n + ' de ' + total + ' · ✅ ' + ok + ' · ❌ ' + fail);
   }
 
-  btn.classList.remove('loading');btn.disabled=false;
-  fail===0
-    ?setSts('ok',`${ok} transmissão(ões) criada(s)!`,'Acesse Transmissão no portal para adicionar destinatários e disparar.')
-    :setSts('err',`${ok} criada(s), ${fail} falhou`,'Verifique os logs no N8N.');
+  btn.classList.remove('loading'); btn.disabled = false;
+  fail === 0
+    ? setSts('ok', ok + ' transmissão(ões) criada(s)!', 'Acesse Transmissão no portal Infobip para adicionar destinatários e disparar.')
+    : setSts('err', ok + ' criada(s), ' + fail + ' falhou', 'Verifique os logs no N8N.');
 }
 
-function setSts(type,title,msg){
-  const b=document.getElementById('stsBox');
-  b.className='sts show '+(type==='ok'?'ok':type==='err'?'err':'wait');
-  document.getElementById('sIcon').textContent=type==='ok'?'✅':type==='err'?'❌':'⏳';
-  document.getElementById('sTitle').textContent=title;
-  document.getElementById('sMsg').textContent=msg;
+function setSts(type, title, msg) {
+  const b = document.getElementById('stsBox');
+  b.className = 'sts show ' + (type === 'ok' ? 'ok' : type === 'err' ? 'err' : 'wait');
+  document.getElementById('sIcon').textContent = type === 'ok' ? '✅' : type === 'err' ? '❌' : '⏳';
+  document.getElementById('sTitle').textContent = title;
+  document.getElementById('sMsg').textContent = msg;
 }
 
-function goStep(n){
-  if(n===3)buildVars();
-  if(n===4)buildReview();
-  document.getElementById(`step${cur}`).classList.remove('act');
-  document.getElementById(`step${n}`).classList.add('act');
-  for(let i=1;i<=4;i++){
-    const d=document.getElementById(`sd${i}`);
-    d.className='sd'+(i<n?' done':i===n?' act':'');
-    d.querySelector('.sn').textContent=i<n?'✓':i;
+function goStep(n) {
+  if (n === 3) buildVars();
+  if (n === 4) buildReview();
+  document.getElementById('step' + cur).classList.remove('act');
+  document.getElementById('step' + n).classList.add('act');
+  for (let i = 1; i <= 4; i++) {
+    const d = document.getElementById('sd' + i);
+    d.className = 'sd' + (i < n ? ' done' : i === n ? ' act' : '');
+    d.querySelector('.sn').textContent = i < n ? '✓' : i;
   }
-  cur=n;window.scrollTo(0,0);
+  cur = n;
+  window.scrollTo(0, 0);
 }
 </script>
 </body>
