@@ -344,8 +344,9 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
     <div class="card">
       <div class="chead">
         <span>Números remetentes</span>
-        <div style="display:flex;gap:6px;align-items:center">
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
           <span id="tpl-sel-count" style="font-size:11px;color:var(--muted)"></span>
+          <button class="btn btn-all" id="tplBtnAtivos" onclick="tplSelectAtivos()" style="display:none;background:var(--bdim);border-color:var(--bbdr);color:var(--blue)">✓ Apenas ativos</button>
           <button class="btn btn-all" id="tplBtnAll" onclick="tplSelectAll()" style="display:none">Selecionar todos</button>
           <button class="btn btn-ghost" id="btnLoadSenders" onclick="carregarSendersTemplate()">
             <div class="spin spin-w"></div><span class="lbl">Carregar números</span>
@@ -797,8 +798,10 @@ async function carregarSendersTemplate() {
     var d = await r.json();
     tplAllSenders = (d.senders && d.senders.results) || [];
     tplSelectedSenders = new Set();
-    document.getElementById('tpl-search-wrap').style.display = tplAllSenders.length ? '' : 'none';
-    document.getElementById('tplBtnAll').style.display = tplAllSenders.length ? '' : 'none';
+    var show = tplAllSenders.length ? '' : 'none';
+    document.getElementById('tpl-search-wrap').style.display = show;
+    document.getElementById('tplBtnAll').style.display = show;
+    document.getElementById('tplBtnAtivos').style.display = show;
     tplRenderSenders(tplAllSenders);
   } catch(e) { document.getElementById('tpl-senders-list').innerHTML = '<div style="color:var(--red);padding:10px;font-size:12px">Erro ao carregar números</div>'; }
   btn.classList.remove('loading'); btn.disabled = false;
@@ -846,10 +849,33 @@ function tplFilterSenders() {
   tplRenderSenders(filtered);
 }
 
+function tplIsAtivo(s) {
+  var st = (s.connectionStatus || s.registrationStatus || '').toUpperCase();
+  return st === 'FINISHED' || st === 'CONNECTED' || st === 'UNKNOWN' || st === '';
+}
+
+function tplSelectAtivos() {
+  var ativos = tplAllSenders.filter(tplIsAtivo).map(function(s) { return s.sender; });
+  var allSel = ativos.every(function(n) { return tplSelectedSenders.has(n); });
+  ativos.forEach(function(n) {
+    if (allSel) tplSelectedSenders.delete(n);
+    else tplSelectedSenders.add(n);
+  });
+  // re-render visible list preserving filter
+  var q = document.getElementById('tpl-search').value.toLowerCase();
+  var filtered = tplAllSenders.filter(function(s) {
+    return s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q);
+  });
+  tplRenderSenders(filtered);
+}
+
 function tplUpdateSelCount() {
   var n = tplSelectedSenders.size;
   document.getElementById('tpl-sel-count').textContent = n ? n + ' selecionado' + (n > 1 ? 's' : '') : '';
   document.getElementById('tplBtnAll').textContent = tplAllSenders.length === n ? 'Desmarcar todos' : 'Selecionar todos';
+  var ativos = tplAllSenders.filter(tplIsAtivo);
+  var todosAtivosSel = ativos.length && ativos.every(function(s) { return tplSelectedSenders.has(s.sender); });
+  document.getElementById('tplBtnAtivos').textContent = todosAtivosSel ? '✕ Desmarcar ativos' : '✓ Apenas ativos';
 }
 
 function tplNormalizeName(el) {
