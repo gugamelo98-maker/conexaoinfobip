@@ -340,16 +340,23 @@ textarea{resize:vertical;min-height:80px;line-height:1.5}
       <p>Criação de templates para aprovação na Meta</p>
     </div>
 
-    <!-- Seleção de sender -->
+    <!-- Seleção de senders -->
     <div class="card">
-      <div class="chead">Número remetente</div>
-      <div style="display:flex;gap:8px">
-        <select id="tpl-sender" style="flex:1">
-          <option value="">Selecione um número...</option>
-        </select>
-        <button class="btn btn-ghost" id="btnLoadSenders" onclick="carregarSendersTemplate()">
-          <div class="spin spin-w"></div><span class="lbl">Carregar números</span>
-        </button>
+      <div class="chead">
+        <span>Números remetentes</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span id="tpl-sel-count" style="font-size:11px;color:var(--muted)"></span>
+          <button class="btn btn-all" id="tplBtnAll" onclick="tplSelectAll()" style="display:none">Selecionar todos</button>
+          <button class="btn btn-ghost" id="btnLoadSenders" onclick="carregarSendersTemplate()">
+            <div class="spin spin-w"></div><span class="lbl">Carregar números</span>
+          </button>
+        </div>
+      </div>
+      <div class="selbar" id="tpl-search-wrap" style="display:none">
+        <input type="text" id="tpl-search" placeholder="Filtrar por nome ou número..." oninput="tplFilterSenders()"/>
+      </div>
+      <div class="lst" id="tpl-senders-list">
+        <div class="empty" style="padding:10px;color:var(--muted);font-size:12px">Clique em "Carregar números" para listar os remetentes</div>
       </div>
     </div>
 
@@ -779,23 +786,70 @@ function goStep(n) {
 // ─ Template Builder ─
 var tplButtons = [];
 
+var tplAllSenders = [];
+var tplSelectedSenders = new Set();
+
 async function carregarSendersTemplate() {
   var btn = document.getElementById('btnLoadSenders');
   btn.classList.add('loading'); btn.disabled = true;
   try {
     var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'listSenders', apiKey: AK, baseUrl: BU }) });
     var d = await r.json();
-    var senders = (d.senders && d.senders.results) || [];
-    var sel = document.getElementById('tpl-sender');
-    sel.innerHTML = '<option value="">Selecione um número...</option>';
-    senders.forEach(function(s) {
-      var opt = document.createElement('option');
-      opt.value = s.sender;
-      opt.textContent = '+' + s.sender + (s.displayName ? ' — ' + s.displayName : '');
-      sel.appendChild(opt);
-    });
-  } catch(e) { alert('Erro ao carregar senders'); }
+    tplAllSenders = (d.senders && d.senders.results) || [];
+    tplSelectedSenders = new Set();
+    document.getElementById('tpl-search-wrap').style.display = tplAllSenders.length ? '' : 'none';
+    document.getElementById('tplBtnAll').style.display = tplAllSenders.length ? '' : 'none';
+    tplRenderSenders(tplAllSenders);
+  } catch(e) { document.getElementById('tpl-senders-list').innerHTML = '<div style="color:var(--red);padding:10px;font-size:12px">Erro ao carregar números</div>'; }
   btn.classList.remove('loading'); btn.disabled = false;
+}
+
+function tplRenderSenders(list) {
+  var el = document.getElementById('tpl-senders-list');
+  if (!list.length) { el.innerHTML = '<div style="color:var(--muted);padding:10px;font-size:12px">Nenhum número encontrado</div>'; return; }
+  el.innerHTML = list.map(function(s) {
+    var sel = tplSelectedSenders.has(s.sender);
+    return '<div class="it' + (sel ? ' sg' : '') + '" onclick="tplToggleSender(\'' + s.sender + '\')" data-sender="' + s.sender + '">' +
+      '<div class="ck"></div>' +
+      '<div class="ii"><div class="im">+' + s.sender + '</div>' +
+      '<div class="is">' + (s.displayName || s.wabaName || '') + '</div></div>' +
+      (s.quality ? '<div class="bdg ' + (s.quality==='GREEN'?'bg':s.quality==='RED'?'br':'by') + '">' + s.quality + '</div>' : '') +
+      '</div>';
+  }).join('');
+  tplUpdateSelCount();
+}
+
+function tplToggleSender(sender) {
+  if (tplSelectedSenders.has(sender)) tplSelectedSenders.delete(sender);
+  else tplSelectedSenders.add(sender);
+  // update item visually
+  var el = document.querySelector('#tpl-senders-list [data-sender="' + sender + '"]');
+  if (el) { el.classList.toggle('sg', tplSelectedSenders.has(sender)); }
+  tplUpdateSelCount();
+}
+
+function tplSelectAll() {
+  var visible = document.querySelectorAll('#tpl-senders-list [data-sender]');
+  var allSel = Array.from(visible).every(function(el) { return tplSelectedSenders.has(el.dataset.sender); });
+  visible.forEach(function(el) {
+    if (allSel) { tplSelectedSenders.delete(el.dataset.sender); el.classList.remove('sg'); }
+    else { tplSelectedSenders.add(el.dataset.sender); el.classList.add('sg'); }
+  });
+  tplUpdateSelCount();
+}
+
+function tplFilterSenders() {
+  var q = document.getElementById('tpl-search').value.toLowerCase();
+  var filtered = tplAllSenders.filter(function(s) {
+    return s.sender.includes(q) || (s.displayName || '').toLowerCase().includes(q);
+  });
+  tplRenderSenders(filtered);
+}
+
+function tplUpdateSelCount() {
+  var n = tplSelectedSenders.size;
+  document.getElementById('tpl-sel-count').textContent = n ? n + ' selecionado' + (n > 1 ? 's' : '') : '';
+  document.getElementById('tplBtnAll').textContent = tplAllSenders.length === n ? 'Desmarcar todos' : 'Selecionar todos';
 }
 
 function tplNormalizeName(el) {
@@ -874,7 +928,6 @@ function tplUpdatePreview() {
 }
 
 async function criarTemplate() {
-  var sender = document.getElementById('tpl-sender').value;
   var name = document.getElementById('tpl-name').value.trim();
   var category = document.getElementById('tpl-category').value;
   var language = document.getElementById('tpl-language').value;
@@ -883,7 +936,8 @@ async function criarTemplate() {
   var headerText = document.getElementById('tpl-header-text').value.trim();
   var footer = document.getElementById('tpl-footer').value.trim();
 
-  if (!sender) { tplSetSts('err', 'Selecione um número', 'Carregue os números e escolha um remetente'); return; }
+  var senders = Array.from(tplSelectedSenders);
+  if (!senders.length) { tplSetSts('err', 'Selecione ao menos um número', 'Carregue os números e selecione os remetentes'); return; }
   if (!name) { tplSetSts('err', 'Nome obrigatório', 'Preencha o nome do template'); return; }
   if (!body) { tplSetSts('err', 'Corpo obrigatório', 'Preencha o corpo da mensagem'); return; }
 
@@ -895,18 +949,26 @@ async function criarTemplate() {
 
   var btn = document.getElementById('btnCriarTemplate');
   btn.classList.add('loading'); btn.disabled = true;
-  tplSetSts('wait', 'Enviando template...', 'Aguarde');
+  tplSetSts('wait', 'Enviando para ' + senders.length + ' número' + (senders.length > 1 ? 's' : '') + '...', 'Aguarde');
 
-  try {
-    var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'createTemplate', apiKey: AK, baseUrl: BU, sender: sender, templateName: name, category: category, language: language, structure: structure }) });
-    var d = await r.json();
-    if (d.status === 200 || d.status === 201 || (d.body && (d.body.status === 'PENDING' || d.body.id))) {
-      tplSetSts('ok', 'Template enviado!', 'Status: PENDING — aguardando aprovação da Meta (geralmente algumas horas)');
-    } else {
-      tplSetSts('err', 'Erro ao criar', JSON.stringify(d.body || d));
-    }
-  } catch(e) { tplSetSts('err', 'Erro de conexão', e.message); }
+  var ok = 0, errs = [];
+  for (var i = 0; i < senders.length; i++) {
+    try {
+      var r = await fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'createTemplate', apiKey: AK, baseUrl: BU, sender: senders[i], templateName: name, category: category, language: language, structure: structure }) });
+      var d = await r.json();
+      if (d.status === 200 || d.status === 201 || (d.body && (d.body.status === 'PENDING' || d.body.id))) ok++;
+      else errs.push(senders[i] + ': ' + JSON.stringify(d.body || d));
+    } catch(e) { errs.push(senders[i] + ': ' + e.message); }
+  }
+
+  if (!errs.length) {
+    tplSetSts('ok', 'Template enviado para ' + ok + ' número' + (ok > 1 ? 's' : '') + '!', 'Status: PENDING — aguardando aprovação da Meta');
+  } else if (ok > 0) {
+    tplSetSts('wait', ok + ' enviado(s) com sucesso, ' + errs.length + ' com erro', errs.join(' | '));
+  } else {
+    tplSetSts('err', 'Erro ao criar template', errs.join(' | '));
+  }
 
   btn.classList.remove('loading'); btn.disabled = false;
 }
